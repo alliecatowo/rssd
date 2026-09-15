@@ -1,0 +1,3 @@
+# Fixtures are byte-exact captures. Never normalise line endings or they stop
+# reproducing the charset/CRLF behaviour of the real feeds.
+tests/fixtures/** -text -diff
