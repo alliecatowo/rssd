@@ -6,3 +6,8 @@ demo/
 node_modules/
 docs/.vitepress/dist/
 docs/.vitepress/cache/
+
+# Runtime artifacts from running a daemon in the repo root
+var/
+store/
+feeds.d/

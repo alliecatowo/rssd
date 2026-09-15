@@ -1,3 +1,0 @@
-{"v":1,"seq":1,"ts":"2026-09-15T21:55:56.401Z","event":"daemon.started","data":{"pid":58205,"root":".","swept_temps":0}}
-{"v":1,"seq":2,"ts":"2026-09-15T21:55:56.422Z","event":"daemon.reconciled","data":{"feeds":0,"entries":0}}
-{"v":1,"seq":3,"ts":"2026-09-15T21:56:03.815Z","event":"daemon.stopping","data":{}}
