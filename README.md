@@ -33,9 +33,9 @@ mise install
 uv sync --extra tui
 
 uv run rssd init demo/
-uv run rssd daemon --root demo --poll-now    # terminal 1
-uv run rssd tui    --root demo               # terminal 2
-tail -F demo/var/events.jsonl | jq -c        # terminal 3
+uv run rssd daemon --root demo --poll-now   # terminal 1
+uv run rss tui --root demo                  # terminal 2
+tail -F demo/var/events.jsonl | jq -c       # terminal 3
 ```
 
 Drop a new `.xml` file into `demo/feeds.d/` and the daemon picks it up without a
@@ -145,17 +145,61 @@ normal footprint is one request per feed, never one per entry.
 
 ## Commands
 
+Two binaries, on purpose. `rssd` writes the tree; `rss` only reads it.
+
 ```
 rssd init <root>              scaffold an instance  [--fixture-mode]
 rssd daemon --root <root>     run it  [--poll-now]
 rssd once --root <root>       one poll pass, then exit
 rssd poll <feed> --root <r>   force-poll one feed
-rssd tui --root <root>        terminal visualiser
 rssd validate --root <root>   check every subscription parses
 rssd prune --retired --yes    delete retired folders (never automatic)
 rssd serve-fixtures           local HTTP server over the fixtures
 rssd demo-mutate --root <r>   force a revision on demand
 ```
+
+```
+rss feeds                     what's subscribed, and is it healthy
+rss ls [feed]                 entries, newest first
+rss show <ref>                read an entry as wrapped text
+rss link <ref>                print just the URL
+rss open <ref>                open it in a browser
+rss links <ref>               every link in an entry
+rss search <query> [feed]     match titles and body text
+rss revisions <ref>           every stored version
+rss diff <ref>                what changed when it was edited
+rss info <ref>                id, dates, origin, hash, path
+rss config                    effective settings and their source
+rss tui                       the terminal reader
+```
+
+Refer to an entry by id prefix, position, feed, or path — all four work:
+
+```bash
+rss show 9f2c1a3b            # unique id prefix
+rss show rust-blog:3         # 3rd newest in a feed
+rss show rust-blog           # newest in a feed
+rss show demo/store/rust-blog/entries/2026….xml
+```
+
+An ambiguous prefix lists the candidates rather than guessing.
+
+## The TUI
+
+```bash
+rss tui --root demo
+```
+
+Modal, like vim. Three panes — feeds, entries, reader — a status line, and no
+chrome. `hjkl` to move, `Enter` to read, `o` to open in a browser, `y` to yank
+the URL, `/` to search, `:` for ex commands (`:e rust-blog`, `:set width=100`,
+`:links`, `:open 3`, `:q`).
+
+`:set` changes the session only, exactly like vim; persistent preferences go in
+`rss.toml`.
+
+The daemon doesn't need to be running — the TUI reads the filesystem, so it
+works fine against a static tree or a directory you rsynced from elsewhere.
 
 ## Development
 
