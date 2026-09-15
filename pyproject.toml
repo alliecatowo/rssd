@@ -2,6 +2,19 @@
 name = "rssd"
 version = "0.1.0"
 description = "A file-based RSS daemon: the filesystem is the API"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Allie Coleman" }]
+keywords = ["rss", "atom", "feed", "daemon", "filesystem", "tui"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
+    "Topic :: Utilities",
+]
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
@@ -11,12 +24,20 @@ dependencies = [
     "watchfiles>=1.2.0",
 ]
 
+[project.urls]
+Homepage = "https://github.com/alliecatowo/rssd"
+Documentation = "https://alliecatowo.github.io/rssd/"
+Source = "https://github.com/alliecatowo/rssd"
+Issues = "https://github.com/alliecatowo/rssd/issues"
+
 [project.optional-dependencies]
 tui = ["textual>=8.2.8"]
 fulltext = ["trafilatura>=2.2.0"]
 
 [project.scripts]
+# Two binaries on purpose: `rssd` writes the tree, `rss` only reads it.
 rssd = "rssd.cli:main"
+rss = "rssd.readercli:main"
 
 [dependency-groups]
 dev = [

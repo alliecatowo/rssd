@@ -1,0 +1,29 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Install libxml2-utils
+        # The well-formedness gate shells out to xmllint on purpose: checking
+        # our XML with our own parser would not prove much.
+        run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+
+      - run: uv sync --extra tui
+
+      - name: Run tests
+        # No network is required; the suite serves the committed fixtures
+        # over localhost.
+        run: uv run pytest -q
