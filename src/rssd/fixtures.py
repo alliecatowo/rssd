@@ -57,12 +57,22 @@ class FixtureHandler(http.server.BaseHTTPRequestHandler):
         last_modified = formatdate(stat.st_mtime, usegmt=True)
 
         # Honour conditional requests, so the 304 path is demoable offline.
-        if self.headers.get("If-None-Match") == etag:
-            self.send_response(304)
-            self.send_header("ETag", etag)
-            self.end_headers()
-            return
-        if self.headers.get("If-Modified-Since") == last_modified:
+        #
+        # RFC 7232 §6: when both validators are present, If-None-Match wins and
+        # If-Modified-Since MUST be ignored. That is not pedantry here -- mtime
+        # has one-second granularity, so a file rewritten in the same second it
+        # was last served still carries an identical Last-Modified. Checking it
+        # after the ETag had already mismatched would answer 304 for content
+        # that demonstrably changed, and `rssd demo-mutate` would appear to do
+        # nothing whenever the operator was quick.
+        inm = self.headers.get("If-None-Match")
+        if inm is not None:
+            if inm == etag:
+                self.send_response(304)
+                self.send_header("ETag", etag)
+                self.end_headers()
+                return
+        elif self.headers.get("If-Modified-Since") == last_modified:
             self.send_response(304)
             self.send_header("Last-Modified", last_modified)
             self.end_headers()

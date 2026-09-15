@@ -34,3 +34,9 @@ module-root = "src"
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
+filterwarnings = [
+    # feedparser warns once per entry that it is falling back from
+    # updated_parsed to published_parsed. We handle both explicitly in
+    # parse.py, and 500 copies of the notice drowns out real output.
+    "ignore:To avoid breaking existing software:DeprecationWarning",
+]
