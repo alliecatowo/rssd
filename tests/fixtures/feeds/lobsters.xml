@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Lobsters</title>
+    <link>https://lobste.rs/</link>
+    <atom:link href="https://lobste.rs/rss?token=asdfasdf" rel="self"/>
+    <description></description>
+    <pubDate>Tue, 15 Sep 2026 12:21:47 -0500</pubDate>
+    <ttl>120</ttl>
+    <item>
+      <title>GEFS on OpenBSD: A very early preview</title>
+      <link>https://marc.info/?l=openbsd-tech&amp;m=178948744271633&amp;w=2</link>
+      <guid>https://lobste.rs/s/buzdkb</guid>
+      <author>marc.info via jbauer</author>
+      <pubDate>Tue, 15 Sep 2026 12:21:47 -0500</pubDate>
+      <comments>https://lobste.rs/s/buzdkb/gefs_on_openbsd_very_early_preview</comments>
+      <description>&lt;p&gt;&lt;a href="https://lobste.rs/s/buzdkb/gefs_on_openbsd_very_early_preview"&gt;Comments&lt;/a&gt;&lt;/p&gt;</description>
+      <category>openbsd</category>
+    </item>
+    <item>
+      <title>"Do You Still Read the Code?"</title>
+      <link>https://zanlib.dev/blog/do-you-still-read-the-code/</link>
+      <guid>https://lobste.rs/s/qiwlzz</guid>
+      <author>zanlib.dev by zanlib</author>
+      <pubDate>Mon, 14 Sep 2026 15:16:07 -0500</pubDate>
+      <comments>https://lobste.rs/s/qiwlzz/do_you_still_read_code</comments>
+      <description>&lt;p&gt;&lt;a href="https://lobste.rs/s/qiwlzz/do_you_still_read_code"&gt;Comments&lt;/a&gt;&lt;/p&gt;</description>
+      <category>practices</category>
+      <category>vibecoding</category>
+    </item>
+    <item>
+      <title>The contagion of fear</title>
+      <link>https://bcantrill.dtrace.org/2026/09/13/the-contagion-of-fear/</link>
+      <guid>https://lobste.rs/s/1ifr5f</guid>
+      <author>bcantrill.dtrace.org via rrampage</author>
+      <pubDate>Mon, 14 Sep 2026 11:53:14 -0500</pubDate>
+      <comments>https://lobste.rs/s/1ifr5f/contagion_fear</comments>
+      <description>&lt;p&gt;&lt;a href="https://lobste.rs/s/1ifr5f/contagion_fear"&gt;Comments&lt;/a&gt;&lt;/p&gt;</description>
+      <category>vibecoding</category>
+    </item>
+    <item>
+      <title>Coreutils - rejected feature requests</title>
+      <link>https://www.gnu.org/software/coreutils/rejected_requests.html</link>
+      <guid>https://lobste.rs/s/zbcua4</guid>
+      <author>gnu.org via ryan-duve</author>
+      <pubDate>Tue, 15 Sep 2026 04:06:36 -0500</pubDate>
+      <comments>https://lobste.rs/s/zbcua4/coreutils_rejected_feature_requests</comments>
+      <description>&lt;p&gt;&lt;a href="https://lobste.rs/s/zbcua4/coreutils_rejected_feature_requests"&gt;Comments&lt;/a&gt;&lt;/p&gt;</description>
+      <category>unix</category>
+      <category>programming</category>
+    </item>
+    <item>
+      <title>CSS-Tricks in Limbo</title>
+      <link>https://vale.rocks/micros/20260915-0135</link>
+      <guid>https://lobste.rs/s/lgcmoo</guid>
+      <author>vale.rocks via FedericoSchonborn</author>
+      <pubDate>Tue, 15 Sep 2026 04:12:31 -0500</pubDate>
+      <comments>https://lobste.rs/s/lgcmoo/css_tricks_limbo</comments>
+      <description>&lt;p&gt;&lt;a href="https://lobste.rs/s/lgcmoo/css_tricks_limbo"&gt;Comments&lt;/a&gt;&lt;/p&gt;</description>
+      <category>web</category>
+      <category>css</category>
+    </item>
+    <item>
+      <title>Converting a $20 4G wireless hotspot into a texting device</title>
+      <link>https://bkovac.github.io/modem-thing/</link>
+      <guid>https://lobste.rs/s/klussk</guid>
+      <author>bkovac.github.io via untitaker</author>
+      <pubDate>Tue, 15 Sep 2026 08:43:30 -0500</pubDate>
+      <comments>https://lobste.rs/s/klussk/converting_20_4g_wireless_hotspot_into</comments>
+      <description>&lt;p&gt;&lt;a href="https://lobste.rs/s/klussk/converting_20_4g_wireless_hotspot_into"&gt;Comments&lt;/a&gt;&lt;/p&gt;</description>
+      <category>hardware</category>
+    </item>
+    <item>
+      <title>What blog posts influenced your thinking the most?</title>
+      <link>https://lobste.rs/s/lbavmm/what_blog_posts_influenced_your_thinking</link>
+      <guid>https://lobste.rs/s/lbavmm</guid>
+      <author> by mt</author>
+      <pubDate>Mon, 14 Sep 2026 10:27:32 -0500</pubDate>
+      <comments>https://lobste.rs/s/lbavmm/what_blog_posts_influenced_your_thinking</comments>
+      <description>&lt;p&gt;Interested in hearing your opinions, I usually learn a lot from it.&lt;/p&gt;
+&lt;p&gt;For me it has to be Parse, Don’t Validate and early joelonsoftware.&lt;/p&gt;
+</description>
+      <category>practices</category>
+      <category>ask</category>
+    </item>
+    <item>
+      <title>From Intern to Software Architect</title>
+      <link>https://chauhankiran.blogspot.com/2026/09/levels.html</link>
+      <guid>https://lobste.rs/s/jsvadf</guid>
+      <author>chauhankiran.blogspot.com by chauhankiran</author>
+      <pubDate>Tue, 15 Sep 2026 13:38:43 -0500</pubDate>
+      <comments>https://lobste.rs/s/jsvadf/from_intern_software_architect</comments>
+      <description>&lt;p&gt;&lt;a href="https://lobste.rs/s/jsvadf/from_intern_software_architect"&gt;Comments&lt;/a&gt;&lt;/p&gt;</description>
+      <category>practices</category>
+    </item>
+    <item>
+      <title>How can you not be romantic about UNIX domain sockets?</title>
+      <link>https://yuvalino.com/how-can-you-not-be-romantic-about-unix-domain-sockets</link>
+      <guid>https://lobste.rs/s/uauns9</guid>
+      <author>yuvalino.com via polywolf</author>
+      <pubDate>Mon, 14 Sep 2026 11:27:12 -0500</pubDate>
+      <comments>https://lobste.rs/s/uauns9/how_can_you_not_be_romantic_about_unix</comments>
+      <description>&lt;p&gt;&lt;a href="https://lobste.rs/s/uauns9/how_can_you_not_be_romantic_about_unix"&gt;Comments&lt;/a&gt;&lt;/p&gt;</description>
+      <category>c</category>
+      <category>unix</category>
+    </item>
+    <item>
+      <title>A New Equal-Area Map for Interactive Computer Use (natively zooms to Mercator)</title>
+      <link>https://www.benjoffe.com/map</link>
+      <guid>https://lobste.rs/s/zttri6</guid>
+      <author>benjoffe.com by benjoffe</author>
+      <pubDate>Mon, 14 Sep 2026 17:37:17 -0500</pubDate>
+      <comments>https://lobste.rs/s/zttri6/new_equal_area_map_for_interactive</comments>
+      <description>&lt;p&gt;&lt;a href="https://lobste.rs/s/zttri6/new_equal_area_map_for_interactive"&gt;Comments&lt;/a&gt;&lt;/p&gt;</description>
+      <category>web</category>
+      <category>math</category>
+    </item>
+    <item>
+      <title>Performance Improvements in .NET 11</title>
+      <link>https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-11/</link>
+      <guid>https://lobste.rs/s/udwhz2</guid>
+      <author>devblogs.microsoft.com via jbe_</author>
+      <pubDate>Tue, 15 Sep 2026 12:03:47 -0500</pubDate>
+      <comments>https://lobste.rs/s/udwhz2/performance_improvements_net_11</comments>
+      <description>&lt;p&gt;&lt;a href="https://lobste.rs/s/udwhz2/performance_improvements_net_11"&gt;Comments&lt;/a&gt;&lt;/p&gt;</description>
+      <category>dotnet</category>
+      <category>performance</category>
+    </item>
+    <item>
+      <title>GDScript: The Good, Bad, and Ugly Parts</title>
+      <link>https://azhdarchid.com/gdscript-good-bad-ugly/</link>
+      <guid>https://lobste.rs/s/q5dgu6</guid>
+      <author>azhdarchid.com via misty</author>
+      <pubDate>Mon, 14 Sep 2026 19:29:04 -0500</pubDate>
+      <comments>https://lobste.rs/s/q5dgu6/gdscript_good_bad_ugly_parts</comments>
+      <description>&lt;p&gt;&lt;a href="https://lobste.rs/s/q5dgu6/gdscript_good_bad_ugly_parts"&gt;Comments&lt;/a&gt;&lt;/p&gt;</description>
+      <category>programming</category>
+      <category>games</category>
+    </item>
+    <item>
+      <title>How much of F-Droid is LLM generated?</title>
+      <link>https://tintotint.eu/whacky-corner/f-droid_slop/</link>
+      <guid>https://lobste.rs/s/acwuxy</guid>
+      <author>tintotint.eu via lobo</author>
+      <pubDate>Tue, 15 Sep 2026 12:09:13 -0500</pubDate>
+      <comments>https://lobste.rs/s/acwuxy/how_much_f_droid_is_llm_generated</comments>
+      <description>&lt;p&gt;&lt;a href="https://lobste.rs/s/acwuxy/how_much_f_droid_is_llm_generated"&gt;Comments&lt;/a&gt;&lt;/p&gt;</description>
+      <category>vibecoding</category>
+    </item>
+    <item>
+      <title>Trying to Make a Loop Auto-Vectorize</title>
+      <link>https://jsgroth.dev/blog/posts/trying-to-make-a-loop-auto-vectorize/</link>
+      <guid>https://lobste.rs/s/4nhhax</guid>
+      <author>jsgroth.dev via fanf</author>
+      <pubDate>Tue, 15 Sep 2026 12:29:43 -0500</pubDate>
+      <comments>https://lobste.rs/s/4nhhax/trying_make_loop_auto_vectorize</comments>
+      <description>&lt;p&gt;&lt;a href="https://lobste.rs/s/4nhhax/trying_make_loop_auto_vectorize"&gt;Comments&lt;/a&gt;&lt;/p&gt;</description>
+      <category>assembly</category>
+      <category>rust</category>
+      <category>performance</category>
+    </item>
+    <item>
+      <title>A Letter from a Machine Learning Engineer</title>
+      <link>https://nemin.hu/llm-letter/index.html</link>
+      <guid>https://lobste.rs/s/ta2ojd</guid>
+      <author>nemin.hu by nemin</author>
+      <pubDate>Mon, 14 Sep 2026 12:58:22 -0500</pubDate>
+      <comments>https://lobste.rs/s/ta2ojd/letter_from_machine_learning_engineer</comments>
+      <description>&lt;p&gt;&lt;a href="https://lobste.rs/s/ta2ojd/letter_from_machine_learning_engineer"&gt;Comments&lt;/a&gt;&lt;/p&gt;</description>
+      <category>ai</category>
+    </item>
+    <item>
+      <title>How I Wrote a Forth (Without Knowing How)</title>
+      <link>https://vtrlx.ca/w/2026-09-10-how-i-wrote-moonforth.html</link>
+      <guid>https://lobste.rs/s/ccy1nr</guid>
+      <author>vtrlx.ca via crmsnbleyd</author>
+      <pubDate>Tue, 15 Sep 2026 07:51:55 -0500</pubDate>
+      <comments>https://lobste.rs/s/ccy1nr/how_i_wrote_forth_without_knowing_how</comments>
+      <description>&lt;p&gt;&lt;a href="https://lobste.rs/s/ccy1nr/how_i_wrote_forth_without_knowing_how"&gt;Comments&lt;/a&gt;&lt;/p&gt;</description>
+      <category>plt</category>
+      <category>concatenative</category>
+    </item>
+    <item>
+      <title>A Nix store is three functions</title>
+      <link>https://fzakaria.com/2026/09/11/a-nix-store-is-three-functions</link>
+      <guid>https://lobste.rs/s/9zytkh</guid>
+      <author>fzakaria.com via skycam</author>
+      <pubDate>Mon, 14 Sep 2026 23:07:33 -0500</pubDate>
+      <comments>https://lobste.rs/s/9zytkh/nix_store_is_three_functions</comments>
+      <description>&lt;p&gt;&lt;a href="https://lobste.rs/s/9zytkh/nix_store_is_three_functions"&gt;Comments&lt;/a&gt;&lt;/p&gt;</description>
+      <category>nix</category>
+    </item>
+    <item>
+      <title>Stalling installing</title>
+      <link>https://adactio.com/journal/22757</link>
+      <guid>https://lobste.rs/s/pgzlof</guid>
+      <author>adactio.com via opale</author>
+      <pubDate>Tue, 15 Sep 2026 02:31:11 -0500</pubDate>
+      <comments>https://lobste.rs/s/pgzlof/stalling_installing</comments>
+      <description>&lt;p&gt;&lt;a href="https://lobste.rs/s/pgzlof/stalling_installing"&gt;Comments&lt;/a&gt;&lt;/p&gt;</description>
+      <category>browsers</category>
+      <category>web</category>
+    </item>
+    <item>
+      <title>Search over Algebraic Graphs</title>
+      <link>https://anekstein.com/posts/2026-08-22.html</link>
+      <guid>https://lobste.rs/s/cw8fep</guid>
+      <author>anekstein.com by anex9d</author>
+      <pubDate>Tue, 15 Sep 2026 07:04:42 -0500</pubDate>
+      <comments>https://lobste.rs/s/cw8fep/search_over_algebraic_graphs</comments>
+      <description>&lt;p&gt;&lt;a href="https://lobste.rs/s/cw8fep/search_over_algebraic_graphs"&gt;Comments&lt;/a&gt;&lt;/p&gt;</description>
+      <category>haskell</category>
+    </item>
+    <item>
+      <title>IBM Built the Cold War’s Most Powerful Code Breaker for the NSA</title>
+      <link>https://spectrum.ieee.org/cold-war-codebreaker-nsa-ibm</link>
+      <guid>https://lobste.rs/s/pwofca</guid>
+      <author>spectrum.ieee.org via fanf</author>
+      <pubDate>Tue, 15 Sep 2026 06:22:06 -0500</pubDate>
+      <comments>https://lobste.rs/s/pwofca/ibm_built_cold_war_s_most_powerful_code</comments>
+      <description>&lt;p&gt;&lt;a href="https://lobste.rs/s/pwofca/ibm_built_cold_war_s_most_powerful_code"&gt;Comments&lt;/a&gt;&lt;/p&gt;</description>
+      <category>historical</category>
+      <category>cryptography</category>
+    </item>
+    <item>
+      <title>Postgres development activity</title>
+      <link>https://vondra.me/posts/postgres-development-activity/</link>
+      <guid>https://lobste.rs/s/3wmby2</guid>
+      <author>vondra.me via fanf</author>
+      <pubDate>Tue, 15 Sep 2026 07:26:49 -0500</pubDate>
+      <comments>https://lobste.rs/s/3wmby2/postgres_development_activity</comments>
+      <description>&lt;p&gt;&lt;a href="https://lobste.rs/s/3wmby2/postgres_development_activity"&gt;Comments&lt;/a&gt;&lt;/p&gt;</description>
+      <category>databases</category>
+      <category>practices</category>
+    </item>
+    <item>
+      <title>Subnormal floating-point numbers are expensive… on Intel processors</title>
+      <link>https://lemire.me/blog/2026/09/15/subnormal-floating-point-numbers-are-expensive-on-intel-processors/</link>
+      <guid>https://lobste.rs/s/hv3l4v</guid>
+      <author>lemire.me via kevincox</author>
+      <pubDate>Tue, 15 Sep 2026 13:41:00 -0500</pubDate>
+      <comments>https://lobste.rs/s/hv3l4v/subnormal_floating_point_numbers_are</comments>
+      <description>&lt;p&gt;&lt;a href="https://lobste.rs/s/hv3l4v/subnormal_floating_point_numbers_are"&gt;Comments&lt;/a&gt;&lt;/p&gt;</description>
+      <category>hardware</category>
+      <category>performance</category>
+    </item>
+    <item>
+      <title>The terminal should not own the work</title>
+      <link>https://lezli01.is-a.dev/vincent/docs/why/the-terminal-should-not-own-the-work.html</link>
+      <guid>https://lobste.rs/s/m1zfy8</guid>
+      <author>lezli01.is-a.dev via sspaeti</author>
+      <pubDate>Tue, 15 Sep 2026 03:55:35 -0500</pubDate>
+      <comments>https://lobste.rs/s/m1zfy8/terminal_should_not_own_work</comments>
+      <description>&lt;p&gt;&lt;a href="https://lobste.rs/s/m1zfy8/terminal_should_not_own_work"&gt;Comments&lt;/a&gt;&lt;/p&gt;</description>
+      <category>linux</category>
+      <category>programming</category>
+      <category>vibecoding</category>
+    </item>
+    <item>
+      <title>1Password's AI patching benchmark is misleading</title>
+      <link>https://blog.trailofbits.com/2026/09/15/1passwords-ai-patching-benchmark-is-misleading/</link>
+      <guid>https://lobste.rs/s/qx8dxe</guid>
+      <author>blog.trailofbits.com via sarciszewski</author>
+      <pubDate>Tue, 15 Sep 2026 15:03:12 -0500</pubDate>
+      <comments>https://lobste.rs/s/qx8dxe/1password_s_ai_patching_benchmark_is</comments>
+      <description>&lt;p&gt;&lt;a href="https://lobste.rs/s/qx8dxe/1password_s_ai_patching_benchmark_is"&gt;Comments&lt;/a&gt;&lt;/p&gt;</description>
+      <category>security</category>
+      <category>practices</category>
+      <category>ai</category>
+    </item>
+    <item>
+      <title>Swift 6.4 Released</title>
+      <link>https://www.swift.org/blog/swift-6.4-released/</link>
+      <guid>https://lobste.rs/s/ptegb0</guid>
+      <author>swift.org via kevinc</author>
+      <pubDate>Tue, 15 Sep 2026 13:55:10 -0500</pubDate>
+      <comments>https://lobste.rs/s/ptegb0/swift_6_4_released</comments>
+      <description>&lt;p&gt;&lt;a href="https://lobste.rs/s/ptegb0/swift_6_4_released"&gt;Comments&lt;/a&gt;&lt;/p&gt;</description>
+      <category>swift</category>
+    </item>
+  </channel>
+</rss>

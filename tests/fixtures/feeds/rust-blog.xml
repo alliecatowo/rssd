@@ -1,0 +1,979 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <generator uri="https://blog.rust-lang.org/" version="0.1.0">Rust Blog</generator>
+    <link href="https://blog.rust-lang.org/feed.xml" rel="self" type="application/atom+xml" />
+    <link href="https://blog.rust-lang.org/" rel="alternate" type="text/html" />
+    <id>https://blog.rust-lang.org/</id>
+    <title>Rust Blog</title>
+    <subtitle>Empowering everyone to build reliable and efficient software.</subtitle>
+    <author>
+        <name>Maintained by the Rust Teams.</name>
+        <uri>https://github.com/rust-lang/blog.rust-lang.org/</uri>
+    </author>
+    <updated>2026-09-08T15:46:39+00:00</updated>
+
+    
+    <entry>
+        <title>Rust debugging survey 2026 results</title>
+        <link rel="alternate" href="https://blog.rust-lang.org/2026/09/07/rust-debugging-survey-2026-results/" type="text/html" title="Rust debugging survey 2026 results" />
+        <published>2026-09-07T00:00:00+00:00</published>
+        <updated>2026-09-07T00:00:00+00:00</updated>
+        <id>https://blog.rust-lang.org/2026/09/07/rust-debugging-survey-2026-results/</id>
+        <content type="html" xml:base="https://blog.rust-lang.org/2026/09/07/rust-debugging-survey-2026-results/">&lt;p&gt;One of the biggest challenges Rust developers report in our
+&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://blog.rust-lang.org/2026/03/02/2025-State-Of-Rust-Survey-results/#challenges-and-wishes-about-rust&quot;&gt;annual surveys&lt;/a&gt; is a subpar debugging experience. So, back
+in February, we ran our first &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://blog.rust-lang.org/2026/02/23/rust-debugging-survey-2026/&quot;&gt;Rust Debugging Survey&lt;/a&gt;,
+in the hopes of identifying how Rust developers are using debuggers and what
+problems they are facing when doing so. We received over 2,300 responses, and
+we&#x27;d like to thank everyone who took the time to participate in the survey!&lt;/p&gt;
+&lt;p&gt;In this report, we&#x27;ll go over some of the results of the survey. If you&#x27;d like,
+you can also check out &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://raw.githubusercontent.com/rust-lang/surveys/main/surveys/2026/debugging/report/debugging-survey-2026-report.pdf&quot;&gt;the complete results of the survey&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you&#x27;d like to skip ahead to any particular section, you can do so with this
+index:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href&#x3D;&quot;https://blog.rust-lang.org/2026/09/07/rust-debugging-survey-2026-results/#who-uses-debuggers&quot;&gt;Who Uses Debuggers?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href&#x3D;&quot;https://blog.rust-lang.org/2026/09/07/rust-debugging-survey-2026-results/#how-are-debuggers-used&quot;&gt;How Are Debuggers Used?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href&#x3D;&quot;https://blog.rust-lang.org/2026/09/07/rust-debugging-survey-2026-results/#challenges&quot;&gt;Challenges&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href&#x3D;&quot;https://blog.rust-lang.org/2026/09/07/rust-debugging-survey-2026-results/#debugger-visualizers&quot;&gt;Debugger Visualizers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href&#x3D;&quot;https://blog.rust-lang.org/2026/09/07/rust-debugging-survey-2026-results/#closing-remarks&quot;&gt;Closing Remarks&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id&#x3D;&quot;who-uses-debuggers&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#who-uses-debuggers&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Who Uses Debuggers?&lt;/h2&gt;
+&lt;p&gt;The first step to making sense of the survey results is understanding who took
+the survey. We asked respondents to rate their Rust expertise, from &quot;Never used
+it&quot; to &quot;Advanced&quot;. Over 80% reported themselves as &quot;Advanced&quot; or &quot;Intermediate&quot;,
+split roughly evenly between the two:&lt;/p&gt;
+&lt;!-- Chart how-would-you-rate-your-rust-expertise start --&gt;
+&lt;div&gt;
+    &lt;div class id&#x3D;&quot;how-would-you-rate-your-rust-expertise&quot;&gt;&lt;noscript&gt;
+&lt;img alt&#x3D;&quot;how-would-you-rate-your-rust-expertise&quot; src&#x3D;&quot;how-would-you-rate-your-rust-expertise.png&quot;/&gt;
+&lt;/noscript&gt;&lt;/div&gt;
+    &lt;div style&#x3D;&quot;display: flex; margin-bottom: 10px;&quot;&gt;
+        &lt;span&gt;[&lt;a href&#x3D;&quot;how-would-you-rate-your-rust-expertise.png&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as PNG&quot;&gt;PNG&lt;/a&gt;]&lt;/span&gt;&amp;nbsp;&lt;span&gt;[&lt;a href&#x3D;&quot;how-would-you-rate-your-rust-expertise.svg&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as SVG&quot;&gt;SVG&lt;/a&gt;]&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Chart how-would-you-rate-your-rust-expertise end --&gt;
+&lt;p&gt;We also asked respondents if they currently use or have used debuggers in Rust.
+Over 46% said they currently do, with the remaining responses split between
+&quot;have in the past&quot; and &quot;never have&quot;. That means that over half of respondents do
+not currently use a debugger for Rust!&lt;/p&gt;
+&lt;!-- Chart do-you-use-debuggers-in-rust start --&gt;
+&lt;div&gt;
+    &lt;div class id&#x3D;&quot;do-you-use-debuggers-in-rust&quot;&gt;&lt;noscript&gt;
+&lt;img alt&#x3D;&quot;do-you-use-debuggers-in-rust&quot; src&#x3D;&quot;do-you-use-debuggers-in-rust.png&quot;/&gt;
+&lt;/noscript&gt;&lt;/div&gt;
+    &lt;div style&#x3D;&quot;display: flex; margin-bottom: 10px;&quot;&gt;
+        &lt;span&gt;[&lt;a href&#x3D;&quot;do-you-use-debuggers-in-rust.png&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as PNG&quot;&gt;PNG&lt;/a&gt;]&lt;/span&gt;&amp;nbsp;&lt;span&gt;[&lt;a href&#x3D;&quot;do-you-use-debuggers-in-rust.svg&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as SVG&quot;&gt;SVG&lt;/a&gt;]&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Chart do-you-use-debuggers-in-rust end --&gt;
+&lt;p&gt;Categorized by expertise, the responses reveal that roughly half of &quot;beginners&quot;
+have never used debuggers in Rust! On the other hand, nearly half of &quot;advanced
+users&quot; currently do use debuggers in Rust:&lt;/p&gt;
+&lt;!-- Chart do-you-use-debuggers-in-rust-per-expertise start --&gt;
+&lt;div&gt;
+    &lt;div class&#x3D;&quot;pie-chart&quot; id&#x3D;&quot;do-you-use-debuggers-in-rust-per-expertise&quot;&gt;&lt;noscript&gt;
+&lt;img alt&#x3D;&quot;do-you-use-debuggers-in-rust-per-expertise&quot; src&#x3D;&quot;do-you-use-debuggers-in-rust-per-expertise.png&quot;/&gt;
+&lt;/noscript&gt;&lt;/div&gt;
+    &lt;div style&#x3D;&quot;display: flex; margin-bottom: 10px;&quot;&gt;
+        &lt;span&gt;[&lt;a href&#x3D;&quot;do-you-use-debuggers-in-rust-per-expertise.png&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as PNG&quot;&gt;PNG&lt;/a&gt;]&lt;/span&gt;&amp;nbsp;&lt;span&gt;[&lt;a href&#x3D;&quot;do-you-use-debuggers-in-rust-per-expertise.svg&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as SVG&quot;&gt;SVG&lt;/a&gt;]&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Chart do-you-use-debuggers-in-rust-per-expertise end --&gt;
+&lt;p&gt;For respondents who indicated they had previously used Rust but no longer did,
+we asked if challenges with debugging support were why they stopped. For nearly
+3%, the answer was &quot;yes&quot;, with an additional 24% reporting debugging issues as
+being partially responsible (though mind the small response count; most
+respondents were active users of Rust):&lt;/p&gt;
+&lt;!-- Chart were-issues-with-debugging-support-the-primary-reason-why-you-stopped-using-rust start --&gt;
+&lt;div&gt;
+    &lt;div class id&#x3D;&quot;were-issues-with-debugging-support-the-primary-reason-why-you-stopped-using-rust&quot;&gt;&lt;noscript&gt;
+&lt;img alt&#x3D;&quot;were-issues-with-debugging-support-the-primary-reason-why-you-stopped-using-rust&quot; src&#x3D;&quot;were-issues-with-debugging-support-the-primary-reason-why-you-stopped-using-rust.png&quot;/&gt;
+&lt;/noscript&gt;&lt;/div&gt;
+    &lt;div style&#x3D;&quot;display: flex; margin-bottom: 10px;&quot;&gt;
+        &lt;span&gt;[&lt;a href&#x3D;&quot;were-issues-with-debugging-support-the-primary-reason-why-you-stopped-using-rust.png&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as PNG&quot;&gt;PNG&lt;/a&gt;]&lt;/span&gt;&amp;nbsp;&lt;span&gt;[&lt;a href&#x3D;&quot;were-issues-with-debugging-support-the-primary-reason-why-you-stopped-using-rust.svg&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as SVG&quot;&gt;SVG&lt;/a&gt;]&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Chart were-issues-with-debugging-support-the-primary-reason-why-you-stopped-using-rust end --&gt;
+&lt;h2 id&#x3D;&quot;how-are-debuggers-used&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#how-are-debuggers-used&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+How Are Debuggers Used?&lt;/h2&gt;
+&lt;p&gt;Knowing what debuggers developers are using and how is another important part of
+understanding the challenges they face. To this end, we asked respondents how
+they were debugging their programs. Unsurprisingly, most developers make use of
+print debugging and the &lt;code&gt;dbg!&lt;/code&gt; macro. Excluding those, using &lt;code&gt;lldb&lt;/code&gt; inside an
+IDE was the most popular choice, followed by &lt;code&gt;gdb&lt;/code&gt; on the command line:&lt;/p&gt;
+&lt;!-- Chart what-tools-and-workflows-do-you-use-to-debug-rust-programs start --&gt;
+&lt;div&gt;
+    &lt;div class&#x3D;&quot;bar-chart&quot; id&#x3D;&quot;what-tools-and-workflows-do-you-use-to-debug-rust-programs&quot;&gt;&lt;noscript&gt;
+&lt;img alt&#x3D;&quot;what-tools-and-workflows-do-you-use-to-debug-rust-programs&quot; src&#x3D;&quot;what-tools-and-workflows-do-you-use-to-debug-rust-programs.png&quot;/&gt;
+&lt;/noscript&gt;&lt;/div&gt;
+    &lt;div style&#x3D;&quot;display: flex; margin-bottom: 10px;&quot;&gt;
+        &lt;span&gt;[&lt;a href&#x3D;&quot;what-tools-and-workflows-do-you-use-to-debug-rust-programs.png&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as PNG&quot;&gt;PNG&lt;/a&gt;]&lt;/span&gt;&amp;nbsp;&lt;span&gt;[&lt;a href&#x3D;&quot;what-tools-and-workflows-do-you-use-to-debug-rust-programs.svg&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as SVG&quot;&gt;SVG&lt;/a&gt;]&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Chart what-tools-and-workflows-do-you-use-to-debug-rust-programs end --&gt;
+&lt;p&gt;We can get a more detailed breakdown of these results if we include the
+operating system on which the respondents use a given debugging approach. We
+examine this from two different angles. The first angle being, &quot;On operating
+system X, what percent of responses are using debugger Y?&quot;. Print debugging and
+the &lt;code&gt;dbg!&lt;/code&gt; macro are consistently the top two yet again, but looking beyond
+that, things get more interesting. On Linux, using &lt;code&gt;gdb&lt;/code&gt; on the command line was
+the most popular choice by a thin margin, beating &lt;code&gt;lldb&lt;/code&gt; in an IDE by only 0.4%.
+On Windows, Windows Subsystem for Linux (WSL), and macOS, &lt;code&gt;lldb&lt;/code&gt; in an IDE was
+the top pick by at least 6%, making it a very popular choice in general. On
+Windows, the three least popular choices were the command line debuggers (&lt;code&gt;gdb&lt;/code&gt;
+CLI, &lt;code&gt;lldb&lt;/code&gt; CLI, and BugStalker), and on both Windows and macOS the third most
+popular pick was, &quot;I don&#x27;t know&quot;. Those who were debugging on operating systems
+not listed (Other) most frequently used some kind of special embedded debugger
+or &lt;code&gt;gdb&lt;/code&gt;:&lt;/p&gt;
+&lt;!-- Chart what-tools-and-workflows-do-you-use-to-debug-rust-programs-per-os-1 start --&gt;
+&lt;div&gt;
+    &lt;div class&#x3D;&quot;pie-chart&quot; id&#x3D;&quot;what-tools-and-workflows-do-you-use-to-debug-rust-programs-per-os-1&quot;&gt;&lt;noscript&gt;
+&lt;img alt&#x3D;&quot;what-tools-and-workflows-do-you-use-to-debug-rust-programs-per-os-1&quot; src&#x3D;&quot;what-tools-and-workflows-do-you-use-to-debug-rust-programs-per-os-1.png&quot;/&gt;
+&lt;/noscript&gt;&lt;/div&gt;
+    &lt;div style&#x3D;&quot;display: flex; margin-bottom: 10px;&quot;&gt;
+        &lt;span&gt;[&lt;a href&#x3D;&quot;what-tools-and-workflows-do-you-use-to-debug-rust-programs-per-os-1.png&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as PNG&quot;&gt;PNG&lt;/a&gt;]&lt;/span&gt;&amp;nbsp;&lt;span&gt;[&lt;a href&#x3D;&quot;what-tools-and-workflows-do-you-use-to-debug-rust-programs-per-os-1.svg&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as SVG&quot;&gt;SVG&lt;/a&gt;]&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Chart what-tools-and-workflows-do-you-use-to-debug-rust-programs-per-os-1 end --&gt;
+&lt;p&gt;The other angle we can look at these responses from is, &quot;For users of debugger
+X, what percent of responses are using it on operating system Y?&quot;. For most
+debuggers, Linux makes up the largest portion of uses, ranging from about 45% to
+about 77%, followed by Windows, then macOS. The most notable exceptions are
+WinDbg and the Visual Studio debugger, which are primarily used on Windows, and
+&lt;code&gt;lldb&lt;/code&gt;, which is used more on macOS than Windows in an IDE and on the command
+line:&lt;/p&gt;
+&lt;!-- Chart what-tools-and-workflows-do-you-use-to-debug-rust-programs-per-os-2 start --&gt;
+&lt;div&gt;
+    &lt;div class&#x3D;&quot;pie-chart&quot; id&#x3D;&quot;what-tools-and-workflows-do-you-use-to-debug-rust-programs-per-os-2&quot;&gt;&lt;noscript&gt;
+&lt;img alt&#x3D;&quot;what-tools-and-workflows-do-you-use-to-debug-rust-programs-per-os-2&quot; src&#x3D;&quot;what-tools-and-workflows-do-you-use-to-debug-rust-programs-per-os-2.png&quot;/&gt;
+&lt;/noscript&gt;&lt;/div&gt;
+    &lt;div style&#x3D;&quot;display: flex; margin-bottom: 10px;&quot;&gt;
+        &lt;span&gt;[&lt;a href&#x3D;&quot;what-tools-and-workflows-do-you-use-to-debug-rust-programs-per-os-2.png&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as PNG&quot;&gt;PNG&lt;/a&gt;]&lt;/span&gt;&amp;nbsp;&lt;span&gt;[&lt;a href&#x3D;&quot;what-tools-and-workflows-do-you-use-to-debug-rust-programs-per-os-2.svg&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as SVG&quot;&gt;SVG&lt;/a&gt;]&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Chart what-tools-and-workflows-do-you-use-to-debug-rust-programs-per-os-2 end --&gt;
+&lt;p&gt;To the 6 respondents who use WinDbg on Linux: we wish you luck!&lt;/p&gt;
+&lt;p&gt;As for how people actually use their debugger of choice, the aggregate results
+are not particularly surprising. Roughly 87% of users are using debuggers for
+stepping line-by-line through programs and a little over half of users are using
+debuggers to obtain stack traces from hung/crashed processes. Only a quarter of
+the respondents use a debugger to debug async code. That might be partially
+caused by the async Rust debugging experience being clumsy and incomplete, or it
+could just be that users aren&#x27;t writing much async code:&lt;/p&gt;
+&lt;!-- Chart what-are-you-using-debuggers-for start --&gt;
+&lt;div&gt;
+    &lt;div class&#x3D;&quot;bar-chart&quot; id&#x3D;&quot;what-are-you-using-debuggers-for&quot;&gt;&lt;noscript&gt;
+&lt;img alt&#x3D;&quot;what-are-you-using-debuggers-for&quot; src&#x3D;&quot;what-are-you-using-debuggers-for.png&quot;/&gt;
+&lt;/noscript&gt;&lt;/div&gt;
+    &lt;div style&#x3D;&quot;display: flex; margin-bottom: 10px;&quot;&gt;
+        &lt;span&gt;[&lt;a href&#x3D;&quot;what-are-you-using-debuggers-for.png&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as PNG&quot;&gt;PNG&lt;/a&gt;]&lt;/span&gt;&amp;nbsp;&lt;span&gt;[&lt;a href&#x3D;&quot;what-are-you-using-debuggers-for.svg&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as SVG&quot;&gt;SVG&lt;/a&gt;]&lt;/span&gt;&amp;nbsp;&lt;span&gt;[&lt;a href&#x3D;&quot;what-are-you-using-debuggers-for-wordcloud.png&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download open answers as wordcloud PNG&quot;&gt;Wordcloud of open answers&lt;/a&gt;]&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Chart what-are-you-using-debuggers-for end --&gt;
+&lt;p&gt;If we break these results down by expertise, we can learn a bit more about usage
+patterns. As users become more experienced with Rust, their use of debuggers for
+learning purposes decreases, and they get more stack traces from crashed
+processes:&lt;/p&gt;
+&lt;!-- Chart what-are-you-using-debuggers-for-per-expertise start --&gt;
+&lt;div&gt;
+    &lt;div class&#x3D;&quot;pie-chart&quot; id&#x3D;&quot;what-are-you-using-debuggers-for-per-expertise&quot;&gt;&lt;noscript&gt;
+&lt;img alt&#x3D;&quot;what-are-you-using-debuggers-for-per-expertise&quot; src&#x3D;&quot;what-are-you-using-debuggers-for-per-expertise.png&quot;/&gt;
+&lt;/noscript&gt;&lt;/div&gt;
+    &lt;div style&#x3D;&quot;display: flex; margin-bottom: 10px;&quot;&gt;
+        &lt;span&gt;[&lt;a href&#x3D;&quot;what-are-you-using-debuggers-for-per-expertise.png&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as PNG&quot;&gt;PNG&lt;/a&gt;]&lt;/span&gt;&amp;nbsp;&lt;span&gt;[&lt;a href&#x3D;&quot;what-are-you-using-debuggers-for-per-expertise.svg&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as SVG&quot;&gt;SVG&lt;/a&gt;]&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Chart what-are-you-using-debuggers-for-per-expertise end --&gt;
+&lt;p&gt;The final bit of insight into how Rustaceans use debuggers is if they are
+debugging programs that use Rust alongside other programming languages. For 44%
+of respondents, the answer is &quot;yes&quot;, which is a pretty high number!&lt;/p&gt;
+&lt;p&gt;As for which languages those are, C dominates the scene at a little over 70%,
+followed by C++ at about 43% and Python at about 20%:&lt;/p&gt;
+&lt;!-- Chart do-you-debug-programs-that-combine-rust-with-any-of-the-following-languages start --&gt;
+&lt;div&gt;
+    &lt;div class&#x3D;&quot;bar-chart&quot; id&#x3D;&quot;do-you-debug-programs-that-combine-rust-with-any-of-the-following-languages&quot;&gt;&lt;noscript&gt;
+&lt;img alt&#x3D;&quot;do-you-debug-programs-that-combine-rust-with-any-of-the-following-languages&quot; src&#x3D;&quot;do-you-debug-programs-that-combine-rust-with-any-of-the-following-languages.png&quot;/&gt;
+&lt;/noscript&gt;&lt;/div&gt;
+    &lt;div style&#x3D;&quot;display: flex; margin-bottom: 10px;&quot;&gt;
+        &lt;span&gt;[&lt;a href&#x3D;&quot;do-you-debug-programs-that-combine-rust-with-any-of-the-following-languages.png&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as PNG&quot;&gt;PNG&lt;/a&gt;]&lt;/span&gt;&amp;nbsp;&lt;span&gt;[&lt;a href&#x3D;&quot;do-you-debug-programs-that-combine-rust-with-any-of-the-following-languages.svg&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as SVG&quot;&gt;SVG&lt;/a&gt;]&lt;/span&gt;&amp;nbsp;&lt;span&gt;[&lt;a href&#x3D;&quot;do-you-debug-programs-that-combine-rust-with-any-of-the-following-languages-wordcloud.png&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download open answers as wordcloud PNG&quot;&gt;Wordcloud of open answers&lt;/a&gt;]&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Chart do-you-debug-programs-that-combine-rust-with-any-of-the-following-languages end --&gt;
+&lt;h2 id&#x3D;&quot;challenges&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#challenges&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Challenges&lt;/h2&gt;
+&lt;p&gt;Instead of diving right into asking, &quot;what problems do you face when using
+debuggers?&quot;, or something to that effect, we first asked respondents why they
+decide against using debuggers whenever they do, including for reasons that
+aren&#x27;t necessarily &quot;problems with debuggers&quot;.&lt;/p&gt;
+&lt;p&gt;The most commonly reported reason was that it was easier or faster to use logs
+or print debugging to solve problems, reported by a little over 81% of
+respondents. This could partially be explained by the open responses, which
+featured complaints that debuggers were too difficult to set up and/or use
+(especially on Windows, when dealing with Web Assembly, or in embedded
+contexts) and sentiment suggesting that small and/or simple problems just don&#x27;t
+really need a debugger. It does leave one wondering if the user experience could
+be made convenient enough to dethrone print debugging, but it seems hard to beat
+something so intuitive. This is followed by roughly 37% of respondents who write
+code that Just Works. Fair enough. After that, about 26% of respondents
+indicated that they&#x27;ve decided not to use debuggers in situations where the
+language features they were working with had poor support. This is slightly more
+than issues with standard library types, at about 22%, which is slightly more
+than issues with external library types, at about 20%:&lt;/p&gt;
+&lt;!-- Chart when-you-dont-use-a-debugger-why-dont-you start --&gt;
+&lt;div&gt;
+    &lt;div class&#x3D;&quot;bar-chart&quot; id&#x3D;&quot;when-you-dont-use-a-debugger-why-dont-you&quot;&gt;&lt;noscript&gt;
+&lt;img alt&#x3D;&quot;when-you-dont-use-a-debugger-why-dont-you&quot; src&#x3D;&quot;when-you-dont-use-a-debugger-why-dont-you.png&quot;/&gt;
+&lt;/noscript&gt;&lt;/div&gt;
+    &lt;div style&#x3D;&quot;display: flex; margin-bottom: 10px;&quot;&gt;
+        &lt;span&gt;[&lt;a href&#x3D;&quot;when-you-dont-use-a-debugger-why-dont-you.png&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as PNG&quot;&gt;PNG&lt;/a&gt;]&lt;/span&gt;&amp;nbsp;&lt;span&gt;[&lt;a href&#x3D;&quot;when-you-dont-use-a-debugger-why-dont-you.svg&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as SVG&quot;&gt;SVG&lt;/a&gt;]&lt;/span&gt;&amp;nbsp;&lt;span&gt;[&lt;a href&#x3D;&quot;when-you-dont-use-a-debugger-why-dont-you-wordcloud.png&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download open answers as wordcloud PNG&quot;&gt;Wordcloud of open answers&lt;/a&gt;]&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Chart when-you-dont-use-a-debugger-why-dont-you end --&gt;
+&lt;p&gt;As stepping through code was anticipated to be one of the most common uses for
+debuggers, we directly asked respondents if they faced any issues when doing so.
+A little over 51% of respondents said they did! Of those who reported that they
+experienced issues stepping through code, we asked when they were experiencing
+issues. Async code was the most common case reported at slightly over 28%,
+followed by code involving macros at about 23%. The least common case reported
+was code involving function pointers, at almost 6%:&lt;/p&gt;
+&lt;!-- Chart when-do-you-experience-issues-with-trying-to-step-through-code-with-your-debugger start --&gt;
+&lt;div&gt;
+    &lt;div class&#x3D;&quot;bar-chart&quot; id&#x3D;&quot;when-do-you-experience-issues-with-trying-to-step-through-code-with-your-debugger&quot;&gt;&lt;noscript&gt;
+&lt;img alt&#x3D;&quot;when-do-you-experience-issues-with-trying-to-step-through-code-with-your-debugger&quot; src&#x3D;&quot;when-do-you-experience-issues-with-trying-to-step-through-code-with-your-debugger.png&quot;/&gt;
+&lt;/noscript&gt;&lt;/div&gt;
+    &lt;div style&#x3D;&quot;display: flex; margin-bottom: 10px;&quot;&gt;
+        &lt;span&gt;[&lt;a href&#x3D;&quot;when-do-you-experience-issues-with-trying-to-step-through-code-with-your-debugger.png&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as PNG&quot;&gt;PNG&lt;/a&gt;]&lt;/span&gt;&amp;nbsp;&lt;span&gt;[&lt;a href&#x3D;&quot;when-do-you-experience-issues-with-trying-to-step-through-code-with-your-debugger.svg&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as SVG&quot;&gt;SVG&lt;/a&gt;]&lt;/span&gt;&amp;nbsp;&lt;span&gt;[&lt;a href&#x3D;&quot;when-do-you-experience-issues-with-trying-to-step-through-code-with-your-debugger-wordcloud.png&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download open answers as wordcloud PNG&quot;&gt;Wordcloud of open answers&lt;/a&gt;]&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Chart when-do-you-experience-issues-with-trying-to-step-through-code-with-your-debugger end --&gt;
+&lt;p&gt;We also directly asked respondents which types in the standard library were hard
+to work with, if any. This was an open-response question, and reading through
+the responses, some particularly common complaints were with &lt;code&gt;enum&lt;/code&gt;s and
+collections, particularly &lt;code&gt;std::collections::HashMap&lt;/code&gt; and &lt;code&gt;std::vec::Vec&lt;/code&gt;. This
+is also visible in the word cloud in the &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://raw.githubusercontent.com/rust-lang/surveys/main/surveys/2026/debugging/report/debugging-survey-2026-report.pdf&quot;&gt;full report&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;We asked respondents to indicate which pain points, if any, they have
+encountered when using debuggers with Rust. At slightly over 74%, poor
+representation of values was the most common pain point by a decent margin,
+followed by being unable to print variables at just over 55%:&lt;/p&gt;
+&lt;!-- Chart which-of-these-pain-points-have-you-experienced-using-a-debugger-with-rust start --&gt;
+&lt;div&gt;
+    &lt;div class&#x3D;&quot;bar-chart&quot; id&#x3D;&quot;which-of-these-pain-points-have-you-experienced-using-a-debugger-with-rust&quot;&gt;&lt;noscript&gt;
+&lt;img alt&#x3D;&quot;which-of-these-pain-points-have-you-experienced-using-a-debugger-with-rust&quot; src&#x3D;&quot;which-of-these-pain-points-have-you-experienced-using-a-debugger-with-rust.png&quot;/&gt;
+&lt;/noscript&gt;&lt;/div&gt;
+    &lt;div style&#x3D;&quot;display: flex; margin-bottom: 10px;&quot;&gt;
+        &lt;span&gt;[&lt;a href&#x3D;&quot;which-of-these-pain-points-have-you-experienced-using-a-debugger-with-rust.png&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as PNG&quot;&gt;PNG&lt;/a&gt;]&lt;/span&gt;&amp;nbsp;&lt;span&gt;[&lt;a href&#x3D;&quot;which-of-these-pain-points-have-you-experienced-using-a-debugger-with-rust.svg&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as SVG&quot;&gt;SVG&lt;/a&gt;]&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Chart which-of-these-pain-points-have-you-experienced-using-a-debugger-with-rust end --&gt;
+&lt;h2 id&#x3D;&quot;debugger-visualizers&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#debugger-visualizers&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Debugger Visualizers&lt;/h2&gt;
+&lt;p&gt;We asked respondents to indicate if they were library authors, and if so, if
+they were aware of and using the &lt;code&gt;debugger_visualizer&lt;/code&gt; attribute. Nearly 62% of
+respondents indicated that they were library authors who were not aware of this
+attribute:&lt;/p&gt;
+&lt;!-- Chart if-you-are-a-library-author-are-you-aware-of-and-using-the-debugger-visualizer-attribute start --&gt;
+&lt;div&gt;
+    &lt;div class id&#x3D;&quot;if-you-are-a-library-author-are-you-aware-of-and-using-the-debugger-visualizer-attribute&quot;&gt;&lt;noscript&gt;
+&lt;img alt&#x3D;&quot;if-you-are-a-library-author-are-you-aware-of-and-using-the-debugger-visualizer-attribute&quot; src&#x3D;&quot;if-you-are-a-library-author-are-you-aware-of-and-using-the-debugger-visualizer-attribute.png&quot;/&gt;
+&lt;/noscript&gt;&lt;/div&gt;
+    &lt;div style&#x3D;&quot;display: flex; margin-bottom: 10px;&quot;&gt;
+        &lt;span&gt;[&lt;a href&#x3D;&quot;if-you-are-a-library-author-are-you-aware-of-and-using-the-debugger-visualizer-attribute.png&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as PNG&quot;&gt;PNG&lt;/a&gt;]&lt;/span&gt;&amp;nbsp;&lt;span&gt;[&lt;a href&#x3D;&quot;if-you-are-a-library-author-are-you-aware-of-and-using-the-debugger-visualizer-attribute.svg&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as SVG&quot;&gt;SVG&lt;/a&gt;]&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Chart if-you-are-a-library-author-are-you-aware-of-and-using-the-debugger-visualizer-attribute end --&gt;
+&lt;p&gt;For those who indicated that they were library authors who knew about the
+attribute but did not use it, we also asked why. This represented a much smaller
+fraction of respondents, so keep that in mind! That said, half of these library
+authors indicated that they didn&#x27;t have the time to maintain visualizer
+attributes, and just under half indicated they didn&#x27;t know how to write
+visualizer scripts:&lt;/p&gt;
+&lt;!-- Chart why-dont-you-use-the-debugger-visualizer-attribute start --&gt;
+&lt;div&gt;
+    &lt;div class&#x3D;&quot;bar-chart&quot; id&#x3D;&quot;why-dont-you-use-the-debugger-visualizer-attribute&quot;&gt;&lt;noscript&gt;
+&lt;img alt&#x3D;&quot;why-dont-you-use-the-debugger-visualizer-attribute&quot; src&#x3D;&quot;why-dont-you-use-the-debugger-visualizer-attribute.png&quot;/&gt;
+&lt;/noscript&gt;&lt;/div&gt;
+    &lt;div style&#x3D;&quot;display: flex; margin-bottom: 10px;&quot;&gt;
+        &lt;span&gt;[&lt;a href&#x3D;&quot;why-dont-you-use-the-debugger-visualizer-attribute.png&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as PNG&quot;&gt;PNG&lt;/a&gt;]&lt;/span&gt;&amp;nbsp;&lt;span&gt;[&lt;a href&#x3D;&quot;why-dont-you-use-the-debugger-visualizer-attribute.svg&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download chart as SVG&quot;&gt;SVG&lt;/a&gt;]&lt;/span&gt;&amp;nbsp;&lt;span&gt;[&lt;a href&#x3D;&quot;why-dont-you-use-the-debugger-visualizer-attribute-wordcloud.png&quot; target&#x3D;&quot;_href_&quot; title&#x3D;&quot;Download open answers as wordcloud PNG&quot;&gt;Wordcloud of open answers&lt;/a&gt;]&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Chart why-dont-you-use-the-debugger-visualizer-attribute end --&gt;
+&lt;p&gt;For those of you who have been reading this section asking yourself what the
+&lt;code&gt;debugger_visualizer&lt;/code&gt; attribute is, you can read up on it in
+&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/reference/attributes/debugger.html&quot;&gt;The Rust Reference: Debugger Attributes&lt;/a&gt;. The quick
+explanation is that the &lt;code&gt;debugger_visualizer&lt;/code&gt; attribute can be applied to
+modules or the crate root to embed files in the debug information which improve
+the display of values with certain debuggers. The two currently supported file
+types are Natvis files, used by Microsoft debuggers such as WinDbg, and GDB
+&quot;pretty printers&quot;, which are structured Python scripts used by GDB.&lt;/p&gt;
+&lt;h2 id&#x3D;&quot;closing-remarks&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#closing-remarks&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Closing Remarks&lt;/h2&gt;
+&lt;p&gt;Thanks to your participation in this survey, we&#x27;ve gained some great insights
+about how Rustaceans are using debuggers and what issues they are facing. For
+example, knowing that such a high number of users are dealing with poor
+representation of values pairs well with knowing which standard library types
+are causing issues, knowing that many library authors haven&#x27;t heard of the
+&lt;code&gt;debugger_visualizer&lt;/code&gt; attribute, and knowing that many of those who have but
+don&#x27;t use it either don&#x27;t know how or don&#x27;t have time to maintain visualizer
+scripts.&lt;/p&gt;
+&lt;p&gt;Looking to the future, the survey results have suggested that there are a few
+notable ways we could most significantly improve the debugging experience in
+Rust, such as:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Fixing the way &lt;code&gt;enum&lt;/code&gt;s are represented by debuggers so they show actual
+variants&lt;/li&gt;
+&lt;li&gt;Fixing the way collections (such as &lt;code&gt;HashMap&lt;/code&gt;) are represented by debuggers so
+they show their contents, rather than their implementation details&lt;/li&gt;
+&lt;li&gt;Fixing the way string types (such as &lt;code&gt;String&lt;/code&gt; and &lt;code&gt;CString&lt;/code&gt;) are represented
+by debuggers so they render as text, rather than their implementation details&lt;/li&gt;
+&lt;li&gt;Improving the &lt;code&gt;async&lt;/code&gt; debugging experience, particularly with stack traces&lt;/li&gt;
+&lt;li&gt;Improving stepping through certain state machines (such as iterators and
+&lt;code&gt;Future&lt;/code&gt;s)&lt;/li&gt;
+&lt;li&gt;Providing documentation on basic set up and use of some common debuggers&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;A common suggestion that could resolve those first three points is to use the
+&lt;code&gt;Debug&lt;/code&gt; implementation of types to display them in debuggers. There are
+challenges to that approach, such as the fact that the &lt;code&gt;Debug&lt;/code&gt; implementation is
+not present in the final binary unless it is actually used somewhere in the
+program, but it isn&#x27;t impossible. Notably, this is already supported by the
+&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/godzie44/BugStalker&quot;&gt;&lt;code&gt;BugStalker&lt;/code&gt;&lt;/a&gt; debugger (given the same condition that the &lt;code&gt;Debug&lt;/code&gt;
+implementation must actually be used), which some of you first heard about from
+the survey! It also appears to have some support for &lt;code&gt;async&lt;/code&gt;, with plans to
+expand.&lt;/p&gt;
+&lt;p&gt;One notable way the debugger experience is currently being improved is through
+the &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://summerofcode.withgoogle.com/programs/2026/projects/gzkF5BG0&quot;&gt;ongoing Google Summer of Code project&lt;/a&gt; improving how we test debug info and
+visualizer scripts, making it easier to maintain and improve our own visualizer
+scripts and general compatibility with visualizer scripts without silent
+breakage or regressions.&lt;/p&gt;
+&lt;p&gt;Once again, we&#x27;d like to thank everyone who took the time to participate in the
+survey!&lt;/p&gt;
+&lt;!-- Chart scripts --&gt;
+&lt;script charset&#x3D;&quot;utf-8&quot; src&#x3D;&quot;/scripts/plotly-basic-2.29.0.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src&#x3D;&quot;charts.js&quot;&gt;&lt;/script&gt;
+</content>
+
+        <author>
+            <name>Sam Kellam</name>
+        </author>
+    </entry>
+    <entry>
+        <title>Announcing Rust 1.98.1</title>
+        <link rel="alternate" href="https://blog.rust-lang.org/2026/09/03/Rust-1.98.1/" type="text/html" title="Announcing Rust 1.98.1" />
+        <published>2026-09-03T00:00:00+00:00</published>
+        <updated>2026-09-03T00:00:00+00:00</updated>
+        <id>https://blog.rust-lang.org/2026/09/03/Rust-1.98.1/</id>
+        <content type="html" xml:base="https://blog.rust-lang.org/2026/09/03/Rust-1.98.1/">&lt;p&gt;The Rust team has published a new point release of Rust, 1.98.1. Rust is a programming language that is empowering everyone to build reliable and efficient software.&lt;/p&gt;
+&lt;p&gt;If you have a previous version of Rust installed via rustup, getting Rust 1.98.1 is as easy as:&lt;/p&gt;
+&lt;pre class&#x3D;&quot;giallo z-code&quot;&gt;&lt;code data-lang&#x3D;&quot;plain&quot;&gt;&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span&gt;rustup update stable&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If you don&#x27;t have it already, you can &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://www.rust-lang.org/install.html&quot;&gt;get &lt;code&gt;rustup&lt;/code&gt;&lt;/a&gt; from the appropriate page on our website.&lt;/p&gt;
+&lt;h2 id&#x3D;&quot;what-s-in-1-98-1&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#what-s-in-1-98-1&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+What&#x27;s in 1.98.1&lt;/h2&gt;
+&lt;p&gt;Rust 1.98.1 fixes a &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rust/issues/161441&quot;&gt;miscompilation in vtable generation&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In Rust 1.98.0, in some circumstances, rustc would incorrectly generate a trait object vtable with a null pointer
+where a function pointer should be. This leads to undefined behavior in the
+emitted code. In some cases this may &#x27;just&#x27; cause segfaults due to the null
+pointer being loaded, but it is possible for it to be justification for
+arbitrary effects (as is typical for UB).&lt;/p&gt;
+&lt;p&gt;If you&#x27;d like to help us out by testing future releases, you might consider
+using the beta (&lt;code&gt;rustup default beta&lt;/code&gt;) and nightly (&lt;code&gt;rustup default nightly&lt;/code&gt;) channels locally and in your CI. Please
+&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rust/issues/new/choose&quot;&gt;report&lt;/a&gt; any bugs you
+might come across!&lt;/p&gt;
+&lt;h3 id&#x3D;&quot;contributors-to-1-98-1&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#contributors-to-1-98-1&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Contributors to 1.98.1&lt;/h3&gt;
+&lt;p&gt;Many people came together to create Rust 1.98.1. We couldn&#x27;t have done it without all of you. &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://thanks.rust-lang.org/rust/1.98.1/&quot;&gt;Thanks!&lt;/a&gt;&lt;/p&gt;
+</content>
+
+        <author>
+            <name>The Rust Release Team</name>
+        </author>
+    </entry>
+    <entry>
+        <title>Announcing rustup 1.29.1</title>
+        <link rel="alternate" href="https://blog.rust-lang.org/2026/09/01/Rustup-1.29.1/" type="text/html" title="Announcing rustup 1.29.1" />
+        <published>2026-09-01T00:00:00+00:00</published>
+        <updated>2026-09-01T00:00:00+00:00</updated>
+        <id>https://blog.rust-lang.org/2026/09/01/Rustup-1.29.1/</id>
+        <content type="html" xml:base="https://blog.rust-lang.org/2026/09/01/Rustup-1.29.1/">&lt;p&gt;The rustup team is happy to announce the release of rustup version 1.29.1.&lt;/p&gt;
+&lt;p&gt;&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://rustup.rs&quot;&gt;Rustup&lt;/a&gt; is the recommended tool to install &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://www.rust-lang.org&quot;&gt;Rust&lt;/a&gt;, a
+programming language that empowers everyone to build reliable and efficient
+software.&lt;/p&gt;
+&lt;h2 id&#x3D;&quot;what-s-new-in-rustup-1-29-1&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#what-s-new-in-rustup-1-29-1&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+What&#x27;s new in rustup 1.29.1&lt;/h2&gt;
+&lt;p&gt;The headlines of this release are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Concurrency in certain &lt;code&gt;rustup&lt;/code&gt; operations has been improved:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;When running &lt;code&gt;rustup update&lt;/code&gt;, rustup will first check for possible updates in parallel. &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rustup/pull/4752&quot;&gt;pr#4752&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;When running &lt;code&gt;rustup component add&lt;/code&gt; with multiple components, they will be installed concurrently. &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rustup/pull/4790&quot;&gt;pr#4790&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Implicit installation of the active toolchain in &lt;code&gt;rustup-init&lt;/code&gt; and &lt;code&gt;rustup&lt;/code&gt; invocations has
+been deprecated where deemed unnecessary and will now produce a warning. &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rustup/pull/4840&quot;&gt;pr#4840&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Please see our
+&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://blog.rust-lang.org/inside-rust/2026/07/03/rustup-update-1.30/#refining-the-implicit-installation-behavior&quot;&gt;blog post&lt;/a&gt;
+for more details regarding this change.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;rustup doc&lt;/code&gt; now supports the &lt;code&gt;--serve&lt;/code&gt; flag which allows serving the docs over local HTTP.
+This should help users with containerized browser and/or rustup setups. &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rustup/pull/4986&quot;&gt;pr#4986&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Installing &lt;code&gt;i686-pc-windows-*&lt;/code&gt; host toolchains on 64-bit Windows now requires &lt;code&gt;--force-non-host&lt;/code&gt;.
+&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rustup/pull/4935&quot;&gt;pr#4935&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;rustup-init&lt;/code&gt; will no longer leave unexpected files on disk after cancelled installations. &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rustup/pull/4996&quot;&gt;pr#4996&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A bug has been fixed which might cause Windows installation to fail when using &lt;code&gt;rustup-init.sh&lt;/code&gt;.
+&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rustup/pull/4756&quot;&gt;pr#4756&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&quot;Target &lt;strong&gt;triple&lt;/strong&gt;&quot; has been renamed to &quot;target &lt;strong&gt;tuple&lt;/strong&gt;&quot; across the project to reflect the
+&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rust/pull/125579/changes/a26450cf81d67d68d3c6157579f8d968349129e7&quot;&gt;new terminology&lt;/a&gt;.
+&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rustup/pull/4743&quot;&gt;pr#4743&lt;/a&gt; &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rustup/pull/4827&quot;&gt;pr#4827&lt;/a&gt; &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rustup/pull/4834&quot;&gt;pr#4834&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Please note that this is not a breaking change in the CLI since the existing
+options such as &lt;code&gt;--target&lt;/code&gt; are not using this terminology.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In addition, rustup now officially supports &lt;code&gt;aarch64-pc-windows-gnullvm&lt;/code&gt; as a host platform. &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rustup/pull/4523&quot;&gt;pr#4523&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Further details are available in the &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rustup/blob/stable/CHANGELOG.md&quot;&gt;changelog&lt;/a&gt;!&lt;/p&gt;
+&lt;h2 id&#x3D;&quot;how-to-update&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#how-to-update&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+How to update&lt;/h2&gt;
+&lt;p&gt;If you have a previous version of rustup installed, getting the new one is as easy as stopping
+any programs which may be using rustup (e.g. closing your IDE) and running:&lt;/p&gt;
+&lt;pre class&#x3D;&quot;giallo z-code&quot;&gt;&lt;code data-lang&#x3D;&quot;plain&quot;&gt;&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span&gt;$ rustup self update&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Rustup will also automatically update itself at the end of a normal toolchain update:&lt;/p&gt;
+&lt;pre class&#x3D;&quot;giallo z-code&quot;&gt;&lt;code data-lang&#x3D;&quot;plain&quot;&gt;&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span&gt;$ rustup update&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If you don&#x27;t have it already, you can &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://rustup.rs&quot;&gt;get rustup&lt;/a&gt; from the appropriate page on our website.&lt;/p&gt;
+&lt;p&gt;Rustup&#x27;s documentation is also available in &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://rust-lang.github.io/rustup/&quot;&gt;the rustup book&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id&#x3D;&quot;caveats&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#caveats&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Caveats&lt;/h2&gt;
+&lt;p&gt;Rustup releases can come with problems not caused by rustup itself but just due to having a new release.&lt;/p&gt;
+&lt;p&gt;In particular, anti-malware scanners might block rustup or stop it from creating or copying
+files, especially when installing &lt;code&gt;rust-docs&lt;/code&gt; which contains many small files.&lt;/p&gt;
+&lt;p&gt;Issues like this should be automatically resolved in a few weeks when the anti-malware scanners are updated
+to be aware of the new rustup release.&lt;/p&gt;
+&lt;h2 id&#x3D;&quot;thanks&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#thanks&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Thanks&lt;/h2&gt;
+&lt;p&gt;Thanks again to all the &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rustup/blob/stable/CHANGELOG.md#detailed-changes&quot;&gt;contributors&lt;/a&gt; who made this rustup release possible!&lt;/p&gt;
+</content>
+
+        <author>
+            <name>The Rustup Team</name>
+        </author>
+    </entry>
+    <entry>
+        <title>Announcing our first Maintainers in Residence</title>
+        <link rel="alternate" href="https://blog.rust-lang.org/2026/08/26/announcing-our-first-maintainers-in-residence/" type="text/html" title="Announcing our first Maintainers in Residence" />
+        <published>2026-08-26T00:00:00+00:00</published>
+        <updated>2026-08-26T00:00:00+00:00</updated>
+        <id>https://blog.rust-lang.org/2026/08/26/announcing-our-first-maintainers-in-residence/</id>
+        <content type="html" xml:base="https://blog.rust-lang.org/2026/08/26/announcing-our-first-maintainers-in-residence/">&lt;p&gt;We are very happy to announce the Rust Project&#x27;s first round of Maintainers in Residence:
+&lt;strong&gt;Gen Li&lt;/strong&gt; (&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rami3l&quot;&gt;@rami3l&lt;/a&gt;), &lt;strong&gt;Chris Denton&lt;/strong&gt; (&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/ChrisDenton&quot;&gt;@ChrisDenton&lt;/a&gt;), &lt;strong&gt;Alejandra González&lt;/strong&gt; (&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/blyxyas&quot;&gt;@blyxyas&lt;/a&gt;), &lt;strong&gt;León Liehr&lt;/strong&gt; (&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/fmease&quot;&gt;@fmease&lt;/a&gt;), and Maintainer Grant recipients: &lt;strong&gt;Jason Newcomb&lt;/strong&gt; (&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/Jarcho&quot;&gt;@Jarcho&lt;/a&gt;) and &lt;strong&gt;Jonas Böttiger&lt;/strong&gt; (&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/joboet&quot;&gt;@joboet&lt;/a&gt;). These contributors will be funded for their &lt;code&gt;rust-lang&lt;/code&gt; maintenance activities for (at least) the following 12 months!&lt;/p&gt;
+&lt;p&gt;The funding of the Maintainer in Residence (MiR) and Maintainer Grantee roles is possible thanks to generous donations to the Rust Foundation Maintainers Fund (RFMF) from Google, AWS, OpenAI, the Rust Project Leadership Council and also individual sponsors. We also want to thank the people who advocated for maintainer funding within their companies; Tyler Mandry from Google, Niko Matsakis and Jess Izen from AWS and Predrag Gruevski from OpenAI, and also the whole &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://rust-lang.org/governance/teams/leadership-council/&quot;&gt;Rust Leadership Council&lt;/a&gt; and our &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://rust-lang.org/governance/teams/#team-funding-advisors&quot;&gt;funding advisors&lt;/a&gt;. If you would like to help us support even more Rust contributors, consider &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/sponsors/rustfoundation&quot;&gt;donating&lt;/a&gt; to RFMF.&lt;/p&gt;
+&lt;p&gt;The Rust Foundation has published a &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://rustfoundation.org/media/rust-project-and-rust-foundation-announce-first-maintainers-in-residence/&quot;&gt;press release&lt;/a&gt; and a &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://rustfoundation.org/media/congratulations-to-the-first-round-of-rust-project-maintainers-in-residence/&quot;&gt;blog post&lt;/a&gt;, where you can learn more about the sponsors and the supported contributors.&lt;/p&gt;
+&lt;p&gt;Read more below to learn about the MiR program, how we chose the funded contributors, and of course &lt;a href&#x3D;&quot;https://blog.rust-lang.org/2026/08/26/announcing-our-first-maintainers-in-residence/#gen-li-rami3l&quot;&gt;who they are&lt;/a&gt;!&lt;/p&gt;
+&lt;h2 id&#x3D;&quot;background&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#background&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Background&lt;/h2&gt;
+&lt;p&gt;The Maintainer in Residence program, established in &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://rust-lang.github.io/rfcs/3931-rfmf-rust-foundation-maintainer-fund.html&quot;&gt;RFC 3931&lt;/a&gt;, is designed to provide stable financial support for Rust contributors, so that they can truly focus on crucial &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://blog.rust-lang.org/inside-rust/2026/01/12/what-is-maintenance-anyway/&quot;&gt;maintenance&lt;/a&gt; activities. Currently, there are three categories of support that we offer:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Full-time MiR: funded for 5 days/week of Rust Project work&lt;/li&gt;
+&lt;li&gt;Half-time MiR: funded for ~2.5 days/week of Rust Project work&lt;/li&gt;
+&lt;li&gt;Maintainer Grant: funded for ~1 day/week of Rust Project work&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Funding for this program comes from the Rust Foundation Maintainers Fund, which was &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://blog.rust-lang.org/2026/06/02/launching-the-rust-foundation-maintainers-fund/&quot;&gt;launched&lt;/a&gt; recently, and the whole program is managed by the Rust &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://rust-lang.org/governance/teams/#team-funding&quot;&gt;Funding team&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;When deciding who to fund, we took a systematic approach. First, we looked at Rust teams to understand their maintenance baseline (the smallest number of maintainers they need to ensure a healthy long-term status of the given project or repository), and how far they currently are from that baseline. From there, we identified and prioritized Rust teams who were both critically underfunded, and have a high impact on the language and its users. These teams (in no particular order) were &lt;code&gt;rustdoc&lt;/code&gt;, &lt;code&gt;rustup&lt;/code&gt;, &lt;code&gt;cargo&lt;/code&gt;, &lt;code&gt;compiler&lt;/code&gt;, &lt;code&gt;libs&lt;/code&gt;, &lt;code&gt;clippy&lt;/code&gt;, &lt;code&gt;rustfmt&lt;/code&gt;, &lt;code&gt;rust analyzer&lt;/code&gt; and &lt;code&gt;mods&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The next step was pairing these teams with maintainers looking for funding. And it turns out that finding such maintainers for some teams turned out to be much more difficult than we originally assumed! For example, some maintainers are already employed, some do not want to be funded, and while we did our best to promote our funding efforts, not everyone looking for funding actually asked us for it. We also realized that some teams on our list have essentially no active members, which makes it tricky to onboard new contributors, even if they would like to help out.&lt;/p&gt;
+&lt;p&gt;In the end, we decided to start by supporting six contributors, who will help maintain several critical Rust projects and teams and who could start immediately. However, we are not stopping there. Our funding efforts are ongoing, so stay tuned for more MiR announcements in the near future! If you would like to learn more about our process, check out our &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://blog.rust-lang.org/inside-rust/2026/08/04/funding-team-progress-update-july-2026/&quot;&gt;recent post&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;And now, without further ado, let&#x27;s meet our newly funded maintainers!&lt;/p&gt;
+&lt;!-- mir-list --&gt;
+&lt;h2 id&#x3D;&quot;gen-li-rami3l&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#gen-li-rami3l&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Gen Li (@rami3l)&lt;/h2&gt;
+&lt;div&gt;
+    &lt;div class&#x3D;&quot;mir&quot;&gt;
+        &lt;img src&#x3D;&quot;rami3l.png&quot; style&#x3D;&quot;width: 200px; margin: 0 20px 20px 0; align-self: flex-start;&quot; /&gt;
+        &lt;div&gt;
+            &lt;div&gt;Gen Li (&lt;a href&#x3D;&quot;https://github.com/rami3l&quot;&gt;@rami3l&lt;/a&gt;) is a full-time MiR focusing on Rustup.&lt;/div&gt;
+            &lt;div style&#x3D;&quot;margin-top: 1em;&quot;&gt;He has been a Rustup team member since 2023 and its lead since 2025. He deeply cares about the facets of Rust that many might have taken for granted, and embodies all attributes we were looking for in a MiR: he wants to take on complex issues, continue mentoring, and work on important Rustup features, among many other things.&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Turning volunteering into an actual job has really been an empowering experience so far! I finally have the bandwidth to take a careful look at my inbox and can actually read each message without the fear of missing crucial details while rushing prompt replies, which has really helped me retain the essential compassion as a maintainer. I also get to interact with regular contributors a lot more often. Finally, I can&#x27;t wait to see what I can come up with in terms of Project Goals :)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id&#x3D;&quot;chris-denton-chrisdenton&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#chris-denton-chrisdenton&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Chris Denton (@ChrisDenton)&lt;/h2&gt;
+&lt;div&gt;
+    &lt;div class&#x3D;&quot;mir&quot;&gt;
+        &lt;img src&#x3D;&quot;chrisdenton.png&quot; style&#x3D;&quot;width: 200px; margin: 0 20px 20px 0; align-self: flex-start;&quot; /&gt;
+        &lt;div&gt;
+            &lt;div&gt;Chris Denton (&lt;a href&#x3D;&quot;https://github.com/ChrisDenton&quot;&gt;@ChrisDenton&lt;/a&gt;) is a half-time MiR focusing on the standard library, compiler, Rustup and anything Windows-related.&lt;/div&gt;
+            &lt;div style&#x3D;&quot;margin-top: 1em;&quot;&gt;For the past five years Chris has been bringing his deep knowledge of Windows to help Rust sustain and improve its great cross-platform support. He will be unblocking other contributors in various Windows use cases, performing refactoring and code reviews and implementing new features across several areas of the Project.
+&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Even though it is still early days, I&#x27;m feeling pretty optimistic about the health of the Rust Project going forward, thanks to the recent funding efforts.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id&#x3D;&quot;alejandra-gonzalez-blyxyas&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#alejandra-gonzalez-blyxyas&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Alejandra González (@blyxyas)&lt;/h2&gt;
+&lt;div&gt;
+    &lt;div class&#x3D;&quot;mir&quot;&gt;
+        &lt;img src&#x3D;&quot;alejandra-gonzalez.jpg&quot; style&#x3D;&quot;width: 200px; margin: 0 20px 20px 0; align-self: flex-start;&quot; /&gt;
+        &lt;div&gt;
+            &lt;div&gt;Alejandra González (&lt;a href&#x3D;&quot;https://github.com/blyxyas&quot;&gt;@blyxyas&lt;/a&gt;) is a half-time MiR focusing on Clippy.&lt;/div&gt;
+            &lt;div style&#x3D;&quot;margin-top: 1em;&quot;&gt;She is a Clippy team member always keen on improving performance and helping new contributors. She will focus on making Clippy faster and also reviewing its pull requests, to help get the ~300 pull request backlog down. Additionally, she is excited to mentor people from the Rust for Linux project to work on Clippy, and fine tune the &lt;a href&#x3D;&quot;https://blog.rust-lang.org/inside-rust/2026/07/06/unite-for-clippy/&quot;&gt;open peer review system&lt;/a&gt; that Clippy started using earlier this year.&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Funding is the system that helps me pour my heart into a project without worrying about making ends meet. Having those needs met is a game-changer and boosts my productivity. One of the areas where I want to focus my efforts is mentoring new contributors. If new people coming is the lifeblood of a project, I want to be the cardiologist!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id&#x3D;&quot;leon-liehr-fmease&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#leon-liehr-fmease&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+León Liehr (@fmease)&lt;/h2&gt;
+&lt;div&gt;
+    &lt;div class&#x3D;&quot;mir&quot;&gt;
+        &lt;img src&#x3D;&quot;leon-liehr.jpg&quot; style&#x3D;&quot;width: 200px; margin: 0 20px 20px 0; align-self: flex-start;&quot; /&gt;
+        &lt;div&gt;
+            &lt;div&gt;León Liehr (&lt;a href&#x3D;&quot;https://github.com/fmease&quot;&gt;@fmease&lt;/a&gt;) is a half-time MiR focusing on rustdoc and the compiler.&lt;/div&gt;
+            &lt;div style&#x3D;&quot;margin-top: 1em;&quot;&gt;He is a member of the rustdoc and compiler teams, who is usually working on the Rust type system or issues related to parsing. He will continue working on complex features that he started a few years ago, and also focus on general maintenance, code reviews, refactoring and mentoring.&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Being funded to work on Rust means I can sustainably focus my time and energy on a project I call a passion of mine.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id&#x3D;&quot;jonas-bottiger-joboet&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#jonas-bottiger-joboet&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Jonas Böttiger (@joboet)&lt;/h2&gt;
+&lt;div&gt;
+    &lt;div class&#x3D;&quot;mir&quot;&gt;
+        &lt;img src&#x3D;&quot;jonas-boettiger.jpg&quot; style&#x3D;&quot;width: 200px; margin: 0 20px 20px 0; align-self: flex-start;&quot; /&gt;
+        &lt;div&gt;
+            &lt;div&gt;Jonas Böttiger (&lt;a href&#x3D;&quot;https://github.com/joboet&quot;&gt;@joboet&lt;/a&gt;) is a maintainer grantee focusing on the standard library.&lt;/div&gt;
+            &lt;div style&#x3D;&quot;margin-top: 1em;&quot;&gt;He is a musicology student from Germany. When he is not playing the Cello or reading about Fanny Hensel, he applies his research skills to ensure that programs written in Rust run quickly and soundly on all platforms, no matter how quirky the operating system may be. He loves helping contributors write excellent code that they can be proud of; and considers it to be just as much fun as writing it himself.&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Getting funding for my work is a dream come true. It will allow me to continue doing the thing I love instead of worrying about whether I should rather invest all that time in a money-earning job with much less positive impact on the world around me.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id&#x3D;&quot;jason-newcomb-jarcho&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#jason-newcomb-jarcho&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Jason Newcomb (@Jarcho)&lt;/h2&gt;
+&lt;div&gt;
+    &lt;div class&#x3D;&quot;mir&quot;&gt;
+        &lt;img src&#x3D;&quot;jason-newcomb.jpg&quot; style&#x3D;&quot;width: 200px; margin: 0 20px 20px 0; align-self: flex-start;&quot; /&gt;
+        &lt;div&gt;
+            &lt;div&gt;Jason Newcomb (&lt;a href&#x3D;&quot;https://github.com/Jarcho&quot;&gt;@Jarcho&lt;/a&gt;) is a maintainer grantee focusing on Clippy.&lt;/div&gt;
+            &lt;div style&#x3D;&quot;margin-top: 1em;&quot;&gt;He is primarily working on fixing bugs and making it easier to develop and contribute to Clippy. He is also focusing on making the review process as smooth as possible.&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Being funded allows me to work on something I care about and want to work on instead of what will get me paid. I&#x27;m looking forward to seeing how this will impact Clippy and the Rust project in general.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;!-- mir-list --&gt;
+&lt;h2 id&#x3D;&quot;conclusion&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#conclusion&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Conclusion&lt;/h2&gt;
+&lt;p&gt;The contributors presented above will be funded for the next 12 months, though of course we hope that we will be able to extend their support going further, as this program is designed to be for long-term stable maintenance funding. We are very excited about them; each one of them has been with the Project for years, and we are very glad that we can support their maintenance work! All of them have already signed their contracts, so they are already being funded as we speak.&lt;/p&gt;
+&lt;p&gt;While there are many other Rust contributors who are doing awesome work, and who would also deserve to get proper funding for it, we think that this is a great start. We hope that the awesome work done by the funded maintainers will allow us to promote this program, so that we can fund even more Rust contributors!&lt;/p&gt;
+&lt;p&gt;We would like to once again sincerely thank everyone who made this possible, especially our sponsors. If you would like to help us fund more maintainers, consider &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/sponsors/rustfoundation&quot;&gt;donating to RFMF&lt;/a&gt;. You can also sponsor individual Rust contributors &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://rust-lang.org/funding/&quot;&gt;directly&lt;/a&gt;.&lt;/p&gt;
+&lt;style&gt;
+.mir {
+display: flex;
+flex-direction: column;
+margin-bottom: 10px;
+}
+@media (min-width: 600px) {
+.mir {
+flex-direction: row;
+}
+}
+aside p {
+margin: 0;
+}
+&lt;/style&gt;
+</content>
+
+        <author>
+            <name>Lori Lorusso, Jakub Beránek</name>
+        </author>
+    </entry>
+    <entry>
+        <title>Enabling the next-generation trait solver on nightly</title>
+        <link rel="alternate" href="https://blog.rust-lang.org/2026/08/21/enabling-next-solver-on-nightly/" type="text/html" title="Enabling the next-generation trait solver on nightly" />
+        <published>2026-08-21T00:00:00+00:00</published>
+        <updated>2026-08-21T00:00:00+00:00</updated>
+        <id>https://blog.rust-lang.org/2026/08/21/enabling-next-solver-on-nightly/</id>
+        <content type="html" xml:base="https://blog.rust-lang.org/2026/08/21/enabling-next-solver-on-nightly/">&lt;p&gt;After nearly 4 years of active development, &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rust-project-goals/issues/113&quot;&gt;the next-generation trait solver&lt;/a&gt; is close to stabilization. We are enabling it by default on nightly to surface any remaining issues and plan to stabilize it in the next months. This is the largest single change to the Rust compiler since its initial release. It completely replaces how we prove where-clauses, normalize associated types, and much more. &lt;strong&gt;Please try out the latest nightly and &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rust/issues&quot;&gt;open an issue&lt;/a&gt; if you encounter any bugs or regressions.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;This is an internal component of the compiler. The main benefits of this rework will come in the future. The removal of the old implementation will unblock features such as &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://rust-lang.github.io/rust-project-goals/2026/rtn.html&quot;&gt;Type Alias Impl Trait and Return Type Notation&lt;/a&gt;, allow us to add new implicit default trait bounds (e.g., &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://rust-lang.github.io/rust-project-goals/2026/move-trait.html&quot;&gt;&lt;code&gt;Move&lt;/code&gt; and &lt;code&gt;Forget&lt;/code&gt;&lt;/a&gt;), and enable us to fix &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://rust-lang.github.io/rust-project-goals/2026/roadmap-project-zero.html&quot;&gt;the remaining type system unsoundnesses&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Even so, this already fixes a huge number of issues. As an underapproximation, we currently know of &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rust/issues?q&#x3D;is%3Aissue%20state%3Aopen%20label%3Afixed-by-next-solver&quot;&gt;more than 200 issues on GitHub fixed by this change&lt;/a&gt;. This also has a significant impact on compile times; more on that later. When developing on nightly, you may accidentally rely on behavior only supported by the new trait solver.&lt;/p&gt;
+&lt;p&gt;This is an incredibly big change which results in a non-trivial amount of breakage. Most of these changes are intended improvements to type inference or the removal of undesirable behavior. We are tracking the known issues and breakage &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rust/issues/160895&quot;&gt;in a pinned GitHub issue&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id&#x3D;&quot;what-can-i-do&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#what-can-i-do&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+What can I do?&lt;/h2&gt;
+&lt;p&gt;Please update to the latest nightly version by using &lt;code&gt;rustup update nightly&lt;/code&gt; and use it to test your existing projects and libraries.&lt;/p&gt;
+&lt;p&gt;Please tell us if you encounter any breakage, compile-time performance regression, or bad diagnostics. We have not yet spent too much time on error messages for the next-generation trait solver, so we would also appreciate you using this nightly for development to find poor diagnostics and other bugs in our error handling.&lt;/p&gt;
+&lt;p&gt;If you encounter any issue, take a quick look at &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rust/issues/160895&quot;&gt;the pinned GitHub issue&lt;/a&gt; to see if the affected crate is already listed, and if not, please open &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rust/issues/new?template&#x3D;bug_report.md&quot;&gt;a new issue&lt;/a&gt;! To disable the next-generation trait solver on nightly, you can pass &lt;code&gt;-Znext-solver&#x3D;coherence&lt;/code&gt; to &lt;code&gt;rustc&lt;/code&gt;, use &lt;code&gt;RUSTFLAGS&#x3D;-Znext-solver&#x3D;coherence&lt;/code&gt;, or change your project&#x27;s &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/cargo/reference/config.html&quot;&gt;&lt;code&gt;.cargo/config.toml&lt;/code&gt;&lt;/a&gt; configuration file:&lt;/p&gt;
+&lt;pre class&#x3D;&quot;giallo z-code&quot;&gt;&lt;code data-lang&#x3D;&quot;toml&quot;&gt;&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span&gt;[&lt;/span&gt;&lt;span&gt;build&lt;/span&gt;&lt;span&gt;]&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt;rustflags&lt;/span&gt;&lt;span&gt; &#x3D;&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-array&quot;&gt; [&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-string z-string&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class&#x3D;&quot;z-string z-quoted z-string&quot;&gt;-Znext-solver&#x3D;coherence&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-string z-string&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-array&quot;&gt;]&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;h2 id&#x3D;&quot;what-exactly-does-this-mean&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#what-exactly-does-this-mean&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+What exactly does this mean?&lt;/h2&gt;
+&lt;p&gt;We will go into more detail about the next-generation trait solver, how we got here, and what it changes when fully stabilizing it. This is a quick summary of its main impact.&lt;/p&gt;
+&lt;h3 id&#x3D;&quot;impl-trait-handling&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#impl-trait-handling&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+&lt;code&gt;impl Trait&lt;/code&gt; handling&lt;/h3&gt;
+&lt;p&gt;The way opaque types — return-position &lt;code&gt;impl Trait&lt;/code&gt; (RPIT), but also the unstable &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://rust-lang.github.io/rust-project-goals/2026/rtn.html&quot;&gt;Type Alias Impl Trait (TAIT) and Return Type Notation (RTN)&lt;/a&gt; — are handled in the type system has nearly completely changed. This fixes a lot of bugs and edge cases with them and should make their behavior a lot more consistent in general. This change is why the next-generation trait solver is necessary to stabilize TAIT and RTN.&lt;/p&gt;
+&lt;p&gt;The implementation change mostly does not matter for RPIT as we special-cased &lt;code&gt;impl Trait&lt;/code&gt; from the method signature when type checking the method body. This means the only way to observe the old behavior is via recursive function calls. The following snippet errors with the existing implementation, but compiles with &lt;code&gt;-Znext-solver&lt;/code&gt; enabled: &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://rust.godbolt.org/z/3faWKn4aE&quot;&gt;godbolt&lt;/a&gt;&lt;/p&gt;
+&lt;pre class&#x3D;&quot;giallo z-code&quot;&gt;&lt;code data-lang&#x3D;&quot;rust&quot;&gt;&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-keyword&quot;&gt;fn&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-function&quot;&gt; foo&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt;b&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;:&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; bool&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt; -&amp;gt;&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword&quot;&gt; impl&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; Sized&lt;/span&gt;&lt;span&gt; {&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-keyword z-control&quot;&gt;    if&lt;/span&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt; b&lt;/span&gt;&lt;span&gt; {&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-comment z-comment&quot;&gt;        //&lt;/span&gt;&lt;span class&#x3D;&quot;z-comment z-line z-double-slash z-comment&quot;&gt; The old implementation errored here.&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-entity z-name z-function&quot;&gt;        foo&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-language&quot;&gt;false&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt; +&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-numeric&quot;&gt; 1&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-control&quot;&gt; else&lt;/span&gt;&lt;span&gt; {&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-constant z-numeric&quot;&gt;        0&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;h3 id&#x3D;&quot;associated-types-in-higher-ranked-types&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#associated-types-in-higher-ranked-types&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Associated types in higher-ranked types&lt;/h3&gt;
+&lt;p&gt;The most impactful change is way we handle associated types referencing bound variables, i.e., lifetimes from a &lt;code&gt;for&amp;lt;&#x27;a&amp;gt;&lt;/code&gt; binder, for example, the type &lt;code&gt;for&amp;lt;&#x27;a&amp;gt; fn(&amp;lt;T as Trait&amp;gt;::Assoc&amp;lt;&#x27;a&amp;gt;)&lt;/code&gt;. While most users don&#x27;t encounter such types directly, there are widely used crates which do. This change impacts existing code by removing incorrect type inference, such as in &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/bevyengine/bevy/pull/18840&quot;&gt;bevy&lt;/a&gt; and &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/mitsuhiko/minijinja/pull/787&quot;&gt;minijinja&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;It also fixes a bunch of unnecessary errors like in the following example: &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://rust.godbolt.org/z/MMsEjTxeE&quot;&gt;godbolt&lt;/a&gt;&lt;/p&gt;
+&lt;pre class&#x3D;&quot;giallo z-code&quot;&gt;&lt;code data-lang&#x3D;&quot;rust&quot;&gt;&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-storage z-type&quot;&gt;trait&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; OtherTrait&lt;/span&gt;&lt;span&gt; {&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-storage z-type&quot;&gt;    type&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; Assoc&lt;/span&gt;&lt;span&gt;&amp;lt;&lt;/span&gt;&lt;span&gt;&amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt;a&lt;/span&gt;&lt;span&gt;&amp;gt;&lt;/span&gt;&lt;span&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-keyword&quot;&gt;impl&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; OtherTrait&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-control&quot;&gt; for&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; u32&lt;/span&gt;&lt;span&gt; {&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-storage z-type&quot;&gt;    type&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; Assoc&lt;/span&gt;&lt;span&gt;&amp;lt;&lt;/span&gt;&lt;span&gt;&amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt;a&lt;/span&gt;&lt;span&gt;&amp;gt;&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator z-assignment z-keyword z-operator&quot;&gt; &#x3D;&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt; &amp;amp;&lt;/span&gt;&lt;span&gt;&amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt;a&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; u32&lt;/span&gt;&lt;span&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-storage z-type&quot;&gt;trait&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; Trait&lt;/span&gt;&lt;span&gt; {&lt;/span&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-keyword&quot;&gt;impl&lt;/span&gt;&lt;span&gt;&amp;lt;&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt;T&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;:&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; OtherTrait&lt;/span&gt;&lt;span&gt;&amp;gt;&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; Trait&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-control&quot;&gt; for&lt;/span&gt;&lt;span&gt; (&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt;T&lt;/span&gt;&lt;span&gt;,&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-control&quot;&gt; for&lt;/span&gt;&lt;span&gt;&amp;lt;&lt;/span&gt;&lt;span&gt;&amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt;a&lt;/span&gt;&lt;span&gt;&amp;gt;&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-function&quot;&gt; fn&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;&amp;lt;&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt;T&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword&quot;&gt; as&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; OtherTrait&lt;/span&gt;&lt;span&gt;&amp;gt;&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;::&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt;Assoc&lt;/span&gt;&lt;span&gt;&amp;lt;&lt;/span&gt;&lt;span&gt;&amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt;a&lt;/span&gt;&lt;span&gt;&amp;gt;&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span&gt; {&lt;/span&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-keyword&quot;&gt;fn&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-function&quot;&gt; impls&lt;/span&gt;&lt;span&gt;&amp;lt;&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt;T&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;:&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; Trait&lt;/span&gt;&lt;span&gt;&amp;gt;&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span&gt; {&lt;/span&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-keyword&quot;&gt;fn&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-function&quot;&gt; main&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span&gt; {&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-comment z-comment&quot;&gt;    //&lt;/span&gt;&lt;span class&#x3D;&quot;z-comment z-line z-double-slash z-comment&quot;&gt; The old implementation failed to prove&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-comment z-comment&quot;&gt;    //&lt;/span&gt;&lt;span class&#x3D;&quot;z-comment z-line z-double-slash z-comment&quot;&gt; the where-bound of &#x60;impls&#x60;.&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-entity z-name z-function&quot;&gt;    impls&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;::&lt;/span&gt;&lt;span&gt;&amp;lt;&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt;u32&lt;/span&gt;&lt;span&gt;,&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-control&quot;&gt; for&lt;/span&gt;&lt;span&gt;&amp;lt;&lt;/span&gt;&lt;span&gt;&amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt;a&lt;/span&gt;&lt;span&gt;&amp;gt;&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword&quot;&gt; fn&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span&gt;&amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt;a&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; u32&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span&gt;&amp;gt;&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;h3 id&#x3D;&quot;compile-time-performance&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#compile-time-performance&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Compile-time performance&lt;/h3&gt;
+&lt;p&gt;&lt;sub&gt;co-authored with &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/jdonszelmann&quot;&gt;jana&lt;/a&gt; :3&lt;/sub&gt;&lt;/p&gt;
+&lt;p&gt;We&#x27;ve spent a lot of time on the compile-time performance of the next-generation trait solver. There have been many cases where it performed quadratically or even exponentially slower than the old solver.&lt;/p&gt;
+&lt;p&gt;Especially the last few weeks were mainly spent on improving performance. This work was shared by many people, with major contributions by &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/nnethercote&quot;&gt;Nick Nethercote&lt;/a&gt;, &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/jdonszelmann&quot;&gt;jana&lt;/a&gt;, &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/lqd&quot;&gt;Rémy Rakic&lt;/a&gt;, and &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/inkreasing&quot;&gt;mira&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;As part of this effort, &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/lqd&quot;&gt;Rémy Rakic&lt;/a&gt; compared the performance of both implementations for the top 20,000 crates on &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://crates.io/crates?sort&#x3D;downloads&quot;&gt;crates.io&lt;/a&gt;. Below you is a visualization of the performance changes over the last two months.&lt;/p&gt;
+&lt;p&gt;&lt;img src&#x3D;&quot;https://blog.rust-lang.org/2026/08/21/enabling-next-solver-on-nightly/visualization.png&quot; alt&#x3D;&quot;The performance of 1000 crates (on the x-axis) plotted against their slowdown factor (logarithmic) on the y-axis. Many crates are around the 1.0 mark (no slowdown), with major outliers at both ends. Colors show progression over time.&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;On the left and the right, the major outliers can be found. Note that the sample of crates here is biased &lt;em&gt;towards&lt;/em&gt; such crates, because those are more interesting to us. Nearly all crates we tested in the top 20k had effectively the same performance with both implementations.&lt;/p&gt;
+&lt;p&gt;This graph shows that we&#x27;ve mainly focused our efforts on the negative outliers and made significant progress there. While many of the crates that previously took more than twice as long to compile with the new solver are still slightly slower, our work has made a few of them actually compile &lt;em&gt;faster&lt;/em&gt; than with the old solver.&lt;/p&gt;
+&lt;p&gt;We will continue to improve its performance over the coming months, and there are still a lot of optimization opportunities compared to the existing implementation. My expectation is that, in the long term, nearly all crates will benefit from the next-generation trait solver. I am especially excited about the huge performance benefits for some trait-heavy crates.&lt;/p&gt;
+&lt;p&gt;As an example, &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/Dragon-Hatcher/type-system-chess&quot;&gt;a Chess implementation in Rust&#x27;s type system&lt;/a&gt; hangs with the old implementation while taking a minute with the new one. There are also more practical crates with huge performance benefits, e.g., the &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://crates.io/crates/datafusion&quot;&gt;&lt;code&gt;datafusion&lt;/code&gt; crate&lt;/a&gt; compiles more than 8x faster now. For more details about the recent performance work, see &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://donsz.nl/blog/new-solver-performance&quot;&gt;this blog post by jana&lt;/a&gt;.&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;Again, thank you for testing with the latest nightly and &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rust/issues&quot;&gt;opening a GitHub issue if you encounter any issues&lt;/a&gt;! We&#x27;re excited to fully stabilize the next-generation trait solver soon.&lt;/p&gt;
+</content>
+
+        <author>
+            <name>lcnr</name>
+        </author>
+    </entry>
+    <entry>
+        <title>Supply chain attack on arrayref</title>
+        <link rel="alternate" href="https://blog.rust-lang.org/2026/08/20/supply-chain-attack-on-arrayref/" type="text/html" title="Supply chain attack on arrayref" />
+        <published>2026-08-20T00:00:00+00:00</published>
+        <updated>2026-08-20T00:00:00+00:00</updated>
+        <id>https://blog.rust-lang.org/2026/08/20/supply-chain-attack-on-arrayref/</id>
+        <content type="html" xml:base="https://blog.rust-lang.org/2026/08/20/supply-chain-attack-on-arrayref/">&lt;h2 id&#x3D;&quot;what-happened&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#what-happened&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+What happened&lt;/h2&gt;
+&lt;p&gt;On 2026-08-20 at 7:15 UTC we got a report that the &lt;code&gt;proc-macro1&lt;/code&gt; crate was malicious.&lt;/p&gt;
+&lt;p&gt;The Rust Security Response Team verified this to be the case: the crate had a build script that was downloading a malicious payload.&lt;/p&gt;
+&lt;p&gt;This crate &lt;code&gt;proc-macro1&lt;/code&gt; and others like it (&lt;code&gt;proc-macro-en&lt;/code&gt;, &lt;code&gt;aovine&lt;/code&gt;, &lt;code&gt;arone&lt;/code&gt;, &lt;code&gt;aronenao&lt;/code&gt;, &lt;code&gt;tinymember&lt;/code&gt;) have been deleted.&lt;/p&gt;
+&lt;p&gt;Furthermore, we discovered that the popular &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://crates.io/crates/arrayref&quot;&gt;&lt;code&gt;arrayref&lt;/code&gt;&lt;/a&gt; crate had recently been republished and made to depend on this crate, with the most recent versions yanked. We have removed the malicious version and unyanked the maliciously-yanked versions. Other crates by that author (&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://crates.io/crates/internment&quot;&gt;&lt;code&gt;internment&lt;/code&gt;&lt;/a&gt;, &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://crates.io/crates/append-only-vec&quot;&gt;&lt;code&gt;append-only-vec&lt;/code&gt;&lt;/a&gt;) were also affected so we have done the same for those, and locked the account as a precaution. We do not believe the author of &lt;code&gt;arrayref&lt;/code&gt; to be acting maliciously, but their computer or credentials are likely compromised, and we are attempting to contact them.&lt;/p&gt;
+&lt;h2 id&#x3D;&quot;what-you-need-to-do&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#what-you-need-to-do&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+What you need to do&lt;/h2&gt;
+&lt;p&gt;We recommend you check your local dependencies to ensure these crates were not pulled in.
+Here are the malicious versions that we deleted from crates.io:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;append-only-vec@0.1.9&lt;/code&gt;: published at &lt;code&gt;2026-08-20T07:37:49Z&lt;/code&gt;, deleted at &lt;code&gt;2026-08-20T09:25:24Z&lt;/code&gt;. Online for 107 minutes.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;arrayref@0.3.10&lt;/code&gt;: published at &lt;code&gt;2026-08-20T07:15:00Z&lt;/code&gt;, deleted at &lt;code&gt;2026-08-20T08:41:40Z&lt;/code&gt;. Online for 86 minutes.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;internment@0.8.7&lt;/code&gt;: published at &lt;code&gt;2026-08-20T07:34:07Z&lt;/code&gt;, deleted at &lt;code&gt;2026-08-20T09:04:11Z&lt;/code&gt;. Online for 90 minutes.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;proc-macro1&lt;/code&gt;, &lt;code&gt;proc-macro-en&lt;/code&gt;, &lt;code&gt;aovine&lt;/code&gt;, &lt;code&gt;arone&lt;/code&gt;, &lt;code&gt;aronenao&lt;/code&gt;, &lt;code&gt;tinymember&lt;/code&gt; (any versions).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You can quickly check if these crates have been used locally by going through &lt;code&gt;~/.cargo/registry/cache&lt;/code&gt; with this command:&lt;/p&gt;
+&lt;pre class&#x3D;&quot;giallo z-code&quot;&gt;&lt;code data-lang&#x3D;&quot;shellscript&quot;&gt;&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-entity z-name z-function&quot;&gt;find&lt;/span&gt;&lt;span class&#x3D;&quot;z-string&quot;&gt; ~/.cargo/registry/cache&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt; -&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;type&lt;/span&gt;&lt;span class&#x3D;&quot;z-string&quot;&gt; f&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-character z-escape&quot;&gt; \(&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-character z-escape&quot;&gt; \&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;  -&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;name&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-string z-string&quot;&gt; &amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-string z-quoted z-string&quot;&gt;append-only-vec-0.1.9.crate&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-string z-string&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt; -&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;o&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-character z-escape&quot;&gt; \&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;  -&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;name&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-string z-string&quot;&gt; &amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-string z-quoted z-string&quot;&gt;arrayref-0.3.10.crate&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-string z-string&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt; -&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;o&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-character z-escape&quot;&gt; \&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;  -&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;name&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-string z-string&quot;&gt; &amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-string z-quoted z-string&quot;&gt;internment-0.8.7.crate&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-string z-string&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt; -&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;o&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-character z-escape&quot;&gt; \&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;  -&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;name&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-string z-string&quot;&gt; &amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-string z-quoted z-string&quot;&gt;proc-macro1-*.crate&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-string z-string&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt; -&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;o&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-character z-escape&quot;&gt; \&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;  -&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;name&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-string z-string&quot;&gt; &amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-string z-quoted z-string&quot;&gt;proc-macro-en-*.crate&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-string z-string&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt; -&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;o&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-character z-escape&quot;&gt; \&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;  -&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;name&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-string z-string&quot;&gt; &amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-string z-quoted z-string&quot;&gt;aovine-*.crate&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-string z-string&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt; -&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;o&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-character z-escape&quot;&gt; \&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;  -&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;name&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-string z-string&quot;&gt; &amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-string z-quoted z-string&quot;&gt;arone-*.crate&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-string z-string&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt; -&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;o&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-character z-escape&quot;&gt; \&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;  -&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;name&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-string z-string&quot;&gt; &amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-string z-quoted z-string&quot;&gt;aronenao-*.crate&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-string z-string&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt; -&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;o&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-character z-escape&quot;&gt; \&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;  -&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;name&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-string z-string&quot;&gt; &amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-string z-quoted z-string&quot;&gt;tinymember-*.crate&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-string z-string&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-character z-escape&quot;&gt; \&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-constant z-character z-escape&quot;&gt;\)&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt; -&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-other z-constant z-other z-option&quot;&gt;print&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;h2 id&#x3D;&quot;thanks&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#thanks&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Thanks&lt;/h2&gt;
+&lt;p&gt;We&#x27;d like to thank the Research Team at Nextron Systems GmbH for initially discovering this and reporting it to us. We&#x27;d also like to thank Emily Albini, Manish Goregaokar, Marco Ieni, Tobias Bieniek, Ubiratan Soares, and Walter Pearce for participating in the response here.&lt;/p&gt;
+</content>
+
+        <author>
+            <name>Manish Goregaokar</name>
+        </author>
+    </entry>
+    <entry>
+        <title>Announcing Rust 1.98.0</title>
+        <link rel="alternate" href="https://blog.rust-lang.org/2026/08/20/Rust-1.98.0/" type="text/html" title="Announcing Rust 1.98.0" />
+        <published>2026-08-20T00:00:00+00:00</published>
+        <updated>2026-08-20T00:00:00+00:00</updated>
+        <id>https://blog.rust-lang.org/2026/08/20/Rust-1.98.0/</id>
+        <content type="html" xml:base="https://blog.rust-lang.org/2026/08/20/Rust-1.98.0/">&lt;p&gt;The Rust team is happy to announce a new version of Rust, 1.98.0. Rust is a programming language empowering everyone to build reliable and efficient software.&lt;/p&gt;
+&lt;p&gt;If you have a previous version of Rust installed via &lt;code&gt;rustup&lt;/code&gt;, you can get 1.98.0 with:&lt;/p&gt;
+&lt;pre class&#x3D;&quot;giallo z-code&quot;&gt;&lt;code data-lang&#x3D;&quot;shellsession&quot;&gt;&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span&gt;$&lt;/span&gt;&lt;span&gt; rustup update stable&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If you don&#x27;t have it already, you can get &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://www.rust-lang.org/install.html&quot;&gt;&lt;code&gt;rustup&lt;/code&gt;&lt;/a&gt; from the appropriate page on our website, and check out the &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/stable/releases.html#version-1980-2026-08-20&quot;&gt;detailed release notes for 1.98.0&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you&#x27;d like to help us out by testing future releases, you might consider updating locally to use the beta channel (&lt;code&gt;rustup default beta&lt;/code&gt;) or the nightly channel (&lt;code&gt;rustup default nightly&lt;/code&gt;). Please &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rust/issues/new/choose&quot;&gt;report&lt;/a&gt; any bugs you might come across!&lt;/p&gt;
+&lt;h2 id&#x3D;&quot;what-s-in-1-98-0-stable&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#what-s-in-1-98-0-stable&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+What&#x27;s in 1.98.0 stable&lt;/h2&gt;
+&lt;h3 id&#x3D;&quot;algebraic-floating-point-methods&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#algebraic-floating-point-methods&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Algebraic floating-point methods&lt;/h3&gt;
+&lt;p&gt;The floating-point types &lt;code&gt;f32&lt;/code&gt; and &lt;code&gt;f64&lt;/code&gt; now have &quot;algebraic&quot; methods for addition, subtraction, multiplication, division, and remainder. These allow optimizations on these operations using the algebraic properties of real numbers, even though these properties do not hold with the limitations of floating-point representations. The exact set of optimizations is not specified, but may be similar to the kind of optimization you would see with the &lt;code&gt;-ffast-math&lt;/code&gt; option in other languages.&lt;/p&gt;
+&lt;p&gt;For example, floating-point addition is &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://en.wikipedia.org/wiki/Associative_property#Nonassociativity_of_floating-point_calculation&quot;&gt;not associative&lt;/a&gt;, so a sum like &lt;code&gt;a + b + c + d&lt;/code&gt; must be evaluated in the left-associative order in which it is parsed, like &lt;code&gt;((a + b) + c) + d&lt;/code&gt;. If you write the same sum as a chain of &lt;code&gt;algebraic_add&lt;/code&gt; calls, then the compiler is free to reorder it, perhaps like &lt;code&gt;(a + b) + (c + d)&lt;/code&gt; to evaluate the partial sums simultaneously. Broader loop-vectorization is often enabled by using these algebraic methods as well.&lt;/p&gt;
+&lt;p&gt;These methods are non-deterministic, since the compiler is free to choose different optimizations, but they never cause undefined behavior. See the &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/stable/core/primitive.f32.html#algebraic-operators&quot;&gt;library documentation&lt;/a&gt; and the original &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/libs-team/issues/532&quot;&gt;API change proposal&lt;/a&gt; for more details.&lt;/p&gt;
+&lt;h3 id&#x3D;&quot;buffered-integer-formatting&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#buffered-integer-formatting&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Buffered integer formatting&lt;/h3&gt;
+&lt;p&gt;All of the primitive integer types now have a &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/stable/core/primitive.usize.html#method.format_into&quot;&gt;&lt;code&gt;format_into&lt;/code&gt;&lt;/a&gt; method that takes a &lt;code&gt;&amp;amp;mut NumBuffer&amp;lt;Self&amp;gt;&lt;/code&gt; parameter, which is a buffer that is large enough to hold the decimal format of any value of that type. The buffer itself is opaque, but the method returns the formatted &lt;code&gt;&amp;amp;str&lt;/code&gt; with a lifetime borrowed from that buffer.&lt;/p&gt;
+&lt;p&gt;This method also bypasses much of the dynamic dispatch that you would get with buffered &lt;code&gt;write!&lt;/code&gt; formatting, which can be a boon to performance. The &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/dtolnay/itoa-benchmark&quot;&gt;&lt;code&gt;itoa-benchmark&lt;/code&gt;&lt;/a&gt; repo now shows that &lt;code&gt;format_into&lt;/code&gt; performs similarly to &lt;code&gt;itoa&lt;/code&gt; itself, so this could serve as a standard replacement for that dependency and others like it.&lt;/p&gt;
+&lt;h3 id&#x3D;&quot;fix-interaction-between-manuallydrop-and-box&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#fix-interaction-between-manuallydrop-and-box&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Fix interaction between &lt;code&gt;ManuallyDrop&lt;/code&gt; and &lt;code&gt;Box&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;Prior to Rust 1.96.0, there was a bug in the Rust compiler, which made the following code undefined behavior:&lt;/p&gt;
+&lt;pre class&#x3D;&quot;giallo z-code&quot;&gt;&lt;code data-lang&#x3D;&quot;rust&quot;&gt;&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-storage z-type&quot;&gt;let&lt;/span&gt;&lt;span class&#x3D;&quot;z-storage z-storage z-modifier&quot;&gt; mut&lt;/span&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt; x&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator z-assignment z-keyword z-operator&quot;&gt; &#x3D;&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; ManuallyDrop&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;::&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-function&quot;&gt;new&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-namespace&quot;&gt;Box&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;::&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-function&quot;&gt;new&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-numeric&quot;&gt;1&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-keyword&quot;&gt;unsafe&lt;/span&gt;&lt;span&gt; {&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; ManuallyDrop&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;::&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-function&quot;&gt;drop&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class&#x3D;&quot;z-storage z-storage z-modifier&quot;&gt;mut&lt;/span&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt; x&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span&gt; }&lt;/span&gt;&lt;span&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-storage z-type&quot;&gt;let&lt;/span&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt; x&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator z-assignment z-keyword z-operator&quot;&gt; &#x3D;&lt;/span&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt; x&lt;/span&gt;&lt;span&gt;;&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-comment z-comment&quot;&gt; //&lt;/span&gt;&lt;span class&#x3D;&quot;z-comment z-line z-double-slash z-comment&quot;&gt; UB!&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This is because the compiler considers it undefined behavior to move a &lt;code&gt;Box&lt;/code&gt; that has been dropped (deallocated), and &lt;code&gt;ManuallyDrop&lt;/code&gt; used to propagate that, such that moving &lt;code&gt;ManuallyDrop&amp;lt;Box&amp;lt;_&amp;gt;&amp;gt;&lt;/code&gt; where the box has been dropped would also be considered UB.&lt;/p&gt;
+&lt;p&gt;In Rust 1.96.0 we fixed this, so this code was no longer UB. In this release we have updated the &lt;code&gt;ManuallyDrop&lt;/code&gt; documentation, providing a stable guarantee that this code will continue to not be UB in the future. See &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/stable/std/mem/struct.ManuallyDrop.html#pre-196-interaction-with-box&quot;&gt;&lt;code&gt;ManuallyDrop&lt;/code&gt; docs&lt;/a&gt; and the related &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://rust-lang.github.io/rfcs/3336-maybe-dangling.html&quot;&gt;RFC 3336&lt;/a&gt; for more information.&lt;/p&gt;
+&lt;h3 id&#x3D;&quot;stabilized-apis&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#stabilized-apis&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Stabilized APIs&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/stable/std/primitive.str.html#method.substr_range&quot;&gt;&lt;code&gt;str::substr_range&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/stable/std/primitive.slice.html#method.subslice_range&quot;&gt;&lt;code&gt;[T]::subslice_range&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/stable/core/fmt/struct.NumBuffer.html&quot;&gt;&lt;code&gt;core::fmt::NumBuffer&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/stable/core/primitive.usize.html#method.format_into&quot;&gt;&lt;code&gt;&amp;lt;{integer}&amp;gt;::format_into&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/stable/std/process/struct.CommandArgs.html#impl-Send-for-CommandArgs%3C&amp;#x27;a%3E&quot;&gt;&lt;code&gt;Send/Sync for std::process::CommandArgs&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/stable/core/primitive.f32.html#method.algebraic_add&quot;&gt;&lt;code&gt;{fN}::algebraic_add&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/stable/core/primitive.f32.html#method.algebraic_sub&quot;&gt;&lt;code&gt;{fN}::algebraic_sub&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/stable/core/primitive.f32.html#method.algebraic_mul&quot;&gt;&lt;code&gt;{fN}::algebraic_mul&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/stable/core/primitive.f32.html#method.algebraic_div&quot;&gt;&lt;code&gt;{fN}::algebraic_div&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/stable/core/primitive.f32.html#method.algebraic_rem&quot;&gt;&lt;code&gt;{fN}::algebraic_rem&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/stable/core/num/struct.NonZero.html#method.from_str_radix-4&quot;&gt;&lt;code&gt;NonZero&amp;lt;{integer}&amp;gt;::from_str_radix&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/stable/std/string/struct.String.html#method.from_utf16le&quot;&gt;&lt;code&gt;String::from_utf16le&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/stable/std/string/struct.String.html#method.from_utf16le_lossy&quot;&gt;&lt;code&gt;String::from_utf16le_lossy&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/stable/std/string/struct.String.html#method.from_utf16be&quot;&gt;&lt;code&gt;String::from_utf16be&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/stable/std/string/struct.String.html#method.from_utf16be_lossy&quot;&gt;&lt;code&gt;String::from_utf16be_lossy&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/stable/core/primitive.slice.html#method.strip_circumfix&quot;&gt;&lt;code&gt;[T]::strip_circumfix&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/stable/core/primitive.str.html#method.strip_circumfix&quot;&gt;&lt;code&gt;str::strip_circumfix&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/stable/core/sync/atomic/struct.Atomic.html#method.from_mut&quot;&gt;&lt;code&gt;Atomic&amp;lt;T&amp;gt;::from_mut&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/stable/core/sync/atomic/struct.Atomic.html#method.get_mut_slice&quot;&gt;&lt;code&gt;Atomic&amp;lt;T&amp;gt;::get_mut_slice&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/stable/core/sync/atomic/struct.Atomic.html#method.from_mut_slice&quot;&gt;&lt;code&gt;Atomic&amp;lt;T&amp;gt;::from_mut_slice&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/stable/std/range/legacy/index.html&quot;&gt;&lt;code&gt;std::range::legacy&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id&#x3D;&quot;other-changes&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#other-changes&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Other changes&lt;/h3&gt;
+&lt;p&gt;Check out everything that changed in &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rust/releases/tag/1.98.0&quot;&gt;Rust&lt;/a&gt;, &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/nightly/cargo/CHANGELOG.html#cargo-198-2026-08-20&quot;&gt;Cargo&lt;/a&gt;, and &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rust-clippy/blob/master/CHANGELOG.md#rust-198&quot;&gt;Clippy&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id&#x3D;&quot;contributors-to-1-98-0&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#contributors-to-1-98-0&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Contributors to 1.98.0&lt;/h2&gt;
+&lt;p&gt;Many people came together to create Rust 1.98.0. We couldn&#x27;t have done it without all of you. &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://thanks.rust-lang.org/rust/1.98.0/&quot;&gt;Thanks!&lt;/a&gt;&lt;/p&gt;
+</content>
+
+        <author>
+            <name>The Rust Release Team</name>
+        </author>
+    </entry>
+    <entry>
+        <title>Enabling the next iteration of the borrow checker on nightly</title>
+        <link rel="alternate" href="https://blog.rust-lang.org/2026/08/04/enabling-polonius-alpha-on-nightly/" type="text/html" title="Enabling the next iteration of the borrow checker on nightly" />
+        <published>2026-08-04T00:00:00+00:00</published>
+        <updated>2026-08-04T00:00:00+00:00</updated>
+        <id>https://blog.rust-lang.org/2026/08/04/enabling-polonius-alpha-on-nightly/</id>
+        <content type="html" xml:base="https://blog.rust-lang.org/2026/08/04/enabling-polonius-alpha-on-nightly/">&lt;p&gt;TL;DR We are enabling the next iteration of the borrow checker (coined Polonius Alpha)
+on nightly in preparation for stabilization in the next few months.&lt;/p&gt;
+&lt;h2 id&#x3D;&quot;whaaaaaat&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#whaaaaaat&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Whaaaaaat?&lt;/h2&gt;
+&lt;p&gt;Yes! You heard it right! The next iteration of the Rust borrow checker is coming! Rust&#x27;s first borrow checker (&quot;AST borrowck&quot;) was very limited and was phased out &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://blog.rust-lang.org/2019/11/01/nll-hard-errors/&quot;&gt;in 2019&lt;/a&gt; in favor of &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://rust-lang.github.io/rfcs/2094-nll.html&quot;&gt;NLL&lt;/a&gt;, other than a &quot;migrate mode&quot; that was used to provide nice error messages. That migrate mode was finally removed &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://blog.rust-lang.org/2022/08/05/nll-by-default&quot;&gt;in 2022&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/polonius&quot;&gt;Polonius borrow checker&lt;/a&gt; spun out of the NLL effort in 2018. The &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://smallcultfollowing.com/babysteps/blog/2018/04/27/an-alias-based-formulation-of-the-borrow-checker/&quot;&gt;initial formulation&lt;/a&gt; passed the NLL test suite and accepted (sound) code that NLL did not. However, performance was a critically-limiting factor; generally borrow check was slower than NLL, but certain programs were considerably slower than NLL to the extent that using that implementation/formulation of Polonius was a non-starter. &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/nikomatsakis/polonius.next&quot;&gt;Attempts were made&lt;/a&gt; over the years to implement the Polonius formulation in a performant manner, without much luck in addressing the core issues.&lt;/p&gt;
+&lt;p&gt;In 2023, &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://smallcultfollowing.com/babysteps/series/polonius-revisited/&quot;&gt;a new formulation&lt;/a&gt; of a Polonius-style borrow checker was imagined that required minimal rearchitecture of the existing NLL implementation and could be extended to allow more code to compile. We &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://blog.rust-lang.org/inside-rust/2023/10/06/polonius-update/&quot;&gt;had hoped&lt;/a&gt;, to try to stabilize this new formulation in 2024; but, various things popped up that delayed this.&lt;/p&gt;
+&lt;p&gt;But! We&#x27;re nearly there now! At this point, there are no known remaining issues with the subset coined Polonius Alpha that we intend to stabilize. And, performance is generally acceptable for stabilization (will discuss that a bit below).&lt;/p&gt;
+&lt;p&gt;So, &lt;strong&gt;we are enabling the Polonius Alpha borrow checker on nightly&lt;/strong&gt; for testing until we stabilize fully later in the year. We&#x27;re doing this in order to help find:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Any serious performance regressions we&#x27;re unaware of&lt;/li&gt;
+&lt;li&gt;Unsoundness in the formulation that we haven&#x27;t thought about&lt;/li&gt;
+&lt;li&gt;Any weird diagnostic issues that we need to improve
+&lt;ul&gt;
+&lt;li&gt;Note: we have not &lt;em&gt;yet&lt;/em&gt; seen any diagnostic changes&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You can report any issues &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rust/issues/160456&quot;&gt;on Github&lt;/a&gt; or &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://rust-lang.zulipchat.com/#narrow/channel/186049-t-types.2Fpolonius/topic/Polonius.20Alpha.20enabled.20on.20nightly/near/614373312&quot;&gt;on Zulip&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id&#x3D;&quot;okay-what-s-new&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#okay-what-s-new&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Okay, what&#x27;s new?&lt;/h2&gt;
+&lt;p&gt;The key thing that Polonius Alpha enables that NLL does not is &lt;em&gt;flow-sensitive&lt;/em&gt; borrow checking of lifetime outlives relationships.&lt;/p&gt;
+&lt;p&gt;Perhaps the smallest example demonstrating what will pass with Polonius Alpha but not the current NLL is:&lt;/p&gt;
+&lt;pre class&#x3D;&quot;giallo z-code&quot;&gt;&lt;code data-lang&#x3D;&quot;rust&quot;&gt;&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-keyword&quot;&gt;fn&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-function&quot;&gt; reborrow&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt;a&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;:&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt; &amp;amp;&lt;/span&gt;&lt;span class&#x3D;&quot;z-storage z-storage z-modifier&quot;&gt;mut&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; u8&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt; -&amp;gt;&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt; &amp;amp;&lt;/span&gt;&lt;span class&#x3D;&quot;z-storage z-storage z-modifier&quot;&gt;mut&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; u8&lt;/span&gt;&lt;span&gt; {&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-storage z-type&quot;&gt;    let&lt;/span&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt; b&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator z-assignment z-keyword z-operator&quot;&gt; &#x3D;&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt; &amp;amp;&lt;/span&gt;&lt;span class&#x3D;&quot;z-storage z-storage z-modifier&quot;&gt;mut&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt; *&lt;/span&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt;a&lt;/span&gt;&lt;span&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-keyword z-control&quot;&gt;    if&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-language&quot;&gt; true&lt;/span&gt;&lt;span&gt; {&lt;/span&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt; b&lt;/span&gt;&lt;span&gt; }&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-control&quot;&gt; else&lt;/span&gt;&lt;span&gt; {&lt;/span&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt; a&lt;/span&gt;&lt;span&gt; }&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;However, the example you will see more often is:&lt;/p&gt;
+&lt;pre class&#x3D;&quot;giallo z-code&quot;&gt;&lt;code data-lang&#x3D;&quot;rust&quot;&gt;&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-keyword&quot;&gt;fn&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-function&quot;&gt; get_mut_or_default&lt;/span&gt;&lt;span&gt;&amp;lt;&lt;/span&gt;&lt;span&gt;&amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt;r&lt;/span&gt;&lt;span&gt;,&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; K&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;:&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; Hash&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt; +&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; Eq&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt; +&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; Copy&lt;/span&gt;&lt;span&gt;,&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; V&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;:&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; Default&lt;/span&gt;&lt;span&gt;&amp;gt;&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt;    map&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;:&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt; &amp;amp;&lt;/span&gt;&lt;span&gt;&amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt;r&lt;/span&gt;&lt;span class&#x3D;&quot;z-storage z-storage z-modifier&quot;&gt; mut&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; HashMap&lt;/span&gt;&lt;span&gt;&amp;lt;&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt;K&lt;/span&gt;&lt;span&gt;,&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; V&lt;/span&gt;&lt;span&gt;&amp;gt;&lt;/span&gt;&lt;span&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt;    key&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;:&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; K&lt;/span&gt;&lt;span&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span&gt;)&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt; -&amp;gt;&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt; &amp;amp;&lt;/span&gt;&lt;span&gt;&amp;#39;&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt;r&lt;/span&gt;&lt;span class&#x3D;&quot;z-storage z-storage z-modifier&quot;&gt; mut&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; V&lt;/span&gt;&lt;span&gt; {&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-keyword z-control&quot;&gt;    match&lt;/span&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt; map&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;.&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-function&quot;&gt;get_mut&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt;key&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span&gt; {&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt;        Some&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt;value&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt; &#x3D;&amp;gt;&lt;/span&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt; value&lt;/span&gt;&lt;span&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt;        None&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt; &#x3D;&amp;gt;&lt;/span&gt;&lt;span&gt; {&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt;            map&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;.&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-function&quot;&gt;insert&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt;key&lt;/span&gt;&lt;span&gt;,&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-namespace&quot;&gt; V&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;::&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-function&quot;&gt;default&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt;            map&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;.&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-function&quot;&gt;get_mut&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt;key&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;.&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-function&quot;&gt;unwrap&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The issue is that the &lt;code&gt;Some(value) &#x3D;&amp;gt; value&lt;/code&gt; branch causes the borrow checker to think that the borrow returned by &lt;code&gt;map.get_mut(&amp;amp;key)&lt;/code&gt; lives for the entire function (because of the &lt;code&gt;&amp;amp;&#x27;r mut V&lt;/code&gt; return type), even though that borrow isn&#x27;t live in the &lt;code&gt;None&lt;/code&gt; branch. NLL&#x27;s analysis is &lt;em&gt;flow-insensitive&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Polonius Alpha passes this because its analysis is &lt;em&gt;flow-sensitive&lt;/em&gt;, and it knows that the borrow isn&#x27;t live in the &lt;code&gt;None&lt;/code&gt; branch.&lt;/p&gt;
+&lt;p&gt;Now, Polonius Alpha is not &lt;em&gt;perfect&lt;/em&gt;; some programs that would compile under legacy Polonius (the slow original implementation) don&#x27;t compile with Polonius Alpha. (This is of course why we call it &quot;Polonius Alpha&quot;). For example:&lt;/p&gt;
+&lt;pre class&#x3D;&quot;giallo z-code&quot;&gt;&lt;code data-lang&#x3D;&quot;rust&quot;&gt;&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-storage z-type&quot;&gt;struct&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; X&lt;/span&gt;&lt;span&gt; {&lt;/span&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt; next&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;:&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; Option&lt;/span&gt;&lt;span&gt;&amp;lt;&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt;Box&lt;/span&gt;&lt;span&gt;&amp;lt;&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt;X&lt;/span&gt;&lt;span&gt;&amp;gt;&lt;/span&gt;&lt;span&gt;&amp;gt;&lt;/span&gt;&lt;span&gt; }&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-keyword&quot;&gt;fn&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-function&quot;&gt; conditional&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span&gt; {&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-storage z-type&quot;&gt;    let&lt;/span&gt;&lt;span class&#x3D;&quot;z-storage z-storage z-modifier&quot;&gt; mut&lt;/span&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt; b&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator z-assignment z-keyword z-operator&quot;&gt; &#x3D;&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; Some&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt;Box&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;::&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-function&quot;&gt;new&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt;X&lt;/span&gt;&lt;span&gt; {&lt;/span&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt; next&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;:&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; None&lt;/span&gt;&lt;span&gt; }&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-storage z-type&quot;&gt;    let&lt;/span&gt;&lt;span class&#x3D;&quot;z-storage z-storage z-modifier&quot;&gt; mut&lt;/span&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt; p&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator z-assignment z-keyword z-operator&quot;&gt; &#x3D;&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt; &amp;amp;&lt;/span&gt;&lt;span class&#x3D;&quot;z-storage z-storage z-modifier&quot;&gt;mut&lt;/span&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt; b&lt;/span&gt;&lt;span&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-keyword z-control&quot;&gt;    while&lt;/span&gt;&lt;span class&#x3D;&quot;z-storage z-type&quot;&gt; let&lt;/span&gt;&lt;span class&#x3D;&quot;z-entity z-name z-type&quot;&gt; Some&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt;now&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator z-assignment z-keyword z-operator&quot;&gt; &#x3D;&lt;/span&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt; p&lt;/span&gt;&lt;span&gt; {&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-keyword z-control&quot;&gt;        if&lt;/span&gt;&lt;span class&#x3D;&quot;z-constant z-language&quot;&gt; true&lt;/span&gt;&lt;span&gt; {&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt;            p&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator z-assignment z-keyword z-operator&quot;&gt; &#x3D;&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt; &amp;amp;&lt;/span&gt;&lt;span class&#x3D;&quot;z-storage z-storage z-modifier&quot;&gt;mut&lt;/span&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt; now&lt;/span&gt;&lt;span class&#x3D;&quot;z-keyword z-operator&quot;&gt;.&lt;/span&gt;&lt;span&gt;next&lt;/span&gt;&lt;span&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;(As a slight note: we have also found programs that compile with Polonius Alpha but not legacy Polonius, so it&#x27;s not really a full subset.)&lt;/p&gt;
+&lt;h2 id&#x3D;&quot;so-what-about-performance&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#so-what-about-performance&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+So, what about performance?&lt;/h2&gt;
+&lt;p&gt;Polonius Alpha currently does strictly equal or more work compared to NLL, so we have been paying particular attention to potential performance regressions.&lt;/p&gt;
+&lt;p&gt;From the top ten thousand crates by downloads on crates.io, we have seen relatively few &quot;significant&quot; regressions, and even crates that have a &quot;significant&quot; regression are typically &lt;em&gt;relatively&lt;/em&gt; minimal:&lt;/p&gt;
+&lt;p&gt;&lt;img src&#x3D;&quot;https://blog.rust-lang.org/2026/08/04/enabling-polonius-alpha-on-nightly/polonius_top10k_leaf.png&quot; alt&#x3D;&quot;top10k_leaf_graph&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Each point represents a crate within the 10,000 most-downloaded crates. The black line is an arbitrary threshold of significance, set to a 1% regression and quadratically scaled below 30 seconds. Red points are crates that pass this arbitrary regression threshold. X-axis is compile time (for the leaf crate only without dependencies) under NLL; Y-axis is the ratio of compile time under Polonius Time compared to NLL.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;If you look at the top five crates, they are:&lt;/p&gt;
+&lt;p&gt;&lt;img src&#x3D;&quot;https://blog.rust-lang.org/2026/08/04/enabling-polonius-alpha-on-nightly/polonius_top10k_leaf_table.png&quot; alt&#x3D;&quot;top10k_leaf_table&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Outside the top ten thousand crates, we have focused mainly on crates with many borrows. The worst case we&#x27;ve seen is a 2-3x regression.&lt;/p&gt;
+&lt;p&gt;We have done some initial triage of the causes of these regressions and are thinking about the best way to fix them. Though, overall we think these regressions are fairly reasonable even if we &lt;em&gt;can&#x27;t&lt;/em&gt; fix them, given how rare and relatively minimal they are compared to the additional power Polonius Alpha brings over NLL.&lt;/p&gt;
+&lt;h2 id&#x3D;&quot;i-really-don-t-want-this-how-do-i-opt-out&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#i-really-don-t-want-this-how-do-i-opt-out&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+I really don&#x27;t want this. How do I opt-out?&lt;/h2&gt;
+&lt;p&gt;To reiterate: this is only being enabled on nightly. But if you want to disable Polonius Alpha, and only use the stable NLL, you can pass &lt;code&gt;-Zpolonius&#x3D;off&lt;/code&gt; to &lt;code&gt;rustc&lt;/code&gt;, use &lt;code&gt;RUSTFLAGS&#x3D;-Zpolonius&#x3D;off&lt;/code&gt;, or with a project&#x27;s &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://doc.rust-lang.org/cargo/reference/config.html&quot;&gt;&lt;code&gt;.cargo/config.toml&lt;/code&gt;&lt;/a&gt; configuration file:&lt;/p&gt;
+&lt;pre class&#x3D;&quot;giallo z-code&quot;&gt;&lt;code data-lang&#x3D;&quot;toml&quot;&gt;&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span&gt;[&lt;/span&gt;&lt;span&gt;target&lt;/span&gt;&lt;span&gt;.&lt;/span&gt;&lt;span&gt;x86_64-unknown-linux-gnu&lt;/span&gt;&lt;span&gt;]&lt;/span&gt;&lt;/span&gt;
+&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span class&#x3D;&quot;z-variable&quot;&gt;rustflags&lt;/span&gt;&lt;span&gt; &#x3D;&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-array&quot;&gt; [&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-string z-string&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class&#x3D;&quot;z-string z-quoted z-string&quot;&gt;-Zpolonius&#x3D;off&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-string z-string&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class&#x3D;&quot;z-punctuation z-definition z-array&quot;&gt;]&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If you have to do this, for some reason, please do tell us why &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rust/issues/160456&quot;&gt;on Github&lt;/a&gt; or &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://rust-lang.zulipchat.com/#narrow/channel/186049-t-types.2Fpolonius/topic/Polonius.20Alpha.20enabled.20on.20nightly/near/614373312&quot;&gt;on Zulip&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id&#x3D;&quot;what-s-next&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#what-s-next&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+What&#x27;s next?&lt;/h2&gt;
+&lt;p&gt;Over the next few months, we will be monitoring Github and Zulip for any reported issues about Polonius Alpha. We will also be working to address known performance regressions. Finally, we will be working on internal documentation about the implementation. All prior to stabilization. Then, we are aiming to stabilize prior to the end of the year!&lt;/p&gt;
+&lt;p&gt;Although some programs that we &lt;em&gt;want&lt;/em&gt; to compile don&#x27;t work with Polonius Alpha (nor NLL today), we don&#x27;t currently have any concrete plans to continue active feature work on the Polonius implementation after the stabilization of Polonius Alpha. We expect to continue to optimize the implementation and address any performance regressions for a little while. We will likely come back to Polonius feature-work &lt;em&gt;at some point&lt;/em&gt;, but given that Polonius Alpha solves the most-encountered borrow-check issues, we are shifting our time to other high-priority work for the near future.&lt;/p&gt;
+</content>
+
+        <author>
+            <name>Jack Huey</name>
+        </author>
+    </entry>
+    <entry>
+        <title>Announcing Rust 1.97.1</title>
+        <link rel="alternate" href="https://blog.rust-lang.org/2026/07/16/Rust-1.97.1/" type="text/html" title="Announcing Rust 1.97.1" />
+        <published>2026-07-16T00:00:00+00:00</published>
+        <updated>2026-07-16T00:00:00+00:00</updated>
+        <id>https://blog.rust-lang.org/2026/07/16/Rust-1.97.1/</id>
+        <content type="html" xml:base="https://blog.rust-lang.org/2026/07/16/Rust-1.97.1/">&lt;p&gt;The Rust team has published a new point release of Rust, 1.97.1. Rust is a programming language that is empowering everyone to build reliable and efficient software.&lt;/p&gt;
+&lt;p&gt;If you have a previous version of Rust installed via rustup, getting Rust 1.97.1 is as easy as:&lt;/p&gt;
+&lt;pre class&#x3D;&quot;giallo z-code&quot;&gt;&lt;code data-lang&#x3D;&quot;plain&quot;&gt;&lt;span class&#x3D;&quot;giallo-l&quot;&gt;&lt;span&gt;rustup update stable&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If you don&#x27;t have it already, you can &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://www.rust-lang.org/install.html&quot;&gt;get &lt;code&gt;rustup&lt;/code&gt;&lt;/a&gt; from the appropriate page on our website.&lt;/p&gt;
+&lt;h2 id&#x3D;&quot;what-s-in-1-97-1&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#what-s-in-1-97-1&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+What&#x27;s in 1.97.1&lt;/h2&gt;
+&lt;p&gt;Rust 1.97.1 fixes a &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rust/issues/159035&quot;&gt;miscompilation in an LLVM optimization&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;We have backported both an LLVM fix and a disable of the underlying change in Rust 1.97.0 of
+Rust&#x27;s generated IR that increased the likelihood of this happening. However,
+note that the underlying miscompilation has been present since at least Rust
+1.87.&lt;/p&gt;
+&lt;p&gt;If you&#x27;d like to help us out by testing future releases, you might consider
+running your code&#x27;s CI or locally using the beta channel (&lt;code&gt;rustup default beta&lt;/code&gt;) or the nightly
+channel (&lt;code&gt;rustup default nightly&lt;/code&gt;). Please
+&lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rust/issues/new/choose&quot;&gt;report&lt;/a&gt; any bugs you
+might come across!&lt;/p&gt;
+&lt;h3 id&#x3D;&quot;contributors-to-1-97-1&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#contributors-to-1-97-1&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Contributors to 1.97.1&lt;/h3&gt;
+&lt;p&gt;Many people came together to create Rust 1.97.1. We couldn&#x27;t have done it without all of you. &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://thanks.rust-lang.org/rust/1.97.1/&quot;&gt;Thanks!&lt;/a&gt;&lt;/p&gt;
+</content>
+
+        <author>
+            <name>The Rust Release Team</name>
+        </author>
+    </entry>
+    <entry>
+        <title>crates.io: development update</title>
+        <link rel="alternate" href="https://blog.rust-lang.org/2026/07/13/crates-io-development-update/" type="text/html" title="crates.io: development update" />
+        <published>2026-07-13T00:00:00+00:00</published>
+        <updated>2026-07-13T00:00:00+00:00</updated>
+        <id>https://blog.rust-lang.org/2026/07/13/crates-io-development-update/</id>
+        <content type="html" xml:base="https://blog.rust-lang.org/2026/07/13/crates-io-development-update/">&lt;p&gt;Another six months have passed since our &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://blog.rust-lang.org/2026/01/21/crates-io-development-update/&quot;&gt;last development update&lt;/a&gt;, and the crates.io team has been busy. Here&#x27;s a summary of the most notable changes and improvements made to &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://crates.io/&quot;&gt;crates.io&lt;/a&gt; since then.&lt;/p&gt;
+&lt;h2 id&#x3D;&quot;source-code-viewer&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#source-code-viewer&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Source Code Viewer&lt;/h2&gt;
+&lt;p&gt;Crate pages now have a &quot;Code&quot; tab that lets you browse the contents of published crate versions directly on crates.io. This shows you the exact files that &lt;code&gt;cargo&lt;/code&gt; downloads when you add a crate as a dependency, which might differ from the linked repository. This makes it much easier to audit your dependencies, including files that never appear in the repository, like the normalized &lt;code&gt;Cargo.toml&lt;/code&gt; files that &lt;code&gt;cargo&lt;/code&gt; generates.&lt;/p&gt;
+&lt;p&gt;&lt;img src&#x3D;&quot;https://blog.rust-lang.org/2026/07/13/crates-io-development-update/code-tab.png&quot; alt&#x3D;&quot;Source code viewer showing the &amp;quot;Code&amp;quot; tab of the serde crate&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;The viewer comes with a file tree sidebar with search functionality, syntax highlighting, and GitHub-style line selection, where clicking or dragging line numbers produces shareable &lt;code&gt;#L10-L20&lt;/code&gt; URLs.&lt;/p&gt;
+&lt;p&gt;Under the hood, the server now builds a zip file for every published version. Since the &lt;code&gt;.crate&lt;/code&gt; files that &lt;code&gt;cargo&lt;/code&gt; consumes are gzipped tarballs without random access support, a background job re-packs each of them into a seekable zip archive plus a JSON manifest describing the contained files. Both are served from our static CDN. The frontend then fetches only the manifest and loads each file on demand with an HTTP range request. Because of this architecture, browsing crate sources essentially adds no load on the crates.io API servers. Existing crate versions have been backfilled, so this works for old releases too.&lt;/p&gt;
+&lt;p&gt;The rendering library behind the code viewer is a diff renderer at heart, and that&#x27;s no accident: a version-to-version diff viewer built on the same infrastructure is currently in the works. This will allow you to review exactly what changed between two published versions, right on crates.io. Stay tuned!&lt;/p&gt;
+&lt;h2 id&#x3D;&quot;untangling-crates-io-accounts-from-github&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#untangling-crates-io-accounts-from-github&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Untangling crates.io Accounts from GitHub&lt;/h2&gt;
+&lt;p&gt;At the end of May, the crates.io team accepted &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/rfcs/pull/3946&quot;&gt;RFC #3946&lt;/a&gt;. Crates.io accounts always have been tightly coupled to GitHub: signing in means &quot;Log in with GitHub&quot;, and your crates.io identity is your GitHub username. The RFC changes that. It introduces usernames that are native to crates.io and independent of linked GitHub accounts, as a prerequisite for eventually supporting login via other identity providers.&lt;/p&gt;
+&lt;p&gt;The implementation of crates.io usernames has started, but there is still a lot left to do, most visibly the ability to change your crates.io username. After that is complete, there will be future RFCs and implementation for signing in with identity providers other than GitHub. Since all of this touches authentication and account security, we are deliberately taking it slow and rolling these changes out in small, carefully reviewed steps.&lt;/p&gt;
+&lt;h2 id&#x3D;&quot;advisories-and-suggestions&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#advisories-and-suggestions&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Advisories and Suggestions&lt;/h2&gt;
+&lt;p&gt;In our &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://blog.rust-lang.org/2026/01/21/crates-io-development-update/&quot;&gt;January update&lt;/a&gt; we introduced the &quot;Security&quot; tab, which shows security advisories from the &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://rustsec.org/&quot;&gt;RustSec&lt;/a&gt; database. We have since taken this integration one step further: crates that RustSec has flagged as unmaintained now show a warning banner directly on their crate pages, linking to the corresponding advisory for details and possible alternatives. Thanks to &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/djc&quot;&gt;Dirkjan Ochtman&lt;/a&gt; for implementing this feature!&lt;/p&gt;
+&lt;p&gt;&lt;img src&#x3D;&quot;https://blog.rust-lang.org/2026/07/13/crates-io-development-update/unmaintained-banner.png&quot; alt&#x3D;&quot;Unmaintained warning banner on the ansi_term crate page&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Related to this, some popular crates have been largely absorbed into the Rust standard library over the years, like &lt;code&gt;lazy_static&lt;/code&gt;, which has been superseded by &lt;code&gt;std::sync::LazyLock&lt;/code&gt; since Rust 1.80. Crate pages of such crates now show a friendly &quot;You might not need this dependency&quot; banner describing the standard library replacement, and superseded crates in dependency lists get a small light bulb icon with a similar hint.&lt;/p&gt;
+&lt;p&gt;&lt;img src&#x3D;&quot;https://blog.rust-lang.org/2026/07/13/crates-io-development-update/std-replacement-banner.png&quot; alt&#x3D;&quot;&amp;quot;You might not need this dependency&amp;quot; banner on the lazy_static crate page&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;The dataset behind this feature lives in the new &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/std-replacement-data&quot;&gt;rust-lang/std-replacement-data&lt;/a&gt; repository, together with a documented inclusion policy: standard library replacements only, every entry must cite the stable &lt;code&gt;std&lt;/code&gt;, &lt;code&gt;core&lt;/code&gt;, or &lt;code&gt;alloc&lt;/code&gt; API and Rust version, and crate maintainers get a notice-and-comment window before an entry is added. New entries can be proposed upstream and can benefit other tools too.&lt;/p&gt;
+&lt;h2 id&#x3D;&quot;ferris&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#ferris&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Ferris&lt;/h2&gt;
+&lt;p&gt;The most delightful change of this cycle: the Ferris on our error pages now follows your mouse cursor with its eyes:&lt;/p&gt;
+&lt;p&gt;&lt;img src&#x3D;&quot;https://blog.rust-lang.org/2026/07/13/crates-io-development-update/ferris.gif&quot; alt&#x3D;&quot;Ferris&amp;#39; eyes following the mouse cursor on the error page&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Getting a 404 error on crates.io is now slightly less sad.&lt;/p&gt;
+&lt;h2 id&#x3D;&quot;svelte-frontend-migration-completed&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#svelte-frontend-migration-completed&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Svelte Frontend Migration Completed&lt;/h2&gt;
+&lt;p&gt;In our &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://blog.rust-lang.org/2026/01/21/crates-io-development-update/&quot;&gt;January update&lt;/a&gt;, we announced that we were experimenting with porting the crates.io frontend from Ember.js to &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://svelte.dev/&quot;&gt;Svelte&lt;/a&gt;. This experiment has concluded successfully: the new frontend reached feature parity, went through a &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://blog.rust-lang.org/inside-rust/2026/04/17/crates-io-svelte-public-testing/&quot;&gt;public testing phase&lt;/a&gt; in April, became the default at the beginning of May, and the Ember.js app has been removed from our repository.&lt;/p&gt;
+&lt;p&gt;We designed this change to be invisible for our users, since the new frontend is a 1:1 port of the previous design and functionality. For the team and our contributors, however, it is a big deal: the frontend is now built on a more modern framework, which should make it easier for new contributors to get started. It also allows us to iterate faster, as the source code viewer above demonstrates.&lt;/p&gt;
+&lt;p&gt;We want to thank the &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://emberjs.com/teams/&quot;&gt;Ember.js team&lt;/a&gt; for a framework that served crates.io well for many years, and the Svelte team for making the transition so enjoyable.&lt;/p&gt;
+&lt;h2 id&#x3D;&quot;miscellaneous&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#miscellaneous&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Miscellaneous&lt;/h2&gt;
+&lt;p&gt;These were some of the more visible changes to crates.io over the past six months, but a lot has happened &quot;under the hood&quot; as well:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Search performance&lt;/strong&gt;: Relevance-sorted search queries previously ranked every crate matching the query, which could take 1-2 seconds for short or common search terms. Ranking is now bounded to the 1,000 matching crates with the highest recent download counts.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Reverse dependencies performance&lt;/strong&gt;: The reverse dependencies endpoint no longer recomputes the full dependent set on every request. It is now served from a precomputed table kept in sync by database triggers, turning an expensive join into a bounded index scan and greatly reducing the chance of getting a timeout error.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;New ARCHITECTURE.md&lt;/strong&gt;: If you&#x27;ve ever wondered how crates.io actually works, our &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/crates.io/blob/main/docs/ARCHITECTURE.md&quot;&gt;&lt;code&gt;ARCHITECTURE.md&lt;/code&gt;&lt;/a&gt; document got a complete rewrite. It is now organized around the high-level systems that make up crates.io and how they fit together, and includes walkthroughs of what happens when you run &lt;code&gt;cargo publish&lt;/code&gt;, why a typical crate download never touches our API servers, and how download counts are derived from CDN access logs.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Definition lists&lt;/strong&gt;: READMEs now render Markdown &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/crates.io/pull/13950&quot;&gt;definition lists&lt;/a&gt;, a widely used Markdown extension. Our markdown renderer &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://crates.io/crates/comrak&quot;&gt;comrak&lt;/a&gt; already supported them, the extension just wasn&#x27;t enabled yet. Thanks to &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/mistaste&quot;&gt;@mistaste&lt;/a&gt; for this contribution!&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;CDN cache tags&lt;/strong&gt;: Files uploaded to our static CDN now carry cache-tag metadata, allowing us to invalidate all cached files of a crate or a specific release in a single operation, instead of issuing one invalidation per file URL.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Caching improvements&lt;/strong&gt;: We removed a global &lt;code&gt;Vary: Cookie&lt;/code&gt; response header that was preventing our CDNs from caching public API responses and frontend assets effectively. Per-user responses now use &lt;code&gt;Cache-Control: no-store&lt;/code&gt; instead, resulting in better cache hit rates at the CDN edge.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Accessibility&lt;/strong&gt;: We have made crates.io friendlier to screen readers: decorative icons are now hidden from the accessibility tree, heading hierarchies have been fixed, and lists are marked up as proper lists. ARIA snapshot tests now ensure that regressions can&#x27;t slip in unnoticed. We plan to continue to improve crates.io accessibility over the coming months.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Git index performance&lt;/strong&gt;: The background worker&#x27;s local clone of the git index is now a bare and shallow repository, eliminating roughly 250,000 checked-out files and the full commit history from its disk, improving its performance as we see increased rates of crate publication. The periodic index squashing now goes through the GitHub API instead of generating large git packs locally, which had previously caused out-of-memory failures on the production worker.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id&#x3D;&quot;feedback&quot;&gt;&lt;a class&#x3D;&quot;anchor&quot; href&#x3D;&quot;#feedback&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;/a&gt;
+Feedback&lt;/h2&gt;
+&lt;p&gt;We hope you enjoyed this update on the development of crates.io. If you have any feedback or questions, please let us know on &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://rust-lang.zulipchat.com/#narrow/stream/318791-t-crates-io&quot;&gt;Zulip&lt;/a&gt; or &lt;a rel&#x3D;&quot;external&quot; href&#x3D;&quot;https://github.com/rust-lang/crates.io/discussions&quot;&gt;GitHub&lt;/a&gt;. We are always happy to hear from you and are looking forward to your feedback!&lt;/p&gt;
+</content>
+
+        <author>
+            <name>Tobias Bieniek</name>
+        </author>
+    </entry>
+</feed>

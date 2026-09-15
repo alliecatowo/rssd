@@ -1,0 +1,36 @@
+[project]
+name = "rssd"
+version = "0.1.0"
+description = "A file-based RSS daemon: the filesystem is the API"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "feedparser>=6.0.14",
+    "httpx>=0.28.1",
+    "lxml>=6.1.3",
+    "watchfiles>=1.2.0",
+]
+
+[project.optional-dependencies]
+tui = ["textual>=8.2.8"]
+fulltext = ["trafilatura>=2.2.0"]
+
+[project.scripts]
+rssd = "rssd.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "pytest-asyncio>=1.4.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.12,<0.13"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = "src"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"

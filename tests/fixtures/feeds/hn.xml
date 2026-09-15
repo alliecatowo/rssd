@@ -1,0 +1,103 @@
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hacker News: Front Page</title><link>https://news.ycombinator.com/</link><description>Hacker News RSS</description><docs>https://hnrss.org/</docs><generator>hnrss v2.1.1</generator><lastBuildDate>Tue, 15 Sep 2026 20:55:32 +0000</lastBuildDate><atom:link href="https://hnrss.org/frontpage" rel="self" type="application/rss+xml"></atom:link><item><title><![CDATA[Building a Linux GPU Driver for the M4 Mac Mini in One Month]]></title><description><![CDATA[
+<p>Article URL: <a href="https://codyho.dev/blog/gpu-driver/">https://codyho.dev/blog/gpu-driver/</a></p>
+<p>Comments URL: <a href="https://news.ycombinator.com/item?id=49717638">https://news.ycombinator.com/item?id=49717638</a></p>
+<p>Points: 5</p>
+<p># Comments: 0</p>
+]]></description><pubDate>Tue, 15 Sep 2026 19:30:03 +0000</pubDate><link>https://codyho.dev/blog/gpu-driver/</link><dc:creator>ADevWithAnIdea</dc:creator><comments>https://news.ycombinator.com/item?id=49717638</comments><guid isPermaLink="false">https://news.ycombinator.com/item?id=49717638</guid></item><item><title><![CDATA[WangNet – 1.8 MB, zero-dependency Numberwang adjudication in 11 languages]]></title><description><![CDATA[
+<p>Article URL: <a href="https://github.com/GraafHenk/numberwang">https://github.com/GraafHenk/numberwang</a></p>
+<p>Comments URL: <a href="https://news.ycombinator.com/item?id=49717605">https://news.ycombinator.com/item?id=49717605</a></p>
+<p>Points: 41</p>
+<p># Comments: 12</p>
+]]></description><pubDate>Tue, 15 Sep 2026 19:27:35 +0000</pubDate><link>https://github.com/GraafHenk/numberwang</link><dc:creator>Liogra123</dc:creator><comments>https://news.ycombinator.com/item?id=49717605</comments><guid isPermaLink="false">https://news.ycombinator.com/item?id=49717605</guid></item><item><title><![CDATA[Introducing System One Models and Jev]]></title><description><![CDATA[
+<p>Article URL: <a href="https://typesafe.ai/blog/introducing-system-one-models-and-jev">https://typesafe.ai/blog/introducing-system-one-models-and-jev</a></p>
+<p>Comments URL: <a href="https://news.ycombinator.com/item?id=49717558">https://news.ycombinator.com/item?id=49717558</a></p>
+<p>Points: 290</p>
+<p># Comments: 106</p>
+]]></description><pubDate>Tue, 15 Sep 2026 19:25:03 +0000</pubDate><link>https://typesafe.ai/blog/introducing-system-one-models-and-jev</link><dc:creator>albelfio</dc:creator><comments>https://news.ycombinator.com/item?id=49717558</comments><guid isPermaLink="false">https://news.ycombinator.com/item?id=49717558</guid></item><item><title><![CDATA[Chop up your books]]></title><description><![CDATA[
+<p>Article URL: <a href="https://attainablefelicity.mattkirkland.com/20260915/cut-up-your-books.html">https://attainablefelicity.mattkirkland.com/20260915/cut-up-your-books.html</a></p>
+<p>Comments URL: <a href="https://news.ycombinator.com/item?id=49716953">https://news.ycombinator.com/item?id=49716953</a></p>
+<p>Points: 46</p>
+<p># Comments: 40</p>
+]]></description><pubDate>Tue, 15 Sep 2026 18:45:31 +0000</pubDate><link>https://attainablefelicity.mattkirkland.com/20260915/cut-up-your-books.html</link><dc:creator>matt_kirkland</dc:creator><comments>https://news.ycombinator.com/item?id=49716953</comments><guid isPermaLink="false">https://news.ycombinator.com/item?id=49716953</guid></item><item><title><![CDATA[We got admin access to Baseten's production GitHub in 25 minutes]]></title><description><![CDATA[
+<p>Article URL: <a href="https://www.strix.ai/blog/baseten-harbor-github-pat-takeover">https://www.strix.ai/blog/baseten-harbor-github-pat-takeover</a></p>
+<p>Comments URL: <a href="https://news.ycombinator.com/item?id=49716476">https://news.ycombinator.com/item?id=49716476</a></p>
+<p>Points: 134</p>
+<p># Comments: 57</p>
+]]></description><pubDate>Tue, 15 Sep 2026 18:11:24 +0000</pubDate><link>https://www.strix.ai/blog/baseten-harbor-github-pat-takeover</link><dc:creator>bearsyankees</dc:creator><comments>https://news.ycombinator.com/item?id=49716476</comments><guid isPermaLink="false">https://news.ycombinator.com/item?id=49716476</guid></item><item><title><![CDATA[An Update on Wayback Machine Access]]></title><description><![CDATA[
+<p>Article URL: <a href="https://blog.archive.org/2026/09/15/an-update-on-wayback-machine-access/">https://blog.archive.org/2026/09/15/an-update-on-wayback-machine-access/</a></p>
+<p>Comments URL: <a href="https://news.ycombinator.com/item?id=49716176">https://news.ycombinator.com/item?id=49716176</a></p>
+<p>Points: 221</p>
+<p># Comments: 116</p>
+]]></description><pubDate>Tue, 15 Sep 2026 17:52:18 +0000</pubDate><link>https://blog.archive.org/2026/09/15/an-update-on-wayback-machine-access/</link><dc:creator>ChrisArchitect</dc:creator><comments>https://news.ycombinator.com/item?id=49716176</comments><guid isPermaLink="false">https://news.ycombinator.com/item?id=49716176</guid></item><item><title><![CDATA[Gemini 3.8 Live and 3.8 Live Extended Thinking]]></title><description><![CDATA[
+<p>Article URL: <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-8-live-gemini-3-8-live-extended-thinking/">https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-8-live-gemini-3-8-live-extended-thinking/</a></p>
+<p>Comments URL: <a href="https://news.ycombinator.com/item?id=49715947">https://news.ycombinator.com/item?id=49715947</a></p>
+<p>Points: 163</p>
+<p># Comments: 103</p>
+]]></description><pubDate>Tue, 15 Sep 2026 17:38:18 +0000</pubDate><link>https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-8-live-gemini-3-8-live-extended-thinking/</link><dc:creator>leumon</dc:creator><comments>https://news.ycombinator.com/item?id=49715947</comments><guid isPermaLink="false">https://news.ycombinator.com/item?id=49715947</guid></item><item><title><![CDATA[GEFS on OpenBSD: A Early Preview]]></title><description><![CDATA[
+<p>Article URL: <a href="https://marc.info/?l=openbsd-tech&m=178948744271633&w=2">https://marc.info/?l=openbsd-tech&m=178948744271633&w=2</a></p>
+<p>Comments URL: <a href="https://news.ycombinator.com/item?id=49715590">https://news.ycombinator.com/item?id=49715590</a></p>
+<p>Points: 76</p>
+<p># Comments: 36</p>
+]]></description><pubDate>Tue, 15 Sep 2026 17:12:19 +0000</pubDate><link>https://marc.info/?l=openbsd-tech&amp;m=178948744271633&amp;w=2</link><dc:creator>sippingabonedry</dc:creator><comments>https://news.ycombinator.com/item?id=49715590</comments><guid isPermaLink="false">https://news.ycombinator.com/item?id=49715590</guid></item><item><title><![CDATA[Jiga (YC W21) Is Hiring Product Engineer (Remote/US)]]></title><description><![CDATA[
+<p>Article URL: <a href="https://jiga.io/about-us/?ashby_jid=0b75d72d-c92b-4dca-8062-09d298ada0bd">https://jiga.io/about-us/?ashby_jid=0b75d72d-c92b-4dca-8062-09d298ada0bd</a></p>
+<p>Comments URL: <a href="https://news.ycombinator.com/item?id=49715446">https://news.ycombinator.com/item?id=49715446</a></p>
+<p>Points: 0</p>
+<p># Comments: 0</p>
+]]></description><pubDate>Tue, 15 Sep 2026 17:00:31 +0000</pubDate><link>https://jiga.io/about-us/?ashby_jid=0b75d72d-c92b-4dca-8062-09d298ada0bd</link><dc:creator>grmmph</dc:creator><comments>https://news.ycombinator.com/item?id=49715446</comments><guid isPermaLink="false">https://news.ycombinator.com/item?id=49715446</guid></item><item><title><![CDATA[America's Driver's License Breach Is a National Security Disaster]]></title><description><![CDATA[
+<p>Article URL: <a href="https://www.lawfaremedia.org/article/america%27s-drivers-licence-breach-is-a-national-security-disaster">https://www.lawfaremedia.org/article/america%27s-drivers-licence-breach-is-a-national-security-disaster</a></p>
+<p>Comments URL: <a href="https://news.ycombinator.com/item?id=49714547">https://news.ycombinator.com/item?id=49714547</a></p>
+<p>Points: 181</p>
+<p># Comments: 119</p>
+]]></description><pubDate>Tue, 15 Sep 2026 15:58:48 +0000</pubDate><link>https://www.lawfaremedia.org/article/america%27s-drivers-licence-breach-is-a-national-security-disaster</link><dc:creator>hn_acker</dc:creator><comments>https://news.ycombinator.com/item?id=49714547</comments><guid isPermaLink="false">https://news.ycombinator.com/item?id=49714547</guid></item><item><title><![CDATA[Cartesian – AI 3D Modeling for Design]]></title><description><![CDATA[
+<p>Article URL: <a href="https://www.formas.ai/cartesian">https://www.formas.ai/cartesian</a></p>
+<p>Comments URL: <a href="https://news.ycombinator.com/item?id=49713999">https://news.ycombinator.com/item?id=49713999</a></p>
+<p>Points: 70</p>
+<p># Comments: 61</p>
+]]></description><pubDate>Tue, 15 Sep 2026 15:26:45 +0000</pubDate><link>https://www.formas.ai/cartesian</link><dc:creator>eustoria</dc:creator><comments>https://news.ycombinator.com/item?id=49713999</comments><guid isPermaLink="false">https://news.ycombinator.com/item?id=49713999</guid></item><item><title><![CDATA[The CSS Zen Garden dream, finally shipped]]></title><description><![CDATA[
+<p>Article URL: <a href="https://josprague.com/blog/the-css-zen-garden-dream-finally-shipped/">https://josprague.com/blog/the-css-zen-garden-dream-finally-shipped/</a></p>
+<p>Comments URL: <a href="https://news.ycombinator.com/item?id=49713262">https://news.ycombinator.com/item?id=49713262</a></p>
+<p>Points: 96</p>
+<p># Comments: 41</p>
+]]></description><pubDate>Tue, 15 Sep 2026 14:40:08 +0000</pubDate><link>https://josprague.com/blog/the-css-zen-garden-dream-finally-shipped/</link><dc:creator>yosito</dc:creator><comments>https://news.ycombinator.com/item?id=49713262</comments><guid isPermaLink="false">https://news.ycombinator.com/item?id=49713262</guid></item><item><title><![CDATA[The Inference Hardware Revolution of 2026]]></title><description><![CDATA[
+<p>Article URL: <a href="https://spectrum.ieee.org/inference-hardware-revolution">https://spectrum.ieee.org/inference-hardware-revolution</a></p>
+<p>Comments URL: <a href="https://news.ycombinator.com/item?id=49713024">https://news.ycombinator.com/item?id=49713024</a></p>
+<p>Points: 66</p>
+<p># Comments: 6</p>
+]]></description><pubDate>Tue, 15 Sep 2026 14:24:08 +0000</pubDate><link>https://spectrum.ieee.org/inference-hardware-revolution</link><dc:creator>vinhnx</dc:creator><comments>https://news.ycombinator.com/item?id=49713024</comments><guid isPermaLink="false">https://news.ycombinator.com/item?id=49713024</guid></item><item><title><![CDATA[Show HN: Capsule – Single-file web apps that save their data into SQLite]]></title><description><![CDATA[
+<p>Hey HN,<p>I always had the problem that building HTML pages is really simple now, but trying to save data required hosting it somewhere, and sharing it afterwards was not easy. Over the last few months, I've been building an app called Capsule (it’s also the file extension name) written in Rust with Tauri 2.0 that allows packing an HTML app and its data into a single SQLite file.<p>The HTML file and any related assets are directly embedded in the database. User data can either be saved as a localStorage key/value store or via a MongoDB-inspired collections API as documents, saved in a table in the file. You can also save other assets, like PDF files or images, directly in the database to keep different documents together. All data can be easily exported to CSV or JSON if needed.<p>Privacy and security were a big priority for me, so documents cannot do anything out of the box. They don’t have direct access to the file system and they require permission to access the internet. The permission model is still something I’m working to improve. Capsule documents can also use local or remote AI models for document specific AI features.<p>One downside with this approach is that multiple people working on it will create different copies. To make it possible to merge different copies of the same file, each data entry has a unique UUID and timestamp.<p>I’m planning to open up the file format specification for the 1.0 version of the app so other apps can read or write Capsule files.<p>You can try it out in the web preview at <a href="https://withcapsule.app/preview" rel="nofollow">https://withcapsule.app/preview</a> with pre-built templates or use any AI provider of your choice to create a custom, Capsule-optimized app by using the following prompt:<p>"Please read the app wizard instructions at <a href="https://withcapsule.app/prompt.txt" rel="nofollow">https://withcapsule.app/prompt.txt</a> and help me design an app.“<p>I’m still working on the file format but there are migrations for each new version, so data should never be lost when using newer versions of the app in the future. Please let me know if you have any ideas or use cases where this might make sense or does not work.</p>
+<hr>
+<p>Comments URL: <a href="https://news.ycombinator.com/item?id=49712278">https://news.ycombinator.com/item?id=49712278</a></p>
+<p>Points: 234</p>
+<p># Comments: 108</p>
+]]></description><pubDate>Tue, 15 Sep 2026 13:31:40 +0000</pubDate><link>https://withcapsule.app/</link><dc:creator>bashtian</dc:creator><comments>https://news.ycombinator.com/item?id=49712278</comments><guid isPermaLink="false">https://news.ycombinator.com/item?id=49712278</guid></item><item><title><![CDATA[Show HN: Hacking a $20 4G wireless hotspot into a texting device]]></title><description><![CDATA[
+<p>Article URL: <a href="https://bkovac.github.io/modem-thing/">https://bkovac.github.io/modem-thing/</a></p>
+<p>Comments URL: <a href="https://news.ycombinator.com/item?id=49712102">https://news.ycombinator.com/item?id=49712102</a></p>
+<p>Points: 150</p>
+<p># Comments: 28</p>
+]]></description><pubDate>Tue, 15 Sep 2026 13:20:24 +0000</pubDate><link>https://bkovac.github.io/modem-thing/</link><dc:creator>bobili1234</dc:creator><comments>https://news.ycombinator.com/item?id=49712102</comments><guid isPermaLink="false">https://news.ycombinator.com/item?id=49712102</guid></item><item><title><![CDATA[Show HN: An e-ink frame that hears birds and draws them as 1800s illustrations]]></title><description><![CDATA[
+<p>See also: <i>Avian Visitors</i> - <a href="https://news.ycombinator.com/item?id=48343424">https://news.ycombinator.com/item?id=48343424</a> - May 2026 (20 comments)</p>
+<hr>
+<p>Comments URL: <a href="https://news.ycombinator.com/item?id=49711544">https://news.ycombinator.com/item?id=49711544</a></p>
+<p>Points: 1078</p>
+<p># Comments: 142</p>
+]]></description><pubDate>Tue, 15 Sep 2026 12:31:10 +0000</pubDate><link>https://github.com/arnegiacomo/fugleramme</link><dc:creator>arnemunthekaas</dc:creator><comments>https://news.ycombinator.com/item?id=49711544</comments><guid isPermaLink="false">https://news.ycombinator.com/item?id=49711544</guid></item><item><title><![CDATA[25 years of mass surveillance is enough]]></title><description><![CDATA[
+<p>Article URL: <a href="https://www.schneier.com/blog/archives/2026/09/25-years-of-mass-surveillance-is-enough.html">https://www.schneier.com/blog/archives/2026/09/25-years-of-mass-surveillance-is-enough.html</a></p>
+<p>Comments URL: <a href="https://news.ycombinator.com/item?id=49710883">https://news.ycombinator.com/item?id=49710883</a></p>
+<p>Points: 674</p>
+<p># Comments: 244</p>
+]]></description><pubDate>Tue, 15 Sep 2026 11:26:48 +0000</pubDate><link>https://www.schneier.com/blog/archives/2026/09/25-years-of-mass-surveillance-is-enough.html</link><dc:creator>iamnothere</dc:creator><comments>https://news.ycombinator.com/item?id=49710883</comments><guid isPermaLink="false">https://news.ycombinator.com/item?id=49710883</guid></item><item><title><![CDATA[Let's make quality the norm again]]></title><description><![CDATA[
+<p>Article URL: <a href="https://www.forbrukerradet.no/short-life/">https://www.forbrukerradet.no/short-life/</a></p>
+<p>Comments URL: <a href="https://news.ycombinator.com/item?id=49710109">https://news.ycombinator.com/item?id=49710109</a></p>
+<p>Points: 234</p>
+<p># Comments: 248</p>
+]]></description><pubDate>Tue, 15 Sep 2026 10:00:16 +0000</pubDate><link>https://www.forbrukerradet.no/short-life/</link><dc:creator>ingve</dc:creator><comments>https://news.ycombinator.com/item?id=49710109</comments><guid isPermaLink="false">https://news.ycombinator.com/item?id=49710109</guid></item><item><title><![CDATA[Alternatives to MinIO for single-node local S3]]></title><description><![CDATA[
+<p>Article URL: <a href="https://rmoff.net/2026/01/14/alternatives-to-minio-for-single-node-local-s3/">https://rmoff.net/2026/01/14/alternatives-to-minio-for-single-node-local-s3/</a></p>
+<p>Comments URL: <a href="https://news.ycombinator.com/item?id=49709381">https://news.ycombinator.com/item?id=49709381</a></p>
+<p>Points: 226</p>
+<p># Comments: 93</p>
+]]></description><pubDate>Tue, 15 Sep 2026 08:21:27 +0000</pubDate><link>https://rmoff.net/2026/01/14/alternatives-to-minio-for-single-node-local-s3/</link><dc:creator>rmoff</dc:creator><comments>https://news.ycombinator.com/item?id=49709381</comments><guid isPermaLink="false">https://news.ycombinator.com/item?id=49709381</guid></item><item><title><![CDATA[CSS-Tricks in Limbo]]></title><description><![CDATA[
+<p>Article URL: <a href="https://vale.rocks/micros/20260915-0135">https://vale.rocks/micros/20260915-0135</a></p>
+<p>Comments URL: <a href="https://news.ycombinator.com/item?id=49708993">https://news.ycombinator.com/item?id=49708993</a></p>
+<p>Points: 236</p>
+<p># Comments: 104</p>
+]]></description><pubDate>Tue, 15 Sep 2026 07:27:46 +0000</pubDate><link>https://vale.rocks/micros/20260915-0135</link><dc:creator>edent</dc:creator><comments>https://news.ycombinator.com/item?id=49708993</comments><guid isPermaLink="false">https://news.ycombinator.com/item?id=49708993</guid></item></channel></rss>
