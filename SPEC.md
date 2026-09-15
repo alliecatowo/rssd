@@ -326,9 +326,18 @@ Unbounded revisions are the sharpest edge in this design. Three guards:
   those "new" entries have a content hash matching an existing entry, permanently
   flip the feed to `basis="content"` identity (sticky, recorded in state) and emit
   `feed.identity-downgraded`.
-- **`max_new_entries_per_poll = max(item_count, 100)`.** Exceeded -> write
-  nothing, emit `feed.anomaly`, mark health degraded. A broken feed must not be
-  able to write ten thousand files during a demo.
+- **`max_new_entries_per_poll`** (default 100), a *flat* cap. Exceeded ->
+  write nothing, emit `feed.anomaly`, mark health degraded. A broken feed must
+  not be able to write ten thousand files during a demo.
+
+  The cap must not be scaled by the feed's own size (an earlier draft said
+  `max(item_count, 100)`): the count of new entries is bounded by the item
+  count, so such a cap can never be exceeded and the guard would be dead code.
+
+  It is also **skipped on a feed's first poll**, when nothing is known yet.
+  Adopting a feed's entire window is the point of subscribing. Firing there
+  would deadlock a large feed permanently -- an anomaly writes nothing, so the
+  seen-set would stay empty and every later poll would trip the guard again.
 
 Seen-set is capped at `max_tracked_entries = 50_000` per feed.
 
@@ -448,6 +457,10 @@ feature):
 - `seq` is **monotonic across restarts**: persisted in `var/seq`, recovered on
   boot as `max(var/seq, seq of last line)`. This gives consumers resumable
   "everything after N" semantics.
+- `var/seq` is checkpointed every 64 events, plus on rotation and on close.
+  Because recovery takes the max of the checkpoint and the log's own last line,
+  a stale checkpoint costs nothing -- whereas fsyncing it on every event would
+  mean 100 synchronous writes to publish one poll's worth of entries.
 - All `path` values are relative to the root.
 
 ### 12.1 Taxonomy
@@ -458,6 +471,7 @@ subscription.added  subscription.changed  subscription.removed  subscription.inv
 feed.created  feed.retired  feed.redirected  feed.poll-started
 feed.poll-succeeded  feed.unchanged  feed.poll-failed  feed.throttled
 feed.too-large  feed.identity-downgraded  feed.anomaly  feed.health-changed
+feed.metadata-changed
 entry.new  entry.revised  entry.revision-suppressed  entry.content-degraded
 fulltext.ok  fulltext.error  log.rotated
 ```
@@ -517,7 +531,7 @@ All probed and verified. Chosen so every code path is exercised.
 | `lobsters` | `https://lobste.rs/rss` | high churn, ETag+Last-Modified |
 | `rust-blog` | `https://blog.rust-lang.org/feed.xml` | Atom, full `<content>`, `xml:base` |
 | `simonw` | `https://simonwillison.net/atom/everything/` | rich escaped HTML, Last-Modified only |
-| `hn` | `https://hnrss.org/frontpage` | thin: title+link only, no ETag |
+| `hn` | `https://hnrss.org/frontpage` | metadata-only body, no ETag |
 | `xkcd` | `https://xkcd.com/rss.xml` | image-only body |
 | `godev` | `https://go.dev/blog/feed.atom` | **no validators at all** -> body-hash path |
 
