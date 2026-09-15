@@ -262,3 +262,22 @@ def test_classify_error_kinds():
     assert classify_error(httpx.ReadTimeout("x", request=None)) == "timeout"
     assert classify_error(httpx.ConnectTimeout("x", request=None)) == "timeout"
     assert classify_error(httpx.TransportError("x", request=None)) == "network"
+
+
+async def test_transport_error_message_is_never_empty():
+    """Several httpx exceptions -- ConnectError especially -- carry no message,
+    so str(exc) is "". A caller that falls back on the status code then reports
+    "HTTP 0", which tells an operator nothing about whether they have a DNS
+    problem, a dead server, or no network at all.
+    """
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        raise httpx.ConnectError("")
+
+    transport = httpx.MockTransport(handler)
+    async with httpx.AsyncClient(transport=transport) as client:
+        result = await fetch_feed(client, "https://example.com/feed.xml", limits=Limits())
+
+    assert result.status == 0
+    assert result.error, "transport failure reported an empty message"
+    assert "ConnectError" in result.error

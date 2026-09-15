@@ -86,6 +86,19 @@ def classify_error(exc: BaseException) -> ErrorKind:
     return "network"
 
 
+def _describe(exc: BaseException) -> str:
+    """A transport failure must never report as an empty string.
+
+    Several httpx exceptions -- ConnectError in particular -- carry no message
+    at all, so ``str(exc)`` is "". Callers then fall back to something like
+    "HTTP 0", which tells an operator watching the event log nothing about
+    whether they have a DNS problem, a dead server, or no network.
+    """
+    detail = str(exc).strip()
+    name = type(exc).__name__
+    return f"{name}: {detail}" if detail else name
+
+
 async def fetch_feed(
     client: httpx.AsyncClient,
     url: str,
@@ -188,7 +201,7 @@ async def fetch_feed(
     except httpx.HTTPError as exc:
         return FetchResult(
             status=0,
-            error=str(exc),
+            error=_describe(exc),
             error_kind=classify_error(exc),
         )
     except Exception as exc:  # pragma: no cover - defense in depth
