@@ -1,5 +1,5 @@
 [project]
-name = "rssd"
+name = "rssd-fs"
 version = "0.1.0"
 description = "A file-based RSS daemon: the filesystem is the API"
 license = "MIT"
@@ -51,6 +51,7 @@ build-backend = "uv_build"
 
 [tool.uv.build-backend]
 module-root = "src"
+module-name = "rssd"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
