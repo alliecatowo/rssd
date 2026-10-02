@@ -11,3 +11,10 @@ docs/.vitepress/cache/
 var/
 store/
 feeds.d/
+
+.env
+.env.*
+!.env.example
+.mcp.json
+*.log
+.DS_Store
