@@ -1,0 +1,48 @@
+/* Dracula palette: purple brand, pink accent, no gradients or glow. */
+:root {
+  --vp-c-brand-1: #7c4dcc;
+  --vp-c-brand-2: #8e5fe0;
+  --vp-c-brand-3: #9d72ea;
+  --vp-c-brand-soft: rgba(124, 77, 204, 0.12);
+  --vp-font-family-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+}
+
+.dark {
+  --vp-c-bg: #282a36;
+  --vp-c-bg-alt: #21222c;
+  --vp-c-bg-elv: #343746;
+  --vp-c-bg-soft: #2f3140;
+  --vp-c-divider: #44475a;
+  --vp-c-gutter: #21222c;
+  --vp-c-brand-1: #bd93f9;
+  --vp-c-brand-2: #cba8fb;
+  --vp-c-brand-3: #a97ef0;
+  --vp-c-brand-soft: rgba(189, 147, 249, 0.16);
+}
+
+/* Display type is monospace, like the tool itself. */
+.VPHero .name,
+.VPHero .text,
+.vp-doc h1,
+.vp-doc h2 {
+  font-family: var(--vp-font-family-mono);
+  letter-spacing: -0.02em;
+}
+
+.VPHero .name {
+  color: var(--vp-c-brand-1);
+  background: none;
+  -webkit-text-fill-color: currentColor;
+}
+
+/* Flat feature cells instead of floating cards. */
+.VPFeature {
+  border-radius: 2px !important;
+  box-shadow: none !important;
+}
+
+.vp-doc img {
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 4px;
+  margin: 16px 0;
+}
