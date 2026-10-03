@@ -1,6 +1,6 @@
 [project]
 name = "rssd-fs"
-version = "0.1.1"
+version = "0.2.0"
 description = "A file-based RSS daemon: the filesystem is the API"
 license = "MIT"
 license-files = ["LICENSE"]
@@ -21,6 +21,7 @@ dependencies = [
     "feedparser>=6.0.14",
     "httpx>=0.28.1",
     "lxml>=6.1.3",
+    "platformdirs>=4.3",
     "watchfiles>=1.2.0",
 ]
 

@@ -459,3 +459,16 @@ async def test_tui_writes_nothing(populated_root: Path):
 
     after = snapshot(populated_root)
     assert after == before, "the TUI must never write to the store"
+
+
+async def test_first_run_empty_instance_shows_hint(tmp_path):
+    """A brand-new default instance opens a working, empty TUI with a hint."""
+    from rssd.root import ensure_instance, resolve_root
+
+    ensure_instance(resolve_root(str(tmp_path / "fresh")), quiet=True)
+    config = Config(root=tmp_path / "fresh")
+    app = RssdApp(config, ReaderConfig())
+    async with app.run_test(size=(100, 30)) as pilot:
+        await pilot.pause()
+        assert app.feed_summaries == []
+        assert any("rssd add" in line for line in app.reader_lines)

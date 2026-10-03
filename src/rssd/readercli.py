@@ -39,7 +39,8 @@ from .reader import (
     revisions,
     to_text,
 )
-from .userconf import ConfigError, ReaderConfig, load_reader_config
+from .root import open_root, resolve_root
+from .userconf import ConfigError, ReaderConfig, config_search_paths, load_reader_config
 
 _REV_NUM_RE = re.compile(r"\.r(\d+)\.xml$")
 
@@ -109,7 +110,7 @@ def _emit_json(obj: object) -> None:
 
 
 def _load(args: argparse.Namespace) -> tuple[Config, ReaderConfig]:
-    root = Path(args.root)
+    root = open_root(args.root)
     config = Config(root=root)
     reader_config, _source = load_reader_config(root)
     return config, reader_config
@@ -177,7 +178,7 @@ def cmd_feeds(args: argparse.Namespace) -> int:
         )
         return 0
     if not feeds:
-        print("no feeds yet -- run `rssd init` and `rssd once` first")
+        print("no feeds yet -- add one with `rssd add <url>`, then run `rssd once`")
         return 0
     health_color = {
         "ok": "32",
@@ -552,17 +553,25 @@ def cmd_info(args: argparse.Namespace) -> int:
 
 
 def cmd_config(args: argparse.Namespace) -> int:
-    root = Path(args.root)
+    root = resolve_root(args.root).path
     reader_config, source = load_reader_config(root)
+    would_use = config_search_paths(root)[-1]
     if args.json:
         _emit_json(
             {
+                "root": str(root),
                 "source": str(source) if source else None,
+                "default_path": str(would_use),
                 "settings": dict(reader_config.describe()),
             }
         )
         return 0
-    print(f"source: {source if source else '(defaults; no config file found)'}")
+    print(f"root:   {root}")
+    if source:
+        print(f"source: {source}")
+    else:
+        print("source: (defaults; no config file found)")
+        print(f"        create {would_use} to change them")
     for key, value in reader_config.describe():
         print(f"  {key:<16} {value}")
     return 0
@@ -621,14 +630,14 @@ def build_parser() -> argparse.ArgumentParser:
         description="Read what rssd wrote. Opens nothing for writing, ever.",
         parents=[common],
     )
-    parser.set_defaults(root=".", json=False, no_color=False, width=0)
+    parser.set_defaults(root=None, json=False, no_color=False, width=0)
 
     sub = parser.add_subparsers(dest="command", required=True)
 
-    def add(name: str, help_: str) -> argparse.ArgumentParser:
-        return sub.add_parser(name, help=help_, parents=[_global_flags()])
+    def add(name: str, help_: str, aliases: list[str] | None = None) -> argparse.ArgumentParser:
+        return sub.add_parser(name, help=help_, aliases=aliases or [], parents=[_global_flags()])
 
-    add("feeds", "list feeds with health, entry count, last poll").set_defaults(func=cmd_feeds)
+    add("feeds", "list feeds with health, entry count, last poll", ["list"]).set_defaults(func=cmd_feeds)
 
     p_ls = add("ls", "list entries, newest first")
     p_ls.add_argument("feed", nargs="?", default=None, help="restrict to one feed")
