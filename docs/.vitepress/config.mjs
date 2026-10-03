@@ -9,7 +9,7 @@ export default defineConfig({
   lastUpdated: true,
 
   head: [
-    ['meta', { name: 'theme-color', content: '#d97757' }],
+    ['meta', { name: 'theme-color', content: '#bd93f9' }],
     ['meta', { property: 'og:title', content: 'rssd' }],
     ['meta', {
       property: 'og:description',

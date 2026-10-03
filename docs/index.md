@@ -31,6 +31,13 @@ features:
     details: rss is a separate binary from rssd. It opens no file for writing, anywhere — which is the proof that the output tree really is a sufficient API for someone else's program.
 ---
 
+## What it looks like
+
+`rss tui` reads the output tree like any other client: feeds, entries and the
+article, driven from the keyboard.
+
+![The rss TUI showing the rust-blog feed, its entry list and an open article](/rss-tui.svg)
+
 ## Thirty seconds
 
 ```bash

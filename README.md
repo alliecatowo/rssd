@@ -10,6 +10,8 @@ no client library. Any program that can read a directory is a client — `grep`,
 built the same way: it reads the output tree and the event log like anyone else
 would, with no privileged channel back to the daemon.
 
+![The rss TUI reading the rust-blog feed](docs/public/rss-tui.svg)
+
 ```
 demo/
 ├── feeds.d/                    you write these
