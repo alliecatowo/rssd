@@ -69,3 +69,51 @@ jobs:
       - uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
+
+  update-homebrew:
+    if: github.event_name == 'push'
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Point the tap formula at the new PyPI sdist
+        env:
+          HOMEBREW_TAP_DEPLOY_KEY: ${{ secrets.HOMEBREW_TAP_DEPLOY_KEY }}
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME#v}"
+          # PyPI's JSON API can lag the upload by a minute or two.
+          for _ in $(seq 1 20); do
+            meta="$(curl -fsSL "https://pypi.org/pypi/rssd-fs/${VERSION}/json" || true)"
+            [ -n "$meta" ] && break
+            sleep 15
+          done
+          [ -n "$meta" ] || { echo "::error::rssd-fs ${VERSION} not on PyPI"; exit 1; }
+          URL="$(jq -r '.urls[] | select(.packagetype=="sdist") | .url' <<<"$meta")"
+          SHA="$(jq -r '.urls[] | select(.packagetype=="sdist") | .digests.sha256' <<<"$meta")"
+          [ -n "$URL" ] && [ -n "$SHA" ]
+
+          install -d -m 700 ~/.ssh
+          keyfile="$(mktemp)"
+          trap 'rm -f "$keyfile"' EXIT
+          printf '%s\n' "$HOMEBREW_TAP_DEPLOY_KEY" > "$keyfile"
+          chmod 600 "$keyfile"
+          ssh-keyscan -t ed25519,rsa github.com >> ~/.ssh/known_hosts 2>/dev/null
+          export GIT_SSH_COMMAND="ssh -i $keyfile -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes"
+          git clone --depth 1 git@github.com:alliecatowo/homebrew-tap.git tap
+          cd tap
+          sed -i \
+            -e "s|^  url \".*\"|  url \"${URL}\"|" \
+            -e "s|^  sha256 \".*\"|  sha256 \"${SHA}\"|" \
+            -e "s|^# Bump url and sha256 by hand.*|# url and sha256 are bumped by rssd's release workflow.|" \
+            Formula/rssd.rb
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Tap already up to date; nothing to push."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Formula/rssd.rb
+          git commit -m "rssd ${VERSION}"
+          git push origin HEAD:main
