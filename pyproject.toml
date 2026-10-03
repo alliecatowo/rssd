@@ -1,6 +1,6 @@
 [project]
 name = "rssd-fs"
-version = "0.1.0"
+version = "0.1.1"
 description = "A file-based RSS daemon: the filesystem is the API"
 license = "MIT"
 license-files = ["LICENSE"]
