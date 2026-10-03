@@ -578,8 +578,8 @@ wheels = [
 ]
 
 [[package]]
-name = "rssd"
-version = "0.1.0"
+name = "rssd-fs"
+version = "0.1.1"
 source = { editable = "." }
 dependencies = [
     { name = "feedparser" },

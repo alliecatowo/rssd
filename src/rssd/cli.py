@@ -198,9 +198,17 @@ def cmd_tui(args: argparse.Namespace) -> int:
     try:
         from .tui.app import run_tui
     except ImportError:
-        print("rssd: the TUI needs the [tui] extra — run `uv sync --extra tui`")
+        print("rssd: the TUI needs the [tui] extra — install `rssd-fs[tui]`", file=sys.stderr)
         return 1
-    return run_tui(_config(args))
+    from .userconf import ConfigError, load_reader_config
+
+    config = _config(args)
+    try:
+        reader_config, _source = load_reader_config(config.root)
+    except ConfigError as e:
+        print(f"rssd: {e}", file=sys.stderr)
+        return 2
+    return run_tui(config, reader_config)
 
 
 def _config(args: argparse.Namespace) -> Config:

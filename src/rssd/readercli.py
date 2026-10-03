@@ -573,7 +573,7 @@ def cmd_tui(args: argparse.Namespace) -> int:
     try:
         from .tui.app import run_tui
     except ImportError:
-        print("rss: the TUI needs the [tui] extra -- run `uv sync --extra tui`", file=sys.stderr)
+        print("rss: the TUI needs the [tui] extra -- install `rssd-fs[tui]`", file=sys.stderr)
         return 1
     return run_tui(config, reader_config)
 
