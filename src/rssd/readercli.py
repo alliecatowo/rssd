@@ -24,6 +24,7 @@ import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
+from . import __version__
 from .config import Config
 from .reader import (
     EntryDoc,
@@ -630,6 +631,7 @@ def build_parser() -> argparse.ArgumentParser:
         description="Read what rssd wrote. Opens nothing for writing, ever.",
         parents=[common],
     )
+    parser.add_argument("--version", action="version", version=f"rss {__version__}")
     parser.set_defaults(root=None, json=False, no_color=False, width=0)
 
     sub = parser.add_subparsers(dest="command", required=True)

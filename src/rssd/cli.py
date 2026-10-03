@@ -8,6 +8,7 @@ import shutil
 import sys
 from pathlib import Path
 
+from . import __version__
 from .config import Config, Limits
 from .models import Subscription
 from .root import open_root, resolve_root
@@ -258,6 +259,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="rssd", description="A file-based RSS daemon. The filesystem is the API."
     )
+    parser.add_argument("--version", action="version", version=f"rssd {__version__}")
     sub = parser.add_subparsers(dest="command", required=True)
 
     def with_root(p: argparse.ArgumentParser) -> argparse.ArgumentParser:

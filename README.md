@@ -29,7 +29,8 @@ demo/
 ## Quick start
 
 ```bash
-uv tool install 'rssd-fs[tui]'
+brew install alliecatowo/tap/rssd              # Homebrew (macOS and Linux), or:
+uv tool install 'rssd-fs[tui]'                 # from PyPI
 
 rssd add https://blog.rust-lang.org/feed.xml   # subscribe (creates the instance on first use)
 rssd once                                      # fetch everything now (or `rssd daemon` to keep polling)
@@ -229,7 +230,7 @@ works fine against a static tree or a directory you rsynced from elsewhere.
 
 ```bash
 uv sync --extra tui
-uv run pytest            # 322 tests, no network required
+uv run pytest            # tests, no network required
 ```
 
 The pure modules — `semantic`, `identity`, `parse`, `render`, `schedule`,
