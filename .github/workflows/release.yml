@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v7
+      - uses: astral-sh/setup-uv@v10.2.0
       - run: sudo apt-get update && sudo apt-get install -y libxml2-utils
       - run: uv sync --extra tui
       - run: uv run pytest -q
@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v7
+      - uses: astral-sh/setup-uv@v10.2.0
 
       - name: Check the tag matches the package version
         if: github.event_name == 'push'
