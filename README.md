@@ -29,6 +29,32 @@ demo/
 ## Quick start
 
 ```bash
+uv tool install 'rssd-fs[tui]'
+
+rssd add https://blog.rust-lang.org/feed.xml   # subscribe (creates the instance on first use)
+rssd once                                      # fetch everything now (or `rssd daemon` to keep polling)
+rss list                                       # or: rss feeds / rss ls
+rss tui                                        # the terminal reader
+```
+
+With no `--root`, the instance lives in `$RSSD_ROOT` if set, otherwise your user
+data directory (`~/.local/share/rssd` on Linux). It is created empty the first
+time any command needs it, so a fresh install opens a working TUI with a hint
+about `rssd add`. Pass `--root DIR` to use a different instance; a `--root` that
+is missing or empty is initialised, one that already holds other files is left
+alone.
+
+`rssd init` additionally seeds six reference feeds, if you want something to
+read straight away. `rss config` shows where the optional reader config file
+would go.
+
+Subscriptions are plain files too: drop a `.xml` file into `feeds.d/` and the
+daemon picks it up without a restart. Delete one and it stops polling — but
+never deletes what it already harvested.
+
+### From a clone
+
+```bash
 mise install
 uv sync --extra tui
 
@@ -37,10 +63,6 @@ uv run rssd daemon --root demo --poll-now   # terminal 1
 uv run rss tui --root demo                  # terminal 2
 tail -F demo/var/events.jsonl | jq -c       # terminal 3
 ```
-
-Drop a new `.xml` file into `demo/feeds.d/` and the daemon picks it up without a
-restart. Delete one and it stops polling — but never deletes what it already
-harvested.
 
 ### Offline
 
@@ -145,10 +167,12 @@ normal footprint is one request per feed, never one per entry.
 
 ## Commands
 
-Two binaries, on purpose. `rssd` writes the tree; `rss` only reads it.
+Two binaries, on purpose. `rssd` writes the tree; `rss` only reads it. Both take
+`--root` and default to the same instance (see Quick start).
 
 ```
-rssd init <root>              scaffold an instance  [--fixture-mode]
+rssd init [root]              scaffold an instance + reference feeds  [--fixture-mode]
+rssd add <url>                subscribe to a feed  [--name N] [--fulltext]
 rssd daemon --root <root>     run it  [--poll-now]
 rssd once --root <root>       one poll pass, then exit
 rssd poll <feed> --root <r>   force-poll one feed
@@ -159,7 +183,7 @@ rssd demo-mutate --root <r>   force a revision on demand
 ```
 
 ```
-rss feeds                     what's subscribed, and is it healthy
+rss list / rss feeds          what's subscribed, and is it healthy
 rss ls [feed]                 entries, newest first
 rss show <ref>                read an entry as wrapped text
 rss link <ref>                print just the URL
@@ -187,7 +211,7 @@ An ambiguous prefix lists the candidates rather than guessing.
 ## The TUI
 
 ```bash
-rss tui --root demo
+rss tui
 ```
 
 Modal, like vim. Three panes — feeds, entries, reader — a status line, and no

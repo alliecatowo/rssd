@@ -98,6 +98,10 @@ complains.
 
 ## Instance layout
 
+With no `--root`, the root is `$RSSD_ROOT` or, failing that, the user data
+directory (`~/.local/share/rssd`). `rss config` prints the resolved root and,
+when no config file exists, the path where one would go.
+
 Every path derives from one root, so an instance is a single directory you can
 move, tar, or delete.
 

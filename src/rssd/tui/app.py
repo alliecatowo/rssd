@@ -340,6 +340,12 @@ class RssdApp(App):
             text = self._set_listing_text()
         elif self.doc is not None:
             text = self._doc_text()
+        elif not self.feed_summaries:
+            text = (
+                "No feeds yet.\n\n"
+                "Add one:   rssd add <url>\n"
+                "Fetch it:  rssd once"
+            )
         else:
             text = "(nothing open -- press <enter> on an entry in the list)"
 

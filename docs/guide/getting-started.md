@@ -6,37 +6,37 @@ Python 3.14 and [uv](https://docs.astral.sh/uv/). If you use
 [mise](https://mise.jdx.dev/), the pinned versions come from `mise.toml`.
 
 ```bash
-git clone https://github.com/alliecatowo/rssd
-cd rssd
-mise install          # optional, pins python 3.14.7 + uv
-uv sync --extra tui
+uv tool install 'rssd-fs[tui]'
 ```
+
+To hack on it instead: `git clone https://github.com/alliecatowo/rssd`, then
+`uv sync --extra tui` and prefix commands below with `uv run`.
 
 ## Your first instance
 
 An *instance* is one directory. Everything rssd knows lives under it, so you can
-move it, tar it, or delete it with no other state to clean up.
+move it, tar it, or delete it with no other state to clean up. By default it is
+`$RSSD_ROOT` or `~/.local/share/rssd`, created for you on first use; use
+`--root DIR` for another.
 
 ```bash
-uv run rssd init demo/
+rssd add https://blog.rust-lang.org/feed.xml   # subscribe
+rssd once                                      # poll everything now
+rss list                                       # what's subscribed, and is it healthy
+rss tui                                        # read it
 ```
 
-That scaffolds six reference feeds chosen to exercise every code path — a
-high-churn one, a rich Atom one, a thin RSS one, an image-only one, and one that
-sends no cache validators at all.
+Use `rssd daemon` instead of `rssd once` to keep polling in the background
+(`--poll-now` skips the startup stagger).
+
+`rssd init` additionally scaffolds six reference feeds chosen to exercise every
+code path — a high-churn one, a rich Atom one, a thin RSS one, an image-only
+one, and one that sends no cache validators at all.
+
+To watch the raw event stream:
 
 ```bash
-uv run rssd daemon --root demo --poll-now
-```
-
-`--poll-now` skips the startup stagger, which you want for a demo and don't want
-in production.
-
-In two more terminals:
-
-```bash
-rss tui --root demo                      # the reader
-tail -F demo/var/events.jsonl | jq -c    # the raw event stream
+tail -F ~/.local/share/rssd/var/events.jsonl | jq -c    
 ```
 
 ## Adding a feed
@@ -45,7 +45,7 @@ A subscription is one XML file. Drop it in and the daemon picks it up without a
 restart.
 
 ```bash
-cat > demo/feeds.d/lwn.xml <<'XML'
+cat > ~/.local/share/rssd/feeds.d/lwn.xml <<'XML'
 <subscription>
   <url>https://lwn.net/headlines/rss</url>
   <name>lwn</name>

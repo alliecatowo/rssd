@@ -12,10 +12,20 @@ sufficient API for a program that shares no code path with the daemon — it
 discovers everything by listing directories and parsing XML, exactly as your
 own script would.
 
+## Choosing the instance
+
+Every command takes `--root DIR`. Without it, both binaries use `$RSSD_ROOT` if
+set, otherwise the user data directory (`~/.local/share/rssd` on Linux). The
+current directory is never used implicitly. A default or `$RSSD_ROOT` instance is
+created empty on first use; an explicit `--root` is only created if it is missing
+or an empty directory. (That scaffold is the one thing `rss` ever writes, and only
+when there is no instance yet.)
+
 ## `rssd` — the daemon
 
 ```bash
-rssd init <root> [--fixture-mode] [--force]
+rssd init [root] [--fixture-mode] [--force]
+rssd add <url> [--name N] [--fulltext] [--force]
 rssd daemon --root <root> [--poll-now] [--no-fsync]
 rssd once --root <root>
 rssd poll <feed> --root <root>

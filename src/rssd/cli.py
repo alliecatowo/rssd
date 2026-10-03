@@ -10,6 +10,7 @@ from pathlib import Path
 
 from .config import Config, Limits
 from .models import Subscription
+from .root import open_root, resolve_root
 
 #: The reference feeds from SPEC §14. Between them they exercise every code
 #: path: high churn, rich Atom content, thin RSS, an image-only body, and one
@@ -54,7 +55,7 @@ def subscription_xml(name: str, url: str, comment: str, *, fulltext: bool = Fals
 
 
 def cmd_init(args: argparse.Namespace) -> int:
-    root = Path(args.root)
+    root = resolve_root(args.root).path
     config = Config(root=root)
     config.ensure_dirs()
 
@@ -88,7 +89,39 @@ def cmd_init(args: argparse.Namespace) -> int:
     print(f"  store/     (empty until first poll)")
     print(f"  var/       events.jsonl appears on first run")
     print()
-    print(f"next:  rssd daemon --root {root} --poll-now")
+    print(f"next:  rssd add <url>   then   rssd once")
+    return 0
+
+
+def cmd_add(args: argparse.Namespace) -> int:
+    """Subscribe to a feed: write feeds.d/<name>.xml."""
+    import re
+    from urllib.parse import urlparse
+
+    from .config import valid_name
+
+    url = args.url.strip()
+    parsed = urlparse(url)
+    if parsed.scheme not in ("http", "https") or not parsed.netloc:
+        print(f"rssd: not an http(s) URL: {url}", file=sys.stderr)
+        return 2
+    name = args.name
+    if not name:
+        host = parsed.hostname or "feed"
+        host = re.sub(r"^(www|feeds?|rss)\.", "", host)
+        name = re.sub(r"[^a-z0-9._-]+", "-", host.lower()).strip("-.")[:48] or "feed"
+    if not valid_name(name):
+        print(f"rssd: invalid feed name {name!r} (lowercase letters, digits, . _ -)", file=sys.stderr)
+        return 2
+    config = _config(args)
+    target = config.feeds_d / f"{name}.xml"
+    if target.exists() and not args.force:
+        print(f"rssd: {target} already exists (use --name, or --force to overwrite)", file=sys.stderr)
+        return 1
+    target.write_text(subscription_xml(name, url, "added with `rssd add`", fulltext=args.fulltext))
+    print(f"added {name}  {url}")
+    print(f"  {target}")
+    print("next:  rssd once   (or `rssd daemon` to keep polling)")
     return 0
 
 
@@ -164,7 +197,7 @@ def cmd_demo_mutate(args: argparse.Namespace) -> int:
     """
     import re
 
-    path = Path(args.root) / "fixtures" / "mutable.xml"
+    path = resolve_root(args.root).path / "fixtures" / "mutable.xml"
     if not path.exists():
         print(f"rssd: {path} not found; run `rssd init --fixture-mode` first")
         return 1
@@ -213,7 +246,7 @@ def cmd_tui(args: argparse.Namespace) -> int:
 
 def _config(args: argparse.Namespace) -> Config:
     return Config(
-        root=Path(args.root),
+        root=open_root(args.root),
         limits=Limits(),
         poll_now=getattr(args, "poll_now", False),
         fixture_mode=getattr(args, "fixture_mode", False),
@@ -228,11 +261,16 @@ def build_parser() -> argparse.ArgumentParser:
     sub = parser.add_subparsers(dest="command", required=True)
 
     def with_root(p: argparse.ArgumentParser) -> argparse.ArgumentParser:
-        p.add_argument("--root", default=".", help="instance root directory")
+        p.add_argument(
+            "--root",
+            default=None,
+            help="instance root directory (default: $RSSD_ROOT, else the user data dir)",
+        )
         return p
 
     p_init = sub.add_parser("init", help="scaffold a new instance")
-    p_init.add_argument("root", nargs="?", default=".")
+    p_init.add_argument("root", nargs="?", default=None,
+                        help="instance root (default: $RSSD_ROOT, else the user data dir)")
     p_init.add_argument("--force", action="store_true", help="overwrite existing subscriptions")
     p_init.add_argument("--fixture-mode", action="store_true",
                         help="point subscriptions at the local fixture server")
@@ -248,6 +286,13 @@ def build_parser() -> argparse.ArgumentParser:
     p_once = with_root(sub.add_parser("once", help="one poll pass, then exit"))
     p_once.add_argument("--no-fsync", action="store_true")
     p_once.set_defaults(func=cmd_once)
+
+    p_add = with_root(sub.add_parser("add", help="subscribe to a feed URL"))
+    p_add.add_argument("url")
+    p_add.add_argument("--name", default=None, help="feed folder name (default: from the host)")
+    p_add.add_argument("--fulltext", action="store_true", help="also fetch article pages")
+    p_add.add_argument("--force", action="store_true", help="overwrite an existing subscription")
+    p_add.set_defaults(func=cmd_add)
 
     p_poll = with_root(sub.add_parser("poll", help="force-poll a single feed"))
     p_poll.add_argument("feed")
