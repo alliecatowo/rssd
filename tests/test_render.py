@@ -183,13 +183,13 @@ def test_render_entry_content_origin_and_hash():
     assert content_el.find(q("paragraph")).text == "Body text."
 
 
-def test_render_entry_content_origin_none_no_hash():
+def test_render_entry_content_origin_none_still_has_hash():
     prepared = make_prepared(content_html=None, content_origin="none")
     data = render_entry(prepared, make_ctx(), revision=1, first_seen=FIRST_SEEN)
     root = etree.fromstring(data)
     content_el = root.find(q("content"))
     assert content_el.get("origin") == "none"
-    assert content_el.get("hash") is None
+    assert content_el.get("hash") == "sha256:" + "b" * 64  # scan() needs it
     assert len(content_el) == 0
 
 
@@ -383,3 +383,38 @@ def test_render_entry_from_rust_blog_fixture():
     assert_well_formed(out)
     root = etree.fromstring(out)
     assert root.find(q("content")).find(q("paragraph")) is not None
+
+
+def test_render_entry_strips_control_chars_everywhere():
+    prepared = make_prepared(
+        title="a\x0bb", author="x\x00y", categories=("c\x1fd",),
+        raw_id="g\x0cuid", link="https://e.com/\x0b",
+    )
+    data = render_entry(
+        prepared, make_ctx(feed_title="T\x0bt"), revision=1, first_seen=FIRST_SEEN
+    )
+    root = etree.fromstring(data)
+    assert root.find(q("title")).text == "ab"
+    assert root.find(q("author")).text == "xy"
+
+
+def test_render_entry_roundtrips_through_scan(tmp_path):
+    from rssd.config import Config
+    from rssd.store import FeedStore
+
+    store = FeedStore(Config(root=tmp_path), "f")
+    cases = {
+        "none": make_prepared(content_html=None, content_origin="none",
+                              entry_id="sha256:" + "1" * 64),
+        "longtitle": make_prepared(title="T" * 6000, entry_id="sha256:" + "2" * 64),
+        "manycats": make_prepared(categories=tuple(f"cat{i}" * 5 for i in range(400)),
+                                  entry_id="sha256:" + "3" * 64),
+    }
+    for key, prepared in cases.items():
+        data = render_entry(prepared, make_ctx(), revision=1, first_seen=FIRST_SEEN)
+        store.write_entry(
+            base_name=f"20260907T000000Z-{prepared.id8}-{key}", data=data, revision=1,
+            fsync=False,
+        )
+    records = store.scan()
+    assert set(records) == {p.id for p in cases.values()}

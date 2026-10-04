@@ -144,70 +144,75 @@ def _walk_inline(node, parent: etree._Element, base_url: str | None) -> None:
     _append_text(parent, node.text)
 
     for child in node:
-        tag = child.tag if isinstance(child.tag, str) else None
-        if tag is None:
-            # comment/PI node -- skip subtree but keep tail text
-            _append_text(parent, child.tail)
-            continue
-        tag = tag.lower()
+        _walk_inline_child(child, parent, base_url)
 
-        if tag in DROP_WITH_SUBTREE:
-            # dropped entirely, subtree and all; tail text still flows
-            _append_text(parent, child.tail)
-            continue
 
-        if tag == "a":
-            href = resolve_url(child.get("href"), base_url)
-            if href is not None:
-                link_el = _new_el("link", href=href)
-                _walk_inline(child, link_el, base_url)
-                if link_el.text or len(link_el):
-                    parent.append(link_el)
-                else:
-                    # empty link -- drop
-                    pass
-            else:
-                # unwrap to text: hoist children as plain text/inline
-                _walk_inline(child, parent, base_url)
-            _append_text(parent, child.tail)
-            continue
-
-        if tag == "img":
-            src = resolve_url(child.get("src"), base_url)
-            if src is not None:
-                alt = child.get("alt")
-                img_el = _new_el("image", src=src, alt=alt)
-                parent.append(img_el)
-            # else: dropped (unwrap to text == nothing, img has no text)
-            _append_text(parent, child.tail)
-            continue
-
-        if tag in INLINE_MAP:
-            sem_tag = INLINE_MAP[tag]
-            if sem_tag == "break":
-                parent.append(_new_el("break"))
-            else:
-                inline_el = _new_el(sem_tag)
-                _walk_inline(child, inline_el, base_url)
-                if inline_el.text or len(inline_el):
-                    parent.append(inline_el)
-                else:
-                    pass
-            _append_text(parent, child.tail)
-            continue
-
-        if tag == "code":
-            code_el = _new_el("code")
-            _walk_inline(child, code_el, base_url)
-            if code_el.text or len(code_el):
-                parent.append(code_el)
-            _append_text(parent, child.tail)
-            continue
-
-        # Anything else at inline level (unwrap tags, unknown tags, nested
-        # blocks bleeding into inline context) -- unwrap to text/children.
-        _walk_inline(child, parent, base_url)
+def _walk_inline_child(child, parent: etree._Element, base_url: str | None) -> None:
+    """Map one inline-level child (and its tail text) into ``parent``."""
+    tag = child.tag if isinstance(child.tag, str) else None
+    if tag is None:
+        # comment/PI node -- skip subtree but keep tail text
         _append_text(parent, child.tail)
+        return
+    tag = tag.lower()
+
+    if tag in DROP_WITH_SUBTREE:
+        # dropped entirely, subtree and all; tail text still flows
+        _append_text(parent, child.tail)
+        return
+
+    if tag == "a":
+        href = resolve_url(child.get("href"), base_url)
+        if href is not None:
+            link_el = _new_el("link", href=href)
+            _walk_inline(child, link_el, base_url)
+            if link_el.text or len(link_el):
+                parent.append(link_el)
+            else:
+                # empty link -- drop
+                pass
+        else:
+            # unwrap to text: hoist children as plain text/inline
+            _walk_inline(child, parent, base_url)
+        _append_text(parent, child.tail)
+        return
+
+    if tag == "img":
+        src = resolve_url(child.get("src"), base_url)
+        if src is not None:
+            alt = child.get("alt")
+            img_el = _new_el("image", src=src, alt=alt)
+            parent.append(img_el)
+        # else: dropped (unwrap to text == nothing, img has no text)
+        _append_text(parent, child.tail)
+        return
+
+    if tag in INLINE_MAP:
+        sem_tag = INLINE_MAP[tag]
+        if sem_tag == "break":
+            parent.append(_new_el("break"))
+        else:
+            inline_el = _new_el(sem_tag)
+            _walk_inline(child, inline_el, base_url)
+            if inline_el.text or len(inline_el):
+                parent.append(inline_el)
+            else:
+                pass
+        _append_text(parent, child.tail)
+        return
+
+    if tag == "code":
+        code_el = _new_el("code")
+        _walk_inline(child, code_el, base_url)
+        if code_el.text or len(code_el):
+            parent.append(code_el)
+        _append_text(parent, child.tail)
+        return
+
+    # Anything else at inline level (unwrap tags, unknown tags, nested
+    # blocks bleeding into inline context) -- unwrap to text/children.
+    _walk_inline(child, parent, base_url)
+    _append_text(parent, child.tail)
 
 
 def _has_block_descendant(node) -> bool:
@@ -344,8 +349,7 @@ def _walk_block(node, out: etree._Element, base_url: str | None) -> None:
         if tag in ("a", "em", "i", "strong", "b", "br") or tag not in UNWRAP_TAGS:
             # inline-level or unknown tag encountered at block level:
             # fold into the current paragraph via inline walking.
-            para = get_para()
-            _walk_inline(child, para, base_url)
+            _walk_inline_child(child, get_para(), base_url)
             continue
 
         # unwrap tags (div/span/section/article/main/figure): recurse as

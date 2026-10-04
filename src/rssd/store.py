@@ -223,11 +223,16 @@ class FeedStore:
         try:
             with open(path, "rb") as f:
                 head = f.read(_SCAN_HEAD_BYTES)
+                id_m = _ID_ATTR_RE.search(head)
+                fs_m = _FIRST_SEEN_ATTR_RE.search(head)
+                hash_m = _CONTENT_HASH_RE.search(head)
+                if id_m and fs_m and not hash_m:
+                    # The hash sits after source/title/categories, which can
+                    # push it past the head window: read the rest.
+                    head += f.read()
+                    hash_m = _CONTENT_HASH_RE.search(head)
         except OSError:
             return None
-        id_m = _ID_ATTR_RE.search(head)
-        fs_m = _FIRST_SEEN_ATTR_RE.search(head)
-        hash_m = _CONTENT_HASH_RE.search(head)
         if not (id_m and fs_m and hash_m):
             return None
         try:

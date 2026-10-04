@@ -18,7 +18,7 @@ from lxml import etree
 
 from rssd.config import NS
 from rssd.models import FeedMeta, FeedState, PreparedEntry, RenderContext
-from rssd.semantic import canonical_xml
+from rssd.semantic import canonical_xml, strip_invalid_xml_chars
 
 _NSMAP = {None: NS}
 
@@ -37,9 +37,9 @@ def _el(tag: str, text: str | None = None, **attrs: str | None) -> etree._Elemen
     e = etree.Element(f"{{{NS}}}{tag}", nsmap=_NSMAP)
     for k, v in attrs.items():
         if v is not None:
-            e.set(k.rstrip("_").replace("_", "-"), v)
+            e.set(k.rstrip("_").replace("_", "-"), strip_invalid_xml_chars(v))
     if text is not None:
-        e.text = text
+        e.text = strip_invalid_xml_chars(text)
     return e
 
 
@@ -63,7 +63,7 @@ def render_entry(
         f"{{{NS}}}entry",
         nsmap=_NSMAP,
         attrib={
-            "id": prepared.id,
+            "id": strip_invalid_xml_chars(prepared.id),
             "revision": str(revision),
             "first-seen": _fmt_ts(first_seen),
         },
@@ -103,6 +103,7 @@ def render_entry(
             "content",
             unparsable="true",
             origin=(content_el.get("origin") or "none"),
+            hash=prepared.content_hash,
         )
         if text:
             degraded.text = text
@@ -122,8 +123,9 @@ def _build_content_element(prepared: PreparedEntry) -> etree._Element:
     content = prepared.content
     el = etree.Element(f"{{{NS}}}content", nsmap=_NSMAP)
     el.set("origin", origin)
-    if origin != "none":
-        el.set("hash", prepared.content_hash)
+    # Always emit the hash (even for origin="none"): FeedStore.scan() needs it
+    # to recover the entry from disk alone.
+    el.set("hash", prepared.content_hash)
     for child in content:
         el.append(_copy_el(child))
     if content.text and content.text.strip():

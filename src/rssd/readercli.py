@@ -41,7 +41,13 @@ from .reader import (
     to_text,
 )
 from .root import open_root, resolve_root
-from .userconf import ConfigError, ReaderConfig, config_search_paths, load_reader_config
+from .userconf import (
+    ConfigError,
+    ReaderConfig,
+    config_search_paths,
+    is_openable_link,
+    load_reader_config,
+)
 
 _REV_NUM_RE = re.compile(r"\.r(\d+)\.xml$")
 
@@ -363,6 +369,8 @@ def cmd_open(args: argparse.Namespace) -> int:
     doc = load_entry(path)
     if not doc.link:
         raise ReaderError(f"{args.ref}: entry has no link")
+    if not is_openable_link(doc.link):
+        raise ReaderError(f"{args.ref}: refusing to open a non-http(s)/mailto link: {doc.link!r}")
     cmd = _resolve_browser(args, reader_config)
     if cmd is None:
         print(doc.link)

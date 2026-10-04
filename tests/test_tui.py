@@ -472,3 +472,16 @@ async def test_first_run_empty_instance_shows_hint(tmp_path):
         await pilot.pause()
         assert app.feed_summaries == []
         assert any("rssd add" in line for line in app.reader_lines)
+
+
+@pytest.mark.asyncio
+async def test_bracket_text_does_not_crash_or_vanish(tmp_path):
+    from rssd.root import resolve_root, ensure_instance
+
+    ensure_instance(resolve_root(str(tmp_path / "fresh")), quiet=True)
+    app = RssdApp(Config(root=tmp_path / "fresh"), ReaderConfig())
+    async with app.run_test(size=(100, 30)) as pilot:
+        await pilot.pause()
+        app._pane_static("reader").update("[PATCH] see [/etc/passwd] now [/] [red]x[/red]")
+        screen = await render_screen(pilot)
+        assert "[PATCH] see" in screen and "[/etc/passwd]" in screen

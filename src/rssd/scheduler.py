@@ -191,7 +191,12 @@ class FeedRunner:
                 filename_stamp(item.published), item.id8,
                 slugify(item.parsed.title, limits.slug_max_len),
             )
-            data = render_entry(item, ctx, revision=1, first_seen=now, updated=item.parsed.updated)
+            try:
+                data = render_entry(item, ctx, revision=1, first_seen=now, updated=item.parsed.updated)
+            except ValueError as exc:
+                # One unrenderable entry must not wedge the whole feed.
+                self.events.emit("entry.render-failed", self.name, id=item.id, error=str(exc))
+                continue
             path = self.store.write_entry(base_name=base, data=data, revision=1, fsync=False)
             self.seen[item.id] = EntryRecord(
                 id=item.id, id8=item.id8, base_name=base, revision=1,
@@ -208,9 +213,13 @@ class FeedRunner:
                 self.events.emit("entry.revision-suppressed", self.name, id=item.id)
                 continue
             revision = record.revision + 1
-            data = render_entry(
-                item, ctx, revision=revision, first_seen=record.first_seen, updated=now
-            )
+            try:
+                data = render_entry(
+                    item, ctx, revision=revision, first_seen=record.first_seen, updated=now
+                )
+            except ValueError as exc:
+                self.events.emit("entry.render-failed", self.name, id=item.id, error=str(exc))
+                continue
             path = self.store.write_entry(
                 base_name=record.base_name, data=data, revision=revision, fsync=False
             )
@@ -463,8 +472,15 @@ class Scheduler:
         except asyncio.CancelledError:
             raise
         except Exception as exc:  # a bug in one feed must not stop the daemon
-            self.events.emit("feed.poll-failed", runner.name, error=f"internal: {exc!r}")
-            runner.state.next_poll_at = time.monotonic() + 300
+            # Route through _fail so backoff, health and status.xml all
+            # reflect a permanently crashing feed (it emits feed.poll-failed).
+            try:
+                runner._fail(f"internal: {exc!r}")
+            except Exception:  # never let bookkeeping kill the scheduler
+                self.events.emit(
+                    "feed.poll-failed", runner.name, error=f"internal: {exc!r}"
+                )
+                runner.state.next_poll_at = time.monotonic() + 300
         finally:
             self._inflight.pop(runner.name, None)
             if runner.name in self.runners:

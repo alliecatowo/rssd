@@ -142,8 +142,13 @@ def load_reader_config(root: Path | None = None) -> tuple[ReaderConfig, Path | N
             continue
         config = ReaderConfig()
         known = {f.name for f in fields(ReaderConfig)}
+        # ./rss.toml lives in whatever directory the user happens to be in,
+        # which may be untrusted: never let it choose a command to execute.
+        from_cwd = not path.is_absolute() and path == Path("rss.toml")
         for key, value in data.items():
             if key not in known:
+                continue
+            if key == "browser" and from_cwd:
                 continue
             try:
                 config = replace(config, **{key: value})
@@ -151,3 +156,19 @@ def load_reader_config(root: Path | None = None) -> tuple[ReaderConfig, Path | N
                 continue
         return config, path
     return ReaderConfig(), None
+
+
+OPENABLE_SCHEMES = ("http", "https", "mailto")
+
+
+def is_openable_link(url: str | None) -> bool:
+    """Only hand http/https/mailto links to a browser: a feed-supplied
+    ``file:``, ``smb:`` or custom-scheme link must never reach the desktop
+    URL handler, and a leading ``-`` must never be read as an option."""
+    if not url:
+        return False
+    url = url.strip()
+    if url.startswith("-"):
+        return False
+    scheme, sep, _rest = url.partition(":")
+    return bool(sep) and scheme.lower() in OPENABLE_SCHEMES

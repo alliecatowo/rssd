@@ -7,6 +7,7 @@ import asyncio
 import shutil
 import sys
 from pathlib import Path
+from xml.sax.saxutils import escape as xml_escape
 
 from . import __version__
 from .config import Config, Limits
@@ -43,13 +44,20 @@ MUTABLE_FIXTURE = """<?xml version="1.0" encoding="utf-8"?>
 """
 
 
+def _xml_comment_safe(text: str) -> str:
+    """``--`` is illegal inside an XML comment, and a trailing ``-`` would
+    form ``--->``."""
+    text = " ".join(text.split()).replace("--", "- -")
+    return text[:-1] + "- " if text.endswith("-") else text
+
+
 def subscription_xml(name: str, url: str, comment: str, *, fulltext: bool = False) -> str:
     return (
         '<?xml version="1.0" encoding="utf-8"?>\n'
-        f"<!-- {comment} -->\n"
+        f"<!-- {_xml_comment_safe(comment)} -->\n"
         "<subscription>\n"
-        f"  <url>{url}</url>\n"
-        f"  <name>{name}</name>\n"
+        f"  <url>{xml_escape(url)}</url>\n"
+        f"  <name>{xml_escape(name)}</name>\n"
         f"  <fulltext>{'true' if fulltext else 'false'}</fulltext>\n"
         "</subscription>\n"
     )
@@ -119,7 +127,15 @@ def cmd_add(args: argparse.Namespace) -> int:
     if target.exists() and not args.force:
         print(f"rssd: {target} already exists (use --name, or --force to overwrite)", file=sys.stderr)
         return 1
-    target.write_text(subscription_xml(name, url, "added with `rssd add`", fulltext=args.fulltext))
+    xml = subscription_xml(name, url, "added with `rssd add`", fulltext=args.fulltext)
+    from .subscriptions import SubscriptionError, parse_subscription
+
+    try:
+        parse_subscription(xml.encode("utf-8"), target)
+    except SubscriptionError as exc:
+        print(f"rssd: refusing to write an invalid subscription: {exc}", file=sys.stderr)
+        return 2
+    target.write_text(xml)
     print(f"added {name}  {url}")
     print(f"  {target}")
     print("next:  rssd once   (or `rssd daemon` to keep polling)")
@@ -148,14 +164,21 @@ def cmd_prune(args: argparse.Namespace) -> int:
     that decision belongs to a human who typed this command.
     """
     from .state import load_state
+    from .subscriptions import load_dir
 
     config = _config(args)
+    # A feed that still has a subscription is never pruned, even if its state
+    # file still says "retired" (re-added while the daemon was stopped).
+    subscribed, _errors = load_dir(config.feeds_d)
     removed = 0
     for feed_dir in sorted(config.store.iterdir()) if config.store.exists() else []:
         if not feed_dir.is_dir():
             continue
         state = load_state(config, feed_dir.name)
         if state.health != "retired":
+            continue
+        if feed_dir.name in subscribed:
+            print(f"  skipping {feed_dir.name}: still subscribed in feeds.d")
             continue
         if not args.yes:
             print(f"  would remove {feed_dir}")
