@@ -26,6 +26,8 @@ when there is no instance yet.)
 ```bash
 rssd init [root] [--fixture-mode] [--force]
 rssd add <url> [--name N] [--fulltext] [--force]
+rssd import <feeds.opml>
+rssd export [-o FILE]
 rssd daemon --root <root> [--poll-now] [--no-fsync]
 rssd once --root <root>
 rssd poll <feed> --root <root>
@@ -38,6 +40,7 @@ rssd demo-mutate --root <root>
 | Command | |
 |---|---|
 | `init` | scaffold an instance with the six reference feeds |
+| `import` / `export` | subscribe to every feed in an OPML file / write your subscriptions as OPML |
 | `daemon` | run continuously, watching `feeds.d/` for changes |
 | `once` | one poll pass over every feed, then exit — good for cron |
 | `poll` | force-poll a single feed now |

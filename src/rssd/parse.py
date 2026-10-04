@@ -210,4 +210,5 @@ def parse_feed(body: bytes, content_type: str | None, feed_url: str) -> ParsedFe
         entries=tuple(entries),
         bozo=bozo,
         bozo_message=bozo_message,
+        recognized=bool(version) or bool(entries),
     )

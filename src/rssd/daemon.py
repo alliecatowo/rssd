@@ -7,6 +7,7 @@ import contextlib
 import fcntl
 import os
 import signal
+import sys
 from pathlib import Path
 
 from .config import Config
@@ -53,8 +54,8 @@ class RootLock:
                 fcntl.flock(self._fd, fcntl.LOCK_UN)
                 os.close(self._fd)
             self._fd = None
-        with contextlib.suppress(OSError):
-            self.path.unlink()
+        # The lock file is deliberately left in place: unlinking it lets a
+        # second process lock a fresh inode while the first still holds the old.
 
     def __enter__(self) -> RootLock:
         self.acquire()
@@ -103,17 +104,39 @@ async def run_daemon(config: Config) -> int:
             asyncio.create_task(watch(config, reconciler, stop), name="watcher"),
             asyncio.create_task(stop.wait(), name="stop"),
         ]
-        await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
+        done, _pending = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
+
+        # The stop task finishing is a clean shutdown; anything else finishing
+        # (or raising) means the scheduler or watcher died under us. Say so and
+        # exit non-zero so a supervisor restarts the daemon.
+        rc = 0
+        if not stop.is_set():
+            for task in done:
+                exc = None if task.cancelled() else task.exception()
+                reason = repr(exc) if exc else "exited unexpectedly"
+                print(f"rssd: {task.get_name()} task {reason}; shutting down", file=sys.stderr)
+                events.emit("daemon.crashed", None, task=task.get_name(), error=reason)
+            rc = 1
 
         events.emit("daemon.stopping", None)
         for task in tasks:
             task.cancel()
         await asyncio.gather(*tasks, return_exceptions=True)
         await scheduler.stop()
-        return 0
+        return rc
     finally:
         events.close()
         lock.release()
+
+
+def _lock_or_report(config: Config) -> RootLock | None:
+    lock = RootLock(config.lock_path)
+    try:
+        lock.acquire()
+    except LockedError as exc:
+        print(f"rssd: {exc.args[0].replace('refusing to start', 'try again once it has stopped')}")
+        return None
+    return lock
 
 
 async def run_once(config: Config) -> int:
@@ -123,6 +146,9 @@ async def run_once(config: Config) -> int:
     drive so they never have to reason about timers.
     """
     config.ensure_dirs()
+    lock = _lock_or_report(config)
+    if lock is None:
+        return 1
     events = EventLog(config)
     events.open()
     try:
@@ -147,10 +173,14 @@ async def run_once(config: Config) -> int:
         return 0
     finally:
         events.close()
+        lock.release()
 
 
 async def poll_one(config: Config, name: str) -> int:
     config.ensure_dirs()
+    lock = _lock_or_report(config)
+    if lock is None:
+        return 1
     events = EventLog(config)
     events.open()
     try:
@@ -166,3 +196,4 @@ async def poll_one(config: Config, name: str) -> int:
         return 0
     finally:
         events.close()
+        lock.release()

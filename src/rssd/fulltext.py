@@ -33,12 +33,15 @@ class FulltextError(Exception):
     pass
 
 
-async def check_public_url(url: str) -> None:
+async def resolve_public(url: str) -> tuple[str, str, str]:
     """SSRF guard: article URLs come from untrusted feeds. Allow only
     http/https, and refuse hosts that resolve to loopback, private,
-    link-local, multicast or otherwise non-global addresses. (Resolution and
-    connection are separate lookups, so this is best-effort against DNS
-    rebinding, not a hard guarantee.)"""
+    link-local, multicast or otherwise non-global addresses.
+
+    Returns ``(host, port, ip)`` where ``ip`` is a checked public address. The
+    caller must connect to that address (not re-resolve the name), otherwise a
+    DNS-rebinding server could answer the check with a public IP and the real
+    connection with an internal one."""
     try:
         parts = urlsplit(url)
         host = parts.hostname
@@ -53,6 +56,7 @@ async def check_public_url(url: str) -> None:
         )
     except OSError as exc:
         raise FulltextError(f"cannot resolve {host}: {exc}") from exc
+    chosen: str | None = None
     for info in infos:
         addr = info[4][0].split("%")[0]
         try:
@@ -63,6 +67,30 @@ async def check_public_url(url: str) -> None:
             ip = ip.ipv4_mapped
         if not ip.is_global:
             raise FulltextError(f"refusing non-public address for {host}")
+        chosen = chosen or addr
+    if chosen is None:
+        raise FulltextError(f"no addresses for {host}")
+    return host, str(port), chosen
+
+
+async def check_public_url(url: str) -> None:
+    """Validate-only form of :func:`resolve_public`."""
+    await resolve_public(url)
+
+
+def _pinned(url: str, host: str, ip: str) -> tuple[str, dict[str, str], dict[str, str]]:
+    """Rewrite `url` to connect to `ip` while keeping Host/SNI/cert checks
+    against the original hostname."""
+    parts = urlsplit(url)
+    netloc = f"[{ip}]" if ":" in ip else ip
+    if parts.port:
+        netloc += f":{parts.port}"
+    pinned = parts._replace(netloc=netloc).geturl()
+    host_header = f"[{host}]" if ":" in host else host
+    if parts.port:
+        host_header += f":{parts.port}"
+    ext = {"sni_hostname": host} if parts.scheme == "https" else {}
+    return pinned, {"Host": host_header}, ext
 
 
 _MAX_ARTICLE_REDIRECTS = 5
@@ -75,11 +103,17 @@ async def fetch_article_html(
     Redirects are followed by hand so every hop passes the SSRF guard."""
     try:
         for _hop in range(_MAX_ARTICLE_REDIRECTS + 1):
-            await check_public_url(url)
+            host, _port, ip = await resolve_public(url)
+            target, host_hdr, ext = _pinned(url, host, ip)
             async with client.stream(
                 "GET",
-                url,
-                headers={"User-Agent": USER_AGENT, "Accept": "text/html,*/*;q=0.1"},
+                target,
+                headers={
+                    "User-Agent": USER_AGENT,
+                    "Accept": "text/html,*/*;q=0.1",
+                    **host_hdr,
+                },
+                extensions=ext,
                 timeout=limits.request_timeout,
                 follow_redirects=False,
             ) as response:
@@ -101,8 +135,8 @@ async def fetch_article_html(
             raise FulltextError("too many redirects")
     except FulltextError:
         raise
-    except Exception as exc:  # network, TLS, timeout
-        raise FulltextError(str(exc)) from exc
+    except Exception as exc:  # network, TLS, timeout, bad charset
+        raise FulltextError(str(exc) or type(exc).__name__) from exc
 
     body = b"".join(chunks)
     try:

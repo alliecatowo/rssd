@@ -191,7 +191,10 @@ class EntryDoc:
 
 def load_entry(path: Path) -> EntryDoc:
     try:
-        tree = etree.parse(str(path))
+        tree = etree.parse(
+            str(path),
+            etree.XMLParser(resolve_entities=False, no_network=True, load_dtd=False),
+        )
     except (OSError, etree.XMLSyntaxError) as exc:
         raise ReaderError(f"{path}: {exc}") from exc
     root = tree.getroot()

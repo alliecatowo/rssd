@@ -34,7 +34,7 @@ demo/
 brew install alliecatowo/tap/rssd              # Homebrew (macOS and Linux), or:
 uv tool install 'rssd-fs[tui]'                 # from PyPI
 
-rssd add https://blog.rust-lang.org/feed.xml   # subscribe (creates the instance on first use)
+rssd add https://blog.rust-lang.org/feed.xml --name rust-blog   # subscribe (creates the instance on first use)
 rssd once                                      # fetch everything now (or `rssd daemon` to keep polling)
 rss list                                       # or: rss feeds / rss ls
 rss tui                                        # the terminal reader
@@ -176,6 +176,8 @@ Two binaries, on purpose. `rssd` writes the tree; `rss` only reads it. Both take
 ```
 rssd init [root]              scaffold an instance + reference feeds  [--fixture-mode]
 rssd add <url>                subscribe to a feed  [--name N] [--fulltext]
+rssd import <file.opml>       subscribe to every feed in an OPML file
+rssd export [-o file]         write your subscriptions as OPML
 rssd daemon --root <root>     run it  [--poll-now]
 rssd once --root <root>       one poll pass, then exit
 rssd poll <feed> --root <r>   force-poll one feed

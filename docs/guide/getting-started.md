@@ -2,7 +2,7 @@
 
 ## Requirements
 
-Python 3.14 and [uv](https://docs.astral.sh/uv/). If you use
+Python 3.12 or newer and [uv](https://docs.astral.sh/uv/). If you use
 [mise](https://mise.jdx.dev/), the pinned versions come from `mise.toml`.
 
 ```bash
@@ -20,7 +20,7 @@ move it, tar it, or delete it with no other state to clean up. By default it is
 `--root DIR` for another.
 
 ```bash
-rssd add https://blog.rust-lang.org/feed.xml   # subscribe
+rssd add https://blog.rust-lang.org/feed.xml --name rust-blog   # subscribe
 rssd once                                      # poll everything now
 rss list                                       # what's subscribed, and is it healthy
 rss tui                                        # read it

@@ -157,7 +157,8 @@ async def test_redirect_chain_populates_resolved_url():
         await client.aclose()
 
     assert result.ok
-    assert result.resolved_url == "http://example.test/new.xml"
+    # Only the permanent (301) hop is pinned; the temporary 302 after it is not.
+    assert result.resolved_url == "http://example.test/mid.xml"
 
 
 async def test_oversize_via_content_length_is_rejected_early():
