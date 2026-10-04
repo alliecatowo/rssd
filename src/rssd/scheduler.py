@@ -63,6 +63,9 @@ class FeedRunner:
     #: (invariant I1) and maintained incrementally thereafter.
     seen: dict[str, EntryRecord] = field(default_factory=dict)
     last_feed_xml: bytes | None = None
+    #: Per-poll flags: this poll's result must not be cached / is not "ok".
+    _degraded: bool = False
+    _skip_cache: bool = False
 
     @property
     def name(self) -> str:
@@ -76,6 +79,8 @@ class FeedRunner:
 
     async def poll(self) -> None:
         limits = self.config.limits
+        self._degraded = False
+        self._skip_cache = False
         self.state.poll_count += 1
         self.state.last_poll_at = iso(now_utc())
         self.events.emit("feed.poll-started", self.name, url=self.url)
@@ -134,6 +139,11 @@ class FeedRunner:
         parsed = await asyncio.to_thread(
             parse_feed, result.body, result.content_type, self.url
         )
+        if not parsed.recognized:
+            # A 200 that is not a feed (captive portal, HTML error page) must
+            # not be cached or counted as a healthy poll.
+            self._fail(f"response is not a feed: {parsed.bozo_message or 'unrecognised document'}")
+            return
         if parsed.bozo:
             self.events.emit(
                 "feed.poll-succeeded", self.name, bozo=True, note=parsed.bozo_message
@@ -171,13 +181,21 @@ class FeedRunner:
         if diff.anomaly:
             # A feed that suddenly claims hundreds of new entries is far more
             # likely to be broken than newsworthy. Write nothing.
-            self.state.health = "degraded"
+            # Do not cache this response either, or its ETag would hide the
+            # backlog from every later poll.
+            self._degraded = True
+            self._skip_cache = True
             self.events.emit("feed.anomaly", self.name, reason=diff.anomaly)
             return 0
 
         if diff.downgrade_identity and self.state.identity_override != "content":
+            # The IDs in this window are rotating: writing them would pollute
+            # the tree with copies that the next poll (content-based IDs)
+            # would then duplicate again. Switch identity and write nothing.
             self.state.identity_override = "content"
+            self._skip_cache = True
             self.events.emit("feed.identity-downgraded", self.name)
+            return 0
 
         ctx = RenderContext(
             feed_name=self.name, feed_url=self.sub.url, feed_title=parsed.meta.title
@@ -197,7 +215,7 @@ class FeedRunner:
                 # One unrenderable entry must not wedge the whole feed.
                 self.events.emit("entry.render-failed", self.name, id=item.id, error=str(exc))
                 continue
-            path = self.store.write_entry(base_name=base, data=data, revision=1, fsync=False)
+            path = self.store.write_entry(base_name=base, data=data, revision=1)
             self.seen[item.id] = EntryRecord(
                 id=item.id, id8=item.id8, base_name=base, revision=1,
                 content_hash=item.content_hash, first_seen=now,
@@ -209,7 +227,7 @@ class FeedRunner:
             if revisions_today(self.state.revision_log, item.id, today) >= limits.max_revisions_per_entry_per_day:
                 # Keeping every revision is the headline feature; letting a
                 # flapping feed write eight hundred of them is not.
-                self.state.health = "degraded"
+                self._degraded = True
                 self.events.emit("entry.revision-suppressed", self.name, id=item.id)
                 continue
             revision = record.revision + 1
@@ -221,7 +239,7 @@ class FeedRunner:
                 self.events.emit("entry.render-failed", self.name, id=item.id, error=str(exc))
                 continue
             path = self.store.write_entry(
-                base_name=record.base_name, data=data, revision=revision, fsync=False
+                base_name=record.base_name, data=data, revision=revision
             )
             self.seen[item.id] = EntryRecord(
                 id=item.id, id8=item.id8, base_name=record.base_name, revision=revision,
@@ -232,8 +250,8 @@ class FeedRunner:
             written += 1
 
         if written:
-            # One directory fsync for the whole batch. Per-file fsync on btrfs
-            # is the difference between milliseconds and hundreds of them.
+            # Files are fsynced as written; the directory (renames and
+            # symlinks) is fsynced once per batch. --no-fsync skips both.
             self.store.fsync_entries()
 
         feed_bytes = render_feed_meta(parsed.meta, name=self.name, url=self.sub.url)
@@ -261,52 +279,57 @@ class FeedRunner:
         from .identity import content_hash
         from .semantic import canonical_xml
 
-        out: list[PreparedEntry] = []
-        for item in prepared:
+        sem = asyncio.Semaphore(4)
+
+        async def one(item: PreparedEntry) -> PreparedEntry | None:
             if item.parsed.content_origin != "none" or not item.parsed.link:
-                out.append(item)
-                continue
+                return item
+            if item.id in self.seen:
+                # Already stored (possibly with fulltext). Re-fetching on every
+                # poll would cost a request per entry and turn a flaky page
+                # into revision churn, so leave it out of this diff.
+                return None
             try:
-                html = await fulltext_mod.extract(
-                    self.client, item.parsed.link, limits=self.config.limits
-                )
+                async with sem:
+                    html = await fulltext_mod.extract(
+                        self.client, item.parsed.link, limits=self.config.limits
+                    )
             except fulltext_mod.FulltextError as exc:
                 self.events.emit(
                     "fulltext.error", self.name, link=item.parsed.link, error=str(exc)
                 )
-                out.append(item)
-                continue
+                return item
             if not html:
-                out.append(item)
-                continue
+                return item
             content = to_semantic(html, item.parsed.link)
-            out.append(
-                dataclasses.replace(
-                    item,
-                    content=content,
-                    content_hash=content_hash(
-                        item.parsed.title, item.parsed.author, canonical_xml(content)
-                    ),
-                    parsed=dataclasses.replace(
-                        item.parsed, content_origin="fulltext:trafilatura"
-                    ),
-                )
-            )
             self.events.emit("fulltext.ok", self.name, link=item.parsed.link)
-        return out
+            return dataclasses.replace(
+                item,
+                content=content,
+                content_hash=content_hash(
+                    item.parsed.title, item.parsed.author, canonical_xml(content)
+                ),
+                parsed=dataclasses.replace(
+                    item.parsed, content_origin="fulltext:trafilatura"
+                ),
+            )
+
+        results = await asyncio.gather(*(one(i) for i in prepared))
+        return [r for r in results if r is not None]
 
     # ── bookkeeping ──────────────────────────────────────────────────────
 
     def _succeed(self, result, *, parsed, entries_written: int, body_hash: str | None = None) -> None:
         limits = self.config.limits
-        if result.etag:
-            self.state.etag = result.etag
-        if result.last_modified:
-            self.state.last_modified = result.last_modified
-        if body_hash:
-            self.state.body_hash = body_hash
+        if not self._skip_cache:
+            if result.etag:
+                self.state.etag = result.etag
+            if result.last_modified:
+                self.state.last_modified = result.last_modified
+            if body_hash:
+                self.state.body_hash = body_hash
         self.state.last_error = None
-        self._set_health("ok")
+        self._set_health("degraded" if self._degraded else "ok")
 
         interval = next_interval(
             sub_interval=self.sub.interval,
@@ -317,7 +340,7 @@ class FeedRunner:
         )
         self.state.next_poll_at = time.monotonic() + apply_jitter(interval)
         self.store.write_status_xml(
-            render_status(self.state, entry_count=self.store.entry_count())
+            render_status(self.state, entry_count=len(self.seen))
         )
         save_state(self.config, self.state)
         if parsed is not None:
@@ -343,7 +366,7 @@ class FeedRunner:
         else:
             self._set_health("degraded")
         self.store.write_status_xml(
-            render_status(self.state, entry_count=self.store.entry_count())
+            render_status(self.state, entry_count=len(self.seen))
         )
         save_state(self.config, self.state)
 
@@ -364,6 +387,8 @@ class Scheduler:
         self.events = events
         self.runners: dict[str, FeedRunner] = {}
         self._heap: list[_Due] = []
+        #: The one live due time per feed; heap entries that disagree are stale.
+        self._due: dict[str, float] = {}
         self._wake = asyncio.Event()
         self._stopping = False
         self._global = asyncio.Semaphore(config.limits.global_concurrency)
@@ -405,6 +430,7 @@ class Scheduler:
 
     def retire(self, name: str) -> None:
         runner = self.runners.pop(name, None)
+        self._due.pop(name, None)
         if runner is None:
             return
         task = self._inflight.pop(name, None)
@@ -423,7 +449,9 @@ class Scheduler:
         self._schedule(name, 0.0)
 
     def _schedule(self, name: str, delay: float) -> None:
-        heapq.heappush(self._heap, _Due(time.monotonic() + delay, name))
+        at = time.monotonic() + delay
+        self._due[name] = at
+        heapq.heappush(self._heap, _Due(at, name))
         self._wake.set()
 
     def stagger(self, names: list[str]) -> None:
@@ -443,6 +471,9 @@ class Scheduler:
                 await self._sleep_until_wake(timeout)
                 continue
             due = heapq.heappop(self._heap)
+            if self._due.get(due.name) != due.at:
+                continue  # superseded by a later _schedule()
+            self._due.pop(due.name, None)
             runner = self.runners.get(due.name)
             if runner is None or due.name in self._inflight:
                 continue
@@ -450,7 +481,10 @@ class Scheduler:
             self._inflight[due.name] = task
 
     def _next_timeout(self) -> float | None:
-        while self._heap and self._heap[0].name not in self.runners:
+        while self._heap and (
+            self._heap[0].name not in self.runners
+            or self._due.get(self._heap[0].name) != self._heap[0].at
+        ):
             heapq.heappop(self._heap)
         if not self._heap:
             return None

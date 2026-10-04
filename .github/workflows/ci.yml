@@ -5,14 +5,21 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.12", "3.14"]
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v10.2.0
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
         with:
           enable-cache: true
 
@@ -21,7 +28,7 @@ jobs:
         # our XML with our own parser would not prove much.
         run: sudo apt-get update && sudo apt-get install -y libxml2-utils
 
-      - run: uv sync --extra tui
+      - run: uv sync --locked --python ${{ matrix.python }} --extra tui --extra fulltext
 
       - name: Run tests
         # No network is required; the suite serves the committed fixtures

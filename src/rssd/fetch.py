@@ -34,7 +34,9 @@ def parse_retry_after(value: str | None) -> float | None:
     if not value:
         return None
     try:
-        return float(int(value))
+        seconds = float(value)
+        if seconds == seconds and seconds not in (float("inf"), float("-inf")):
+            return max(0.0, seconds)
     except ValueError:
         pass
     try:
@@ -99,6 +101,22 @@ def _describe(exc: BaseException) -> str:
     return f"{name}: {detail}" if detail else name
 
 
+def _permanent_target(url: str, response: httpx.Response) -> str | None:
+    """Where the feed has *permanently* moved to, if anywhere.
+
+    Only a chain of 301/308 hops from the subscribed URL counts; the first
+    temporary hop (302/303/307) stops the walk, so a temporary redirect is
+    followed for this request but never pinned for all future polls."""
+    chain = [*response.history, response]
+    target: str | None = None
+    for hop, nxt in zip(chain, chain[1:]):
+        if hop.status_code in (301, 308):
+            target = str(nxt.url)
+        else:
+            break
+    return target if target and target != url else None
+
+
 async def fetch_feed(
     client: httpx.AsyncClient,
     url: str,
@@ -123,9 +141,7 @@ async def fetch_feed(
 
     try:
         async with client.stream("GET", url, headers=headers) as response:
-            resolved_url: str | None = None
-            if str(response.url) != url:
-                resolved_url = str(response.url)
+            resolved_url = _permanent_target(url, response)
 
             cache_control = response.headers.get("Cache-Control")
             max_age = parse_max_age(cache_control)

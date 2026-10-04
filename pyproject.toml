@@ -1,6 +1,6 @@
 [project]
 name = "rssd-fs"
-version = "0.2.2"
+version = "0.3.0"
 description = "A file-based RSS daemon: the filesystem is the API"
 license = "MIT"
 license-files = ["LICENSE"]
@@ -10,13 +10,14 @@ classifiers = [
     "Development Status :: 4 - Beta",
     "Environment :: Console",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
     "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
     "Topic :: Utilities",
 ]
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.12"
 dependencies = [
     "feedparser>=6.0.14",
     "httpx>=0.28.1",

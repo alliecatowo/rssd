@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
+from urllib.parse import urlsplit
 
 from lxml import etree
 
@@ -84,7 +85,7 @@ def _extract_name(root, source_path: Path) -> str:
     if not valid_name(default):
         raise SubscriptionError(
             f"invalid filename stem {default!r} as a feed name: "
-            "must match ^[a-z0-9][a-z0-9._-]{{0,63}}$ or supply <name>"
+            "must match ^[a-z0-9][a-z0-9._-]{0,63}$ or supply <name>"
         )
     return default
 
@@ -126,13 +127,19 @@ def parse_subscription(data: bytes, source_path: Path) -> Subscription:
     that leaves the subscription unusable -- unparsable XML, no extractable
     URL, or an invalid name."""
     try:
-        root = etree.fromstring(data)
+        root = etree.fromstring(
+            data,
+            etree.XMLParser(resolve_entities=False, no_network=True, load_dtd=False),
+        )
     except etree.XMLSyntaxError as exc:
         raise SubscriptionError(f"XML syntax error: {exc}") from exc
 
     url = _extract_url(root)
     if not url:
         raise SubscriptionError("no URL found (checked url/link/outline/self-link/text)")
+
+    if urlsplit(url).scheme.lower() not in ("http", "https"):
+        raise SubscriptionError(f"unsupported URL scheme (need http or https): {url!r}")
 
     name = _extract_name(root, source_path)
     interval = _extract_interval(root)

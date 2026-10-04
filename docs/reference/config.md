@@ -41,8 +41,14 @@ per *entry*, to a different third-party site each time.
 It needs the extra:
 
 ```bash
-uv sync --extra fulltext
+uv tool install 'rssd-fs[tui,fulltext]'     # or, from a clone: uv sync --extra fulltext
 ```
+
+Article URLs come from untrusted feeds, so every fetch (and every redirect hop)
+is checked: only `http`/`https`, and never to a loopback, private, link-local or
+otherwise non-public address. The name is resolved once and the connection is
+made to that checked address, so DNS rebinding can't swap in an internal IP
+between the check and the request.
 
 Good candidates are feeds like Hacker News, whose body is link metadata rather
 than prose.

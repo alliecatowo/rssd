@@ -262,9 +262,11 @@ class FeedStore:
         self.ensure_dirs()
         rev_name = f"{base_name}.r{revision}.xml"
         rev_path = self.entries_dir / rev_name
+        fsync = fsync and not self.config.no_fsync
         atomic_write(rev_path, data, fsync=fsync)
         link_path = self.entries_dir / f"{base_name}.xml"
-        atomic_symlink(link_path, rev_name, fsync=fsync)
+        # The symlink is covered by the batched directory fsync.
+        atomic_symlink(link_path, rev_name, fsync=False)
         return rev_path
 
     def write_feed_xml(self, data: bytes) -> bool:
@@ -279,13 +281,13 @@ class FeedStore:
             existing = None
         if existing == data:
             return False
-        atomic_write(path, data)
+        atomic_write(path, data, fsync=not self.config.no_fsync)
         return True
 
     def write_status_xml(self, data: bytes) -> None:
         """``status.xml`` is volatile — always rewritten, no change-guard."""
         self.feed_dir.mkdir(parents=True, exist_ok=True)
-        atomic_write(self.config.status_xml(self.name), data)
+        atomic_write(self.config.status_xml(self.name), data, fsync=not self.config.no_fsync)
 
     def entry_count(self) -> int:
         return len(self.scan())
@@ -293,5 +295,5 @@ class FeedStore:
     def fsync_entries(self) -> None:
         """Batched directory fsync — once per poll, not once per file
         (SPEC §8)."""
-        if self.entries_dir.is_dir():
+        if not self.config.no_fsync and self.entries_dir.is_dir():
             fsync_dir(self.entries_dir)

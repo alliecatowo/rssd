@@ -16,6 +16,7 @@ Search order, first hit wins:
 from __future__ import annotations
 
 import os
+import sys
 import tomllib
 from dataclasses import dataclass, fields, replace
 from pathlib import Path
@@ -113,6 +114,25 @@ def set_option(config: ReaderConfig, key: str, value: str | None) -> ReaderConfi
     return replace(config, **{key: value})
 
 
+def _check_value(config: ReaderConfig, key: str, value: object) -> object:
+    """Type- and range-check one value from a TOML file."""
+    current = getattr(config, key)
+    if isinstance(current, bool):
+        if not isinstance(value, bool):
+            raise ConfigError(f"{key} must be true or false, got {value!r}")
+    elif isinstance(current, int):
+        if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+            raise ConfigError(f"{key} must be a non-negative integer, got {value!r}")
+    else:
+        if not isinstance(value, str):
+            raise ConfigError(f"{key} must be a string, got {value!r}")
+        if key == "sort" and value not in SORTS:
+            raise ConfigError(f"sort must be one of: {', '.join(SORTS)}")
+        if key == "date_format" and value not in DATE_FORMATS:
+            raise ConfigError(f"date_format must be one of: {', '.join(DATE_FORMATS)}")
+    return value
+
+
 def config_search_paths(root: Path | None = None) -> list[Path]:
     paths: list[Path] = []
     if env := os.environ.get("RSS_CONFIG"):
@@ -138,7 +158,10 @@ def load_reader_config(root: Path | None = None) -> tuple[ReaderConfig, Path | N
             if not path.is_file():
                 continue
             data = tomllib.loads(path.read_text())
-        except (OSError, tomllib.TOMLDecodeError):
+        except OSError:
+            continue
+        except tomllib.TOMLDecodeError as exc:
+            print(f"rss: ignoring malformed config {path}: {exc}", file=sys.stderr)
             continue
         config = ReaderConfig()
         known = {f.name for f in fields(ReaderConfig)}
@@ -151,9 +174,9 @@ def load_reader_config(root: Path | None = None) -> tuple[ReaderConfig, Path | N
             if key == "browser" and from_cwd:
                 continue
             try:
-                config = replace(config, **{key: value})
-            except TypeError:
-                continue
+                config = replace(config, **{key: _check_value(config, key, value)})
+            except ConfigError as exc:
+                print(f"rss: {path}: {exc}; using the default", file=sys.stderr)
         return config, path
     return ReaderConfig(), None
 

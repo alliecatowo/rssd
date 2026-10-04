@@ -13,6 +13,7 @@ from . import __version__
 from .config import Config, Limits
 from .models import Subscription
 from .root import open_root, resolve_root
+from .store import atomic_write
 
 #: The reference feeds from SPEC §14. Between them they exercise every code
 #: path: high churn, rich Atom content, thin RSS, an image-only body, and one
@@ -63,6 +64,16 @@ def subscription_xml(name: str, url: str, comment: str, *, fulltext: bool = Fals
     )
 
 
+def derive_name(url: str) -> str:
+    """A feed folder name from the URL's host: lobste.rs -> lobste.rs."""
+    import re
+    from urllib.parse import urlparse
+
+    host = urlparse(url).hostname or "feed"
+    host = re.sub(r"^(www|feeds?|rss)\.", "", host)
+    return re.sub(r"[^a-z0-9._-]+", "-", host.lower()).strip("-.")[:48] or "feed"
+
+
 def cmd_init(args: argparse.Namespace) -> int:
     root = resolve_root(args.root).path
     config = Config(root=root)
@@ -74,7 +85,7 @@ def cmd_init(args: argparse.Namespace) -> int:
         if target.exists() and not args.force:
             continue
         effective = f"{base}/{name}.xml" if base else url
-        target.write_text(subscription_xml(name, effective, comment))
+        atomic_write(target, subscription_xml(name, effective, comment).encode("utf-8"))
 
     fixtures = root / "fixtures"
     fixtures.mkdir(parents=True, exist_ok=True)
@@ -104,7 +115,6 @@ def cmd_init(args: argparse.Namespace) -> int:
 
 def cmd_add(args: argparse.Namespace) -> int:
     """Subscribe to a feed: write feeds.d/<name>.xml."""
-    import re
     from urllib.parse import urlparse
 
     from .config import valid_name
@@ -114,11 +124,7 @@ def cmd_add(args: argparse.Namespace) -> int:
     if parsed.scheme not in ("http", "https") or not parsed.netloc:
         print(f"rssd: not an http(s) URL: {url}", file=sys.stderr)
         return 2
-    name = args.name
-    if not name:
-        host = parsed.hostname or "feed"
-        host = re.sub(r"^(www|feeds?|rss)\.", "", host)
-        name = re.sub(r"[^a-z0-9._-]+", "-", host.lower()).strip("-.")[:48] or "feed"
+    name = args.name or derive_name(url)
     if not valid_name(name):
         print(f"rssd: invalid feed name {name!r} (lowercase letters, digits, . _ -)", file=sys.stderr)
         return 2
@@ -135,10 +141,97 @@ def cmd_add(args: argparse.Namespace) -> int:
     except SubscriptionError as exc:
         print(f"rssd: refusing to write an invalid subscription: {exc}", file=sys.stderr)
         return 2
-    target.write_text(xml)
+    atomic_write(target, xml.encode("utf-8"))
     print(f"added {name}  {url}")
     print(f"  {target}")
     print("next:  rssd once   (or `rssd daemon` to keep polling)")
+    return 0
+
+
+def cmd_import(args: argparse.Namespace) -> int:
+    """Subscribe to every feed in an OPML file (what every other reader exports)."""
+    from lxml import etree
+
+    from .config import valid_name
+    from .subscriptions import SubscriptionError, parse_subscription
+
+    config = _config(args)
+    try:
+        data = Path(args.opml).read_bytes()
+        tree = etree.fromstring(
+            data, etree.XMLParser(resolve_entities=False, no_network=True, load_dtd=False)
+        )
+    except (OSError, etree.XMLSyntaxError) as exc:
+        print(f"rssd: cannot read {args.opml}: {exc}", file=sys.stderr)
+        return 2
+    added = skipped = 0
+    seen_names: set[str] = set()
+    for outline in tree.iter("outline"):
+        url = (outline.get("xmlUrl") or outline.get("xmlurl") or "").strip()
+        if not url:
+            continue
+        name = derive_name(url)
+        base, n = name, 2
+        while name in seen_names or (config.feeds_d / f"{name}.xml").exists():
+            if (config.feeds_d / f"{name}.xml").exists() and _existing_url(
+                config.feeds_d / f"{name}.xml"
+            ) == url:
+                break
+            name = f"{base}-{n}"[:64]
+            n += 1
+        seen_names.add(name)
+        target = config.feeds_d / f"{name}.xml"
+        if target.exists():
+            skipped += 1
+            continue
+        xml = subscription_xml(name, url, "imported from OPML")
+        try:
+            parse_subscription(xml.encode("utf-8"), target)
+        except SubscriptionError as exc:
+            print(f"  skipped {url}: {exc}", file=sys.stderr)
+            skipped += 1
+            continue
+        if not valid_name(name):
+            skipped += 1
+            continue
+        atomic_write(target, xml.encode("utf-8"))
+        print(f"  added {name}  {url}")
+        added += 1
+    print(f"\n{added} added, {skipped} skipped (already subscribed or invalid)")
+    return 0
+
+
+def _existing_url(path: Path) -> str | None:
+    from .subscriptions import SubscriptionError, parse_subscription
+
+    try:
+        return parse_subscription(path.read_bytes(), path).url
+    except (OSError, SubscriptionError):
+        return None
+
+
+def cmd_export(args: argparse.Namespace) -> int:
+    """Write every subscription as OPML 2.0 to stdout (or --output)."""
+    from lxml import etree
+
+    from .subscriptions import load_dir
+
+    config = _config(args)
+    subs, _errors = load_dir(config.feeds_d)
+    opml = etree.Element("opml", version="2.0")
+    head = etree.SubElement(opml, "head")
+    etree.SubElement(head, "title").text = "rssd subscriptions"
+    body = etree.SubElement(opml, "body")
+    for name in sorted(subs):
+        etree.SubElement(
+            body, "outline", type="rss", text=name, title=name, xmlUrl=subs[name].url
+        )
+    out = etree.tostring(opml, xml_declaration=True, encoding="utf-8", pretty_print=True)
+    if args.output:
+        atomic_write(Path(args.output), out)
+        print(f"exported {len(subs)} subscription(s) to {args.output}", file=sys.stderr)
+    else:
+        sys.stdout.write(out.decode("utf-8"))
     return 0
 
 
@@ -318,6 +411,14 @@ def build_parser() -> argparse.ArgumentParser:
     p_add.add_argument("--fulltext", action="store_true", help="also fetch article pages")
     p_add.add_argument("--force", action="store_true", help="overwrite an existing subscription")
     p_add.set_defaults(func=cmd_add)
+
+    p_imp = with_root(sub.add_parser("import", help="subscribe to every feed in an OPML file"))
+    p_imp.add_argument("opml")
+    p_imp.set_defaults(func=cmd_import)
+
+    p_exp = with_root(sub.add_parser("export", help="write subscriptions as OPML"))
+    p_exp.add_argument("-o", "--output", default=None, help="file to write (default: stdout)")
+    p_exp.set_defaults(func=cmd_export)
 
     p_poll = with_root(sub.add_parser("poll", help="force-poll a single feed"))
     p_poll.add_argument("feed")

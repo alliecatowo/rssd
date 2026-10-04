@@ -731,7 +731,7 @@ class RssdApp(App):
         self.status_message, self.status_error = "", False
         if not raw:
             return
-        if raw.isdigit():
+        if (raw.isascii() and raw.isdigit()):
             self._goto_entry(int(raw))
             return
         parts = raw.split(None, 1)
@@ -796,7 +796,7 @@ class RssdApp(App):
         if not rest:
             self.open_source_link()
             return
-        if rest.isdigit():
+        if (rest.isascii() and rest.isdigit()):
             n = int(rest)
             if not self.doc_links or not 1 <= n <= len(self.doc_links):
                 self._set_error(f"no such link: {n}")

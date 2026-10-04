@@ -8,22 +8,25 @@ on:
     tags: ["v*"]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10.2.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
       - run: sudo apt-get update && sudo apt-get install -y libxml2-utils
-      - run: uv sync --extra tui
+      - run: uv sync --locked --extra tui --extra fulltext
       - run: uv run pytest -q
 
   build:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10.2.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
 
       - name: Check the tag matches the package version
         if: github.event_name == 'push'
@@ -35,7 +38,7 @@ jobs:
           fi
 
       - run: uv build
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: dist
           path: dist/
@@ -48,11 +51,37 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: actions/download-artifact@v8
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: dist
           path: dist/
-      - uses: pypa/gh-action-pypi-publish@release/v1
+      - uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # release/v1
+
+  github-release:
+    # Creates the GitHub release for the tag once PyPI has the files, with the
+    # same sdist/wheel attached and notes generated from merged PRs.
+    if: github.event_name == 'push'
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: dist
+          path: dist/
+      - name: Create the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            echo "Release $GITHUB_REF_NAME already exists; nothing to do."
+            exit 0
+          fi
+          gh release create "$GITHUB_REF_NAME" dist/* \
+            --verify-tag --title "$GITHUB_REF_NAME" --generate-notes
 
   publish-testpypi:
     if: github.event_name == 'workflow_dispatch'
@@ -62,11 +91,11 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: actions/download-artifact@v8
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: dist
           path: dist/
-      - uses: pypa/gh-action-pypi-publish@release/v1
+      - uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
 
@@ -92,14 +121,18 @@ jobs:
           [ -n "$meta" ] || { echo "::error::rssd-fs ${VERSION} not on PyPI"; exit 1; }
           URL="$(jq -r '.urls[] | select(.packagetype=="sdist") | .url' <<<"$meta")"
           SHA="$(jq -r '.urls[] | select(.packagetype=="sdist") | .digests.sha256' <<<"$meta")"
-          [ -n "$URL" ] && [ -n "$SHA" ]
+          if [ -z "$URL" ] || [ -z "$SHA" ]; then
+            echo "::error::no sdist URL/digest in PyPI metadata for ${VERSION}"
+            exit 1
+          fi
 
           install -d -m 700 ~/.ssh
           keyfile="$(mktemp)"
           trap 'rm -f "$keyfile"' EXIT
           printf '%s\n' "$HOMEBREW_TAP_DEPLOY_KEY" > "$keyfile"
           chmod 600 "$keyfile"
-          ssh-keyscan -t ed25519,rsa github.com >> ~/.ssh/known_hosts 2>/dev/null
+          # GitHub's published ed25519 host key (https://api.github.com/meta).
+          echo "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl" > ~/.ssh/known_hosts
           export GIT_SSH_COMMAND="ssh -i $keyfile -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes"
           git clone --depth 1 git@github.com:alliecatowo/homebrew-tap.git tap
           cd tap

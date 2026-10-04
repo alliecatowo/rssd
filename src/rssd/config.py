@@ -14,7 +14,7 @@ from pathlib import Path
 #: they are kept boring on purpose.
 NAME_RE = re.compile(r"^[a-z0-9][a-z0-9._-]{0,63}$")
 
-USER_AGENT = "rssd/0.1 (+https://github.com/allie/rssd)"
+USER_AGENT = "rssd/0.1 (+https://github.com/alliecatowo/rssd)"
 
 ACCEPT = (
     "application/atom+xml, application/rss+xml, application/rdf+xml;q=0.9, "

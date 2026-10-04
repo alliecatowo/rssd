@@ -96,6 +96,9 @@ class ParsedFeed:
     #: Log it, never abort on it.
     bozo: bool = False
     bozo_message: str | None = None
+    #: False when feedparser could not identify the document as a feed at all
+    #: (an HTML error page served with a 200, for instance).
+    recognized: bool = True
 
 
 # ── preparation (identity + semantic content resolved) ──────────────────────
