@@ -20,6 +20,7 @@ from __future__ import annotations
 from datetime import UTC, datetime
 
 import subprocess
+import shlex
 import webbrowser
 from pathlib import Path
 
@@ -41,7 +42,7 @@ from ..reader import (
     resolve,
     to_text,
 )
-from ..userconf import ConfigError, ReaderConfig, set_option
+from ..userconf import ConfigError, ReaderConfig, is_openable_link, set_option
 
 PANES = ("feeds", "entries", "reader")
 
@@ -183,11 +184,11 @@ class RssdApp(App):
 
     def compose(self) -> ComposeResult:
         with Horizontal(id="body"):
-            yield Static(id="feeds")
-            yield Static(id="entries")
-            yield Static(id="reader")
-        yield Static(id="status")
-        yield Static(id="cmdline")
+            yield Static(id="feeds", markup=False)
+            yield Static(id="entries", markup=False)
+            yield Static(id="reader", markup=False)
+        yield Static(id="status", markup=False)
+        yield Static(id="cmdline", markup=False)
 
     def on_mount(self) -> None:
         self.refresh_feeds(initial=True)
@@ -684,10 +685,13 @@ class RssdApp(App):
         self._launch(self.doc.link)
 
     def _launch(self, url: str) -> None:
+        if not is_openable_link(url):
+            self._set_error("refusing to open a non-http(s)/mailto link")
+            return
         try:
             if self.rc.browser:
                 subprocess.Popen(
-                    [self.rc.browser, url], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+                    [*shlex.split(self.rc.browser), url], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
                 )
             else:
                 webbrowser.open(url)

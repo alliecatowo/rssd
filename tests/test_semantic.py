@@ -493,3 +493,27 @@ def test_canonical_xml_different_content_differs():
     el1 = _make("<p>hello</p>")
     el2 = _make("<p>goodbye</p>")
     assert canonical_xml(el1) != canonical_xml(el2)
+
+
+def _text_of(html):
+    return "".join(to_semantic(html).itertext())
+
+
+def test_block_level_inline_keeps_markup_and_tail_text():
+    out = to_semantic('See <a href="http://x.com/a">this</a> for details.')
+    assert "".join(out.itertext()) == "See this for details."
+    assert any(el.tag.endswith("link") for el in out.iter())
+
+
+def test_block_level_br_keeps_all_lines():
+    text = _text_of("Line one<br>Line two<br>three")
+    assert "Line one" in text and "Line two" in text and "three" in text
+
+
+def test_div_with_inline_link_keeps_tail():
+    text = _text_of('<div>See <a href="http://x.com/a">this</a> for details.</div>')
+    assert text.endswith("for details.")
+
+
+def test_block_level_emphasis_keeps_tail():
+    assert "after" in _text_of("<em>bold</em> after")

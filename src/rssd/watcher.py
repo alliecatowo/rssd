@@ -13,6 +13,7 @@ from __future__ import annotations
 import asyncio
 import contextlib
 from dataclasses import dataclass
+from pathlib import Path
 
 from watchfiles import awatch
 
@@ -58,6 +59,21 @@ class Reconciler:
         desired = set(subs)
         running = set(self.scheduler.runners)
 
+        # A file that currently fails to parse (a typo mid-edit) keeps its
+        # previous good subscription loaded: never retire a feed whose
+        # source file is merely invalid.
+        invalid_by_path = {Path(p).resolve() for p, _ in errors}
+        protected = {
+            name
+            for name in running - desired
+            if Path(self.scheduler.runners[name].sub.source_path).resolve()
+            in invalid_by_path
+        }
+        for name in protected:
+            handle = self._pending_removal.pop(name, None)
+            if handle is not None:
+                handle.cancel()
+
         for name in desired:
             handle = self._pending_removal.pop(name, None)
             if handle is not None:
@@ -73,7 +89,7 @@ class Reconciler:
                 self.scheduler.update(subs[name])
                 self.events.emit("subscription.changed", name, url=subs[name].url)
 
-        for name in sorted(running - desired):
+        for name in sorted(running - desired - protected):
             self._schedule_removal(name)
 
         if initial and added:

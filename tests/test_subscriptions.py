@@ -216,3 +216,45 @@ def test_load_dir_is_total_one_bad_file_never_blocks_others(tmp_path):
     by_name, errors = load_dir(tmp_path)
     assert len(by_name) == 5
     assert len(errors) == 2
+
+
+def test_subscription_xml_escapes_and_roundtrips(tmp_path):
+    from rssd.cli import subscription_xml
+    from rssd.subscriptions import parse_subscription
+
+    url = "https://e.com/feed?a=1&b=2&c=<x>"
+    xml = subscription_xml("my-feed", url, "weird -- comment-")
+    sub = parse_subscription(xml.encode(), tmp_path / "my-feed.xml")
+    assert sub.url == url
+    assert sub.name == "my-feed"
+
+
+def test_rssd_add_with_ampersand_url(tmp_path):
+    from rssd.cli import main
+    from rssd.subscriptions import load_dir
+
+    root = tmp_path / "r"
+    assert main(["init", str(root)]) == 0
+    assert main(["add", "https://e.com/feed?a=1&b=2", "--name", "amp", "--root", str(root)]) == 0
+    subs, errors = load_dir(root / "feeds.d")
+    assert not errors
+    assert subs["amp"].url == "https://e.com/feed?a=1&b=2"
+
+
+def test_prune_skips_still_subscribed_feed(tmp_path, capsys):
+    from rssd.cli import main
+    from rssd.config import Config
+    from rssd.state import load_state, save_state
+
+    root = tmp_path / "r"
+    assert main(["init", str(root)]) == 0
+    assert main(["add", "https://e.com/f.xml", "--name", "keep", "--root", str(root)]) == 0
+    config = Config(root=root)
+    folder = config.feed_dir("keep")
+    folder.mkdir(parents=True)
+    (folder / "data.txt").write_text("x")
+    state = load_state(config, "keep")
+    state.health = "retired"
+    save_state(config, state)
+    assert main(["prune", "--yes", "--root", str(root)]) == 0
+    assert folder.exists()

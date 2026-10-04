@@ -19,7 +19,10 @@ _STRIP_PARAMS_EXACT = {"fbclid", "gclid", "ref", "mc_cid", "mc_eid"}
 
 def canonical_link(url: str) -> str:
     """Strip tracking query params and the fragment from a URL."""
-    parts = urlsplit(url)
+    try:
+        parts = urlsplit(url)
+    except ValueError:
+        return url
     kept = [
         (k, v)
         for k, v in parse_qsl(parts.query, keep_blank_values=True)

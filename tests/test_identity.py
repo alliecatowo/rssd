@@ -248,3 +248,9 @@ def test_parse_entry_filename_never_raises_on_weird_input():
     for filename in weird_inputs:
         # must not raise
         identity.parse_entry_filename(filename)
+
+
+def test_canonical_link_total_on_bad_url():
+    from rssd.identity import canonical_link
+
+    assert canonical_link("http://[bad") == "http://[bad"
