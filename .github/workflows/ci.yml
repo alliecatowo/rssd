@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  tests:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -34,3 +34,12 @@ jobs:
         # No network is required; the suite serves the committed fixtures
         # over localhost.
         run: uv run pytest -q
+
+  # The repo ruleset requires a check named exactly `test`; this is the single
+  # gate that is green only when every matrix leg is.
+  test:
+    if: always()
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - run: test "${{ needs.tests.result }}" = "success"
