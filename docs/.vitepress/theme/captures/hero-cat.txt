@@ -1,0 +1,25 @@
+$ xmllint --format store/rust-blog/entries/20260903T000000Z-840ac61d-announcing-rust-1-98-1.xml | cut -c1-110 | head -n 28
+<?xml version="1.0" encoding="utf-8"?>
+<entry xmlns="https://rssd.dev/entry/1" id="sha256:840ac61de3c7dd0bb03a9e1a86da3a154aa349b309ca44081a12d28de60
+  <source>
+    <link>https://blog.rust-lang.org/2026/09/03/Rust-1.98.1/</link>
+    <feed name="rust-blog" title="Rust Blog">https://blog.rust-lang.org/feed.xml</feed>
+    <guid basis="atom-id">https://blog.rust-lang.org/2026/09/03/Rust-1.98.1/</guid>
+  </source>
+  <title>Announcing Rust 1.98.1</title>
+  <author>The Rust Release Team</author>
+  <published origin="feed">2026-09-03T00:00:00Z</published>
+  <content origin="feed:content" hash="sha256:e46b8520b188c95239ac110d359a03c5e46e19b4a6079d04f903a1f077b9782f
+    <paragraph>The Rust team has published a new point release of Rust, 1.98.1. Rust is a programming language
+    <paragraph>If you have a previous version of Rust installed via rustup, getting Rust 1.98.1 is as easy as:
+    <code>rustup update stable</code>
+    <paragraph>If you don't have it already, you can <link href="https://www.rust-lang.org/install.html">get <
+    <heading level="2"> What's in 1.98.1</heading>
+    <paragraph>Rust 1.98.1 fixes a <link href="https://github.com/rust-lang/rust/issues/161441">miscompilation
+    <paragraph>In Rust 1.98.0, in some circumstances, rustc would incorrectly generate a trait object vtable w
+    <paragraph>If you'd like to help us out by testing future releases, you might consider using the beta (<co
+    <heading level="3"> Contributors to 1.98.1</heading>
+    <paragraph>Many people came together to create Rust 1.98.1. We couldn't have done it without all of you. <
+  </content>
+</entry>
+

@@ -1,0 +1,5 @@
+$ rssd import subscriptions.opml
+  added hnrss.org  https://hnrss.org/frontpage
+  added blog.rust-lang.org  https://blog.rust-lang.org/feed.xml
+
+2 added, 0 skipped (already subscribed or invalid)

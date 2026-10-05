@@ -1,0 +1,19 @@
+$ rss feeds --no-color
+NAME       HEALTH    ENTRIES  LAST POLL   TITLE
+lwn        ok             15  2026-10-05  LWN.net
+rust-blog  ok             10  2026-10-05  Rust Blog
+xkcd       ok              4  2026-10-05  xkcd.com
+
+$ ls -la store/rust-blog | tail -n +2
+drwxr-xr-x. 1 allie allie   50 Oct  4 19:41 .
+drwxr-xr-x. 1 allie allie   32 Oct  4 19:41 ..
+drwxr-xr-x. 1 allie allie 2696 Oct  4 19:41 entries
+-rw-r--r--. 1 allie allie  344 Oct  4 19:41 feed.xml
+-rw-r--r--. 1 allie allie  251 Oct  4 19:41 status.xml
+
+$ ls -l store/rust-blog/entries | tail -n 4
+-rw-r--r--. 1 allie allie  8490 Oct  4 19:41 20261001T000000Z-d3cf546b-announcing-rust-1-99-0.r1.xml
+lrwxrwxrwx. 1 allie allie    55 Oct  4 19:41 20261001T000000Z-d3cf546b-announcing-rust-1-99-0.xml -> 20261001T000000Z-d3cf546b-announcing-rust-1-99-0.r1.xml
+-rw-r--r--. 1 allie allie  3393 Oct  4 19:41 20261002T000000Z-979c2fbd-demoting-i686-windows-targets-to-std-only.r1.xml
+lrwxrwxrwx. 1 allie allie    74 Oct  4 19:41 20261002T000000Z-979c2fbd-demoting-i686-windows-targets-to-std-only.xml -> 20261002T000000Z-979c2fbd-demoting-i686-windows-targets-to-std-only.r1.xml
+

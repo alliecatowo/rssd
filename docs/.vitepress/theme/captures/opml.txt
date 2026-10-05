@@ -1,0 +1,12 @@
+$ rssd export
+<?xml version='1.0' encoding='utf-8'?>
+<opml version="2.0">
+  <head>
+    <title>rssd subscriptions</title>
+  </head>
+  <body>
+    <outline type="rss" text="lwn" title="lwn" xmlUrl="https://lwn.net/headlines/rss"/>
+    <outline type="rss" text="rust-blog" title="rust-blog" xmlUrl="https://blog.rust-lang.org/feed.xml"/>
+    <outline type="rss" text="xkcd" title="xkcd" xmlUrl="https://xkcd.com/atom.xml"/>
+  </body>
+</opml>

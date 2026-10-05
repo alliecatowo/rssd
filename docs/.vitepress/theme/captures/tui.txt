@@ -1,0 +1,26 @@
+   lwn                 │ >Demoting i686 Windows targets to std-only  │ Demoting i686 Windows
+ > rust-blog           │  Announcing Rust 1.99.0                     │ targets to std-only
+   xkcd                │  Announcing a Maintainer in Residence:      │ Rust Blog  ·  3d ago
+ ~                     │ Scott Schafer for the Cargo team            │ by Mateusz Mikuła, Ralf Jung
+ ~                     │  GitHub Actions leaking secrets when Miri   │ --------------------------
+ ~                     │ output is cached                            │
+ ~                     │  Be alert: targeted attacks on prominent    │ With Rust 1.100.0, the
+ ~                     │ Rustaceans                                  │ following changes to
+ ~                     │  Rust debugging survey 2026 results         │ 32-bit Windows targets
+ ~                     │  Announcing Rust 1.98.1                     │ will happen:
+ ~                     │  Announcing rustup 1.29.1                   │
+ ~                     │  Announcing our first Maintainers in        │ - `i686-pc-windows-msvc`
+ ~                     │ Residence                                   │   Tier 1 *with* host tools
+ ~                     │  Enabling the next-generation trait solver  │   target will be demoted
+ ~                     │ on nightly                                  │   to Tier 1 *without* host
+ ~                     │ ~                                           │   tools.
+ ~                     │ ~                                           │
+ ~                     │ ~                                           │ - `i686-pc-windows-gnu`
+ ~                     │ ~                                           │   Tier 2 *with* host tools
+ ~                     │ ~                                           │   target will be demoted
+ ~                     │ ~                                           │   to Tier 2 *without* host
+ ~                     │ ~                                           │   tools.
+ ~                     │ ~                                           │
+ ~                     │ ~                                           │ Builds of the standard
+ ~                     │ ~                                           │ library will continue to
+ -- NORMAL --  feed:rust-blog  pane:reader  1/10  0%

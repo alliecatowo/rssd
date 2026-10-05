@@ -20,6 +20,7 @@ export default defineConfig({
   themeConfig: {
     nav: [
       { text: 'Guide', link: '/guide/getting-started' },
+      { text: 'How it works', link: '/guide/how-it-works' },
       { text: 'Reference', link: '/reference/cli' },
       { text: 'Spec', link: '/reference/spec' },
     ],
@@ -29,9 +30,10 @@ export default defineConfig({
         text: 'Guide',
         items: [
           { text: 'Getting started', link: '/guide/getting-started' },
+          { text: 'OPML import and export', link: '/guide/opml' },
           { text: 'How it works', link: '/guide/how-it-works' },
           { text: 'Entry format', link: '/guide/entries' },
-          { text: 'Reading feeds', link: '/guide/reading' },
+          { text: 'Reading feeds and the TUI', link: '/guide/reading' },
           { text: 'Events', link: '/guide/events' },
         ],
       },
