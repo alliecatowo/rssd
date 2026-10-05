@@ -6,8 +6,12 @@ Python 3.12 or newer and [uv](https://docs.astral.sh/uv/). If you use
 [mise](https://mise.jdx.dev/), the pinned versions come from `mise.toml`.
 
 ```bash
-uv tool install 'rssd-fs[tui]'
+uv tool install 'rssd-fs[tui]'      # from PyPI, with the terminal reader
+brew install alliecatowo/tap/rssd   # or Homebrew, macOS and Linux
 ```
+
+That installs two commands: `rssd` (the daemon) and `rss` (the reader). Check with
+`rssd --version`; this site documents 0.3.0.
 
 To hack on it instead: `git clone https://github.com/alliecatowo/rssd`, then
 `uv sync --extra tui` and prefix commands below with `uv run`.
@@ -26,6 +30,10 @@ rss list                                       # what's subscribed, and is it he
 rss tui                                        # read it
 ```
 
+Already use another reader? `rssd import subscriptions.opml` subscribes to every
+feed in an OPML file, and `rssd export` writes your list back out. See
+[OPML import and export](/guide/opml).
+
 Use `rssd daemon` instead of `rssd once` to keep polling in the background
 (`--poll-now` skips the startup stagger).
 
@@ -36,7 +44,7 @@ one, and one that sends no cache validators at all.
 To watch the raw event stream:
 
 ```bash
-tail -F ~/.local/share/rssd/var/events.jsonl | jq -c    
+tail -F ~/.local/share/rssd/var/events.jsonl | jq -c
 ```
 
 ## Adding a feed

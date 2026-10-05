@@ -1,0 +1,5 @@
+$ tail -n 4 var/events.jsonl | cut -c1-150
+{"v":1,"seq":43,"ts":"2026-10-05T02:41:34.203Z","event":"entry.new","feed":"lwn","data":{"id":"sha256:c6d5b2f4df92f72423830cf9cae43cf086a3da5b57428b2b
+{"v":1,"seq":44,"ts":"2026-10-05T02:41:34.203Z","event":"feed.health-changed","feed":"lwn","data":{"health":"ok"}}
+{"v":1,"seq":45,"ts":"2026-10-05T02:41:34.216Z","event":"feed.poll-succeeded","feed":"lwn","data":{"entries":15,"written":15,"next_poll_in":900}}
+{"v":1,"seq":46,"ts":"2026-10-05T02:41:34.217Z","event":"daemon.stopping","data":{}}

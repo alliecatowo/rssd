@@ -32,6 +32,9 @@ A file that fails to parse produces a `subscription.invalid` event and **the
 previous good version stays loaded**. A fat-fingered save never takes a working
 feed offline.
 
+Subscriptions can also be created with `rssd add <url>` (which writes this file
+for you) or `rssd import feeds.opml`; see [OPML import and export](/guide/opml).
+
 ### Full-text extraction
 
 Off by default, and worth keeping that way: the normal footprint is one request
